@@ -1,4 +1,4 @@
-package com.duyp;
+package com.duyp.architecture.mvp;
 
 import org.junit.Test;
 
