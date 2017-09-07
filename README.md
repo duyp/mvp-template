@@ -1,2 +1,2 @@
-# mvp-template
-Advanced MVP Template for new project
+# Advanced MVP Template for new project
+
