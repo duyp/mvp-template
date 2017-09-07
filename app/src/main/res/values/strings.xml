@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Android MVP</string>
+
+    <string name="github_client_id">78dca82345b88a41244b</string>
+    <string name="github_client_secret">4b0de555ea5ec45d40d9e0981c081e3b00eb5d46</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
