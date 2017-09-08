@@ -6,6 +6,8 @@ package com.duyp.architecture.mvp.data.remote;
 
 public class RemoteConstants {
 
+    public static final String HEADER_AUTH = "Authorization";
+
     public static final String ENDPOINT = "https://api.github.com";
     public static final int TIME_OUT_API = 30; // second
 

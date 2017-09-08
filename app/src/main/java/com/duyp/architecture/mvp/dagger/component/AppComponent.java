@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.duyp.architecture.mvp.dagger.module.AppModule;
 import com.duyp.architecture.mvp.dagger.module.NetworkModule;
+import com.duyp.architecture.mvp.dagger.module.UserModule;
 import com.duyp.architecture.mvp.data.local.UserManager;
+import com.duyp.architecture.mvp.data.remote.GithubService;
 
 import javax.inject.Singleton;
 
@@ -28,8 +30,7 @@ public interface AppComponent {
 
     UserManager userManager();
 
-//    AskTutorService askTutorService();
+    GithubService askTutorService();
 
-//    UserComponent getUserComponent(UserModule userModule);
-
+    UserComponent getUserComponent(UserModule userModule);
 }

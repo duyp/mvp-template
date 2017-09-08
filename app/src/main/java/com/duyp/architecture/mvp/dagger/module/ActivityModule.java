@@ -3,10 +3,13 @@ package com.duyp.architecture.mvp.dagger.module;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.Navigator;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
+import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import dagger.Module;
@@ -40,20 +43,25 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    AppCompatActivity provideActivity() { return mActivity; }
+    protected AppCompatActivity provideActivity() { return mActivity; }
 
     @Provides
     @PerActivity
     @ActivityFragmentManager
-    FragmentManager provideFragmentManager() { return mActivity.getSupportFragmentManager(); }
+    protected FragmentManager provideFragmentManager() { return mActivity.getSupportFragmentManager(); }
 
     @Provides
     @PerActivity
-    Navigator provideNavigator() { return new ActivityNavigator(mActivity); }
+    protected Navigator provideNavigator() { return new ActivityNavigator(mActivity); }
 
     @Provides
-    NavigatorHelper provideNavigatorHelper(Navigator navigator) {
+    protected NavigatorHelper provideNavigatorHelper(Navigator navigator) {
         return new NavigatorHelper(navigator);
     }
 
+    @Provides
+    @PerFragment
+    RequestManager providesGlide() {
+        return Glide.with(mActivity);
+    }
 }

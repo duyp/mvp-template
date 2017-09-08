@@ -43,7 +43,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${libs.supportVersion}"
 
     // my utils
-    compile 'com.github.duyp:android-utils:1.0.5'
+    compile 'com.github.duyp:android-utils:1.1.1'
 
     //lombok
     compile 'org.projectlombok:lombok:1.16.16'

@@ -8,10 +8,7 @@ import com.duyp.architecture.mvp.data.local.UserManager;
 import com.duyp.architecture.mvp.data.local.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -19,11 +16,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmMigration;
-import io.realm.RealmObject;
 
 /**
  * Created by air on 4/30/17.
@@ -48,7 +42,7 @@ public class AppModule {
     @Provides
     @Singleton
     static Gson provideGson() {
-        return ServiceFactory.makeGson();
+        return ServiceFactory.makeGsonForRealm();
     }
 
     @Provides
@@ -83,7 +77,7 @@ public class AppModule {
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
                 .schemaVersion(schemaVersion)
                 .migration((realm, oldVersion, newVersion) -> {
-                    // migrate Realm for new version here
+                    // TODO: 9/8/17  Migrate Realm for new version here
                 })
                 .deleteRealmIfMigrationNeeded()
                 .build();

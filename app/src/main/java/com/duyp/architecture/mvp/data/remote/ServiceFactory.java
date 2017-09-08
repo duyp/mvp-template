@@ -44,9 +44,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by duypham on 7/23/17.
  * Factory class for creating ok http client and services
- * /**
- * how to enable tls on android 4.4
- * <a href="https://github.com/square/okhttp/issues/2372"></a>
  */
 
 public class ServiceFactory {
@@ -85,7 +82,7 @@ public class ServiceFactory {
         final File baseDir = context.getCacheDir();
         if (baseDir != null) {
             final File cacheDir = new File(baseDir, "HttpResponseCache");
-            builder.cache(new Cache(cacheDir, 10 * 1024 * 1024));
+            builder.cache(new Cache(cacheDir, 10 * 1024 * 1024)); // 10 MB
         }
 
         return enableTls12OnPreLollipop(builder);
@@ -97,6 +94,8 @@ public class ServiceFactory {
      * @return builder with SSL Socket Factory set
      * according to {@link OkHttpClient.Builder#sslSocketFactory(SSLSocketFactory)} deprecation,
      * Please add config SSL with {@link X509TrustManager} by using {@link CustomTrustManager}
+     *  * how to enable tls on android 4.4
+     * <a href="https://github.com/square/okhttp/issues/2372"></a>
      */
     private static OkHttpClient.Builder enableTls12OnPreLollipop(OkHttpClient.Builder client) {
         if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT < 22) {
@@ -124,7 +123,21 @@ public class ServiceFactory {
         return client;
     }
 
+    /**
+     * Make gson with custom date time deserializer
+     * @return {@link Gson} object
+     */
     public static Gson makeGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateDeserializer())
+                .create();
+    }
+
+    /**
+     * Make gson which Realm object exclusion strategy
+     * @return {@link Gson} object
+     */
+    public static Gson makeGsonForRealm() {
         return new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateDeserializer())
                 .setExclusionStrategies(new ExclusionStrategy() {

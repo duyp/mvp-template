@@ -27,19 +27,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userName = edtUserName.getText().toString();
-                String pass = edtPassword.getText().toString();
-                String basic = StringUtils.getBasicAuth(userName, pass);
-                Log.d("auth", "basic auth: " + basic);
-            }
-        });
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String userName = edtUserName.getText().toString();
+//                String pass = edtPassword.getText().toString();
+//                String basic = StringUtils.getBasicAuth(userName, pass);
+//                Log.d("auth", "basic auth: " + basic);
+//            }
+//        });
     }
 
 }

@@ -1,10 +1,11 @@
 package com.duyp.architecture.mvp.dagger.module;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.duyp.androidutils.ContextUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.duyp.androidutils.CommonUtils;
 import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.Navigator;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
@@ -25,7 +26,7 @@ public class CustomViewModule {
 
     @Provides
     AppCompatActivity provideActivity() {
-        return (AppCompatActivity) ContextUtils.getActivityFromContext(view.getContext());
+        return (AppCompatActivity) CommonUtils.getActivityFromContext(view.getContext());
     }
 
     @Provides
@@ -36,5 +37,10 @@ public class CustomViewModule {
     @Provides
     NavigatorHelper provideNavigatorHelper(Navigator navigator) {
         return new NavigatorHelper(navigator);
+    }
+
+    @Provides
+    RequestManager provideGlide() {
+        return Glide.with(view.getContext());
     }
 }

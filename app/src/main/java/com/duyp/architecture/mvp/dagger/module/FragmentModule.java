@@ -21,11 +21,12 @@ import dagger.Provides;
  * Module for fragment component, modified by Duy Pham (Copyright 2016 Patrick Löwenstein)
  */
 @Module
-public class FragmentModule {
+public class FragmentModule extends ActivityModule {
 
     private final Fragment mFragment;
 
     public FragmentModule(Fragment fragment) {
+        super((AppCompatActivity) fragment.getActivity());
         mFragment = fragment;
     }
 
@@ -48,28 +49,28 @@ public class FragmentModule {
     NavigatorHelper provideNavigatorHelper(FragmentNavigator navigator) {
         return new NavigatorHelper(navigator);
     }
-
-    @Provides
-    @PerFragment
-    RequestManager providesGlide() {
-        return Glide.with(mFragment.getContext());
-    }
-
-    @Provides
-    @PerFragment
-    AppCompatActivity provideActivity() {
-        Activity activity = mFragment.getActivity();
-        if (activity instanceof AppCompatActivity) {
-            return (AppCompatActivity) mFragment.getActivity();
-        } else {
-            throw new IllegalStateException("Must using AppCompatActivity");
-        }
-    }
-
-    @Provides
-    @PerFragment
-    @ActivityFragmentManager
-    FragmentManager provideActivityFragmentManager(AppCompatActivity activity) {
-        return activity.getSupportFragmentManager();
-    }
+//
+//    @Provides
+//    @PerFragment
+//    RequestManager providesGlide() {
+//        return Glide.with(mFragment.getContext());
+//    }
+//
+//    @Provides
+//    @PerFragment
+//    AppCompatActivity provideActivity() {
+//        Activity activity = mFragment.getActivity();
+//        if (activity instanceof AppCompatActivity) {
+//            return (AppCompatActivity) mFragment.getActivity();
+//        } else {
+//            throw new IllegalStateException("Must using AppCompatActivity");
+//        }
+//    }
+//
+//    @Provides
+//    @PerFragment
+//    @ActivityFragmentManager
+//    FragmentManager provideActivityFragmentManager(AppCompatActivity activity) {
+//        return activity.getSupportFragmentManager();
+//    }
 }
