@@ -80,7 +80,7 @@ public class User extends RealmObject {
     private String location;
     @SerializedName("email")
     @Expose
-    private Object email;
+    private String email;
     @SerializedName("hireable")
     @Expose
     private Boolean hireable;
