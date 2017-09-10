@@ -1,7 +1,12 @@
 package com.duyp.architecture.mvp.dagger.component;
 
+import com.duyp.architecture.mvp.dagger.module.ActivityModule;
+import com.duyp.architecture.mvp.dagger.module.CustomViewModule;
+import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.dagger.module.UserModule;
 import com.duyp.architecture.mvp.dagger.scopes.UserScope;
+import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.data.remote.UserService;
 
 import dagger.Subcomponent;
 
@@ -16,15 +21,15 @@ import dagger.Subcomponent;
 )
 public interface UserComponent {
 
-//    // data
-//    UserService getUserService();
-//    UserFirebaseManager getUserFirebaseManager();
-//
-//    // subComponents
-//    UserFragmentComponent getUserFragmentComponent(FragmentModule module);
-//    UserActivityComponent getUserActivityComponent(ActivityModule module);
-//    CustomViewComponent getCustomViewComponent(CustomViewModule module);
-//
+    UserService getUserService();
+
+    User getUser();
+
+    // subComponents
+    UserFragmentComponent getUserFragmentComponent(FragmentModule module);
+    UserActivityComponent getUserActivityComponent(ActivityModule module);
+    CustomViewComponent getCustomViewComponent(CustomViewModule module);
+
 //    // inject
 //    void inject(CustomClassBottomBarView view);
 //    void inject(BecomeTutorDialog dialog);

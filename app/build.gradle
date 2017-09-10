@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
 
 def cfg = rootProject.ext.configuration;
@@ -35,6 +34,10 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
 }
 
 dependencies {
@@ -52,7 +55,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${libs.supportVersion}"
 
     // my utils
-    compile 'com.github.duyp:android-utils:1.1.1'
+    compile 'com.github.duyp:android-utils:master-SNAPSHOT'
 
     //lombok
     compile 'org.projectlombok:lombok:1.16.16'
@@ -72,6 +75,12 @@ dependencies {
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:${libs.daggerVersion}"
     provided 'javax.annotation:jsr250-api:1.0'
 
+    // room library and live data
+    compile "android.arch.lifecycle:extensions:1.0.0-alpha8"
+    compile "android.arch.persistence.room:runtime:1.0.0-alpha8"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha8"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha8"
+
     // butter knife
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
@@ -84,7 +93,16 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
 
     // Glide
-    compile 'com.github.bumptech.glide:glide:4.1.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
+    compile 'com.github.bumptech.glide:glide:3.8.0'
+
+    //leak canary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+
+    compile 'com.mikhaellopez:circularimageview:3.0.2'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+
+    // custom font
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
 }

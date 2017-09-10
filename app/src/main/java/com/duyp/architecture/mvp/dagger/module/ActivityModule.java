@@ -1,10 +1,13 @@
 package com.duyp.architecture.mvp.dagger.module;
 
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
+import com.duyp.androidutils.image.glide.loader.TransitionGlideLoader;
 import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.Navigator;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
@@ -35,15 +38,15 @@ import dagger.Provides;
 @Module
 public class ActivityModule {
 
-    private final AppCompatActivity mActivity;
+    private final FragmentActivity mActivity;
 
-    public ActivityModule(AppCompatActivity activity) {
+    public ActivityModule(FragmentActivity activity) {
         mActivity = activity;
     }
 
     @Provides
     @PerActivity
-    protected AppCompatActivity provideActivity() { return mActivity; }
+    protected FragmentActivity provideActivity() { return mActivity; }
 
     @Provides
     @PerActivity
@@ -55,13 +58,20 @@ public class ActivityModule {
     protected Navigator provideNavigator() { return new ActivityNavigator(mActivity); }
 
     @Provides
+    @PerActivity
     protected NavigatorHelper provideNavigatorHelper(Navigator navigator) {
         return new NavigatorHelper(navigator);
     }
 
     @Provides
-    @PerFragment
-    RequestManager providesGlide() {
-        return Glide.with(mActivity);
+    @PerActivity
+    protected SimpleGlideLoader provideDefaultGlide() {
+        return new SimpleGlideLoader(mActivity);
+    }
+
+    @Provides
+    @PerActivity
+    protected TransitionGlideLoader provideTransitionGlide() {
+        return new TransitionGlideLoader(mActivity);
     }
 }

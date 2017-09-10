@@ -2,10 +2,13 @@ package com.duyp.architecture.mvp.dagger.component;
 
 import android.content.Context;
 
+import com.duyp.architecture.mvp.app.AppDatabase;
+import com.duyp.architecture.mvp.app.MyApplication;
 import com.duyp.architecture.mvp.dagger.module.AppModule;
 import com.duyp.architecture.mvp.dagger.module.NetworkModule;
 import com.duyp.architecture.mvp.dagger.module.UserModule;
-import com.duyp.architecture.mvp.data.local.UserManager;
+import com.duyp.architecture.mvp.data.local.user.UserManager;
+import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 
 import javax.inject.Singleton;
@@ -30,7 +33,13 @@ public interface AppComponent {
 
     UserManager userManager();
 
+    UserRepo userRepo();
+
+    AppDatabase appDatabase();
+
     GithubService askTutorService();
 
     UserComponent getUserComponent(UserModule userModule);
+
+    void inject(MyApplication application);
 }

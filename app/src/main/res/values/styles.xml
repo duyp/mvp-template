@@ -17,4 +17,19 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="avatar_circle">
+        <item name="civ_border">true</item>
+        <item name="civ_border_width">0.5dp</item>
+        <item name="civ_border_color">@android:color/darker_gray</item>
+        <item name="civ_shadow">false</item>
+        <item name="android:layout_width">@dimen/avatar_size_normal</item>
+        <item name="android:layout_height">@dimen/avatar_size_normal</item>
+        <item name="android:src">@drawable/ic_avatar_default</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="avatar_circle_large" parent="avatar_circle">
+        <item name="android:layout_width">@dimen/avatar_size_large</item>
+        <item name="android:layout_height">@dimen/avatar_size_large</item>
+    </style>
 </resources>

@@ -4,8 +4,9 @@ import android.app.Application;
 import android.content.Context;
 
 import com.duyp.androidutils.CustomSharedPreferences;
-import com.duyp.architecture.mvp.data.local.UserManager;
-import com.duyp.architecture.mvp.data.local.UserRepo;
+import com.duyp.architecture.mvp.app.AppDatabase;
+import com.duyp.architecture.mvp.data.local.user.UserManager;
+import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
 import com.google.gson.Gson;
@@ -16,8 +17,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 /**
  * Created by air on 4/30/17.
@@ -41,6 +40,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    AppDatabase provideAppDatabase() {
+        return AppDatabase.getDatabase(application);
+    }
+
+    @Provides
+    @Singleton
     static Gson provideGson() {
         return ServiceFactory.makeGsonForRealm();
     }
@@ -52,36 +57,21 @@ public class AppModule {
     }
 
     @Provides
-    UserRepo provideUserDataStore(CustomSharedPreferences sharedPreferences, Gson gson) {
-        return new UserRepo(sharedPreferences, gson);
+    @Singleton
+    UserRepo provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, AppDatabase appDatabase) {
+        return new UserRepo(appDatabase, sharedPreferences, gson);
     }
 
     @Provides
     @Singleton
-    protected UserManager provideUserManager(Context context, UserRepo userDataStore, Realm realm,
+    protected UserManager provideUserManager(Context context, UserRepo userDataStore,
                                              EventBus eventBus, GithubService service) {
-        return new UserManager(context, userDataStore, realm, eventBus, service);
+        return new UserManager(context, userDataStore, eventBus, service);
     }
 
     @Provides
     @Singleton
     EventBus provideEventBus() {
         return EventBus.getDefault();
-    }
-
-    @Provides
-    @Singleton
-    Realm provideRealm(Context context) {
-        Realm.init(context);
-        int schemaVersion = 1; // current version
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-                .schemaVersion(schemaVersion)
-                .migration((realm, oldVersion, newVersion) -> {
-                    // TODO: 9/8/17  Migrate Realm for new version here
-                })
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        Realm.setDefaultConfiguration(realmConfig);
-        return Realm.getDefaultInstance();
     }
 }

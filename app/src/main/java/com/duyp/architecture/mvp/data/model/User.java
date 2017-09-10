@@ -1,9 +1,18 @@
 package com.duyp.architecture.mvp.data.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
+
+import com.duyp.architecture.mvp.data.model.base.BaseResponse;
+import com.duyp.architecture.mvp.utils.DateConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.internal.bind.DateTypeAdapter;
 
-import io.realm.RealmObject;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,95 +23,127 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class User extends RealmObject {
-    @SerializedName("login")
-    @Expose
-    private String login;
+@Entity
+public class User extends BaseResponse {
+
+    @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
     @Expose
-    private Long id;
+    public Long id;
+
+    @SerializedName("login")
+    @Expose
+    public String login;
     @SerializedName("avatar_url")
     @Expose
-    private String avatarUrl;
+    public String avatarUrl;
     @SerializedName("gravatar_id")
     @Expose
-    private String gravatarId;
+    public String gravatarId;
     @SerializedName("url")
     @Expose
-    private String url;
+    public String url;
     @SerializedName("html_url")
     @Expose
-    private String htmlUrl;
+    public String htmlUrl;
     @SerializedName("followers_url")
     @Expose
-    private String followersUrl;
+    public String followersUrl;
     @SerializedName("following_url")
     @Expose
-    private String followingUrl;
+    public String followingUrl;
     @SerializedName("gists_url")
     @Expose
-    private String gistsUrl;
+    public String gistsUrl;
     @SerializedName("starred_url")
     @Expose
-    private String starredUrl;
+    public String starredUrl;
     @SerializedName("subscriptions_url")
     @Expose
-    private String subscriptionsUrl;
+    public String subscriptionsUrl;
     @SerializedName("organizations_url")
     @Expose
-    private String organizationsUrl;
+    public String organizationsUrl;
     @SerializedName("repos_url")
     @Expose
-    private String reposUrl;
+    public String reposUrl;
     @SerializedName("events_url")
     @Expose
-    private String eventsUrl;
+    public String eventsUrl;
     @SerializedName("received_events_url")
     @Expose
-    private String receivedEventsUrl;
+    public String receivedEventsUrl;
     @SerializedName("type")
     @Expose
-    private String type;
+    public String type;
     @SerializedName("site_admin")
     @Expose
-    private Boolean siteAdmin;
+    public Boolean siteAdmin;
     @SerializedName("name")
     @Expose
-    private String name;
+    public String name;
     @SerializedName("company")
     @Expose
-    private String company;
+    public String company;
     @SerializedName("blog")
     @Expose
-    private String blog;
+    public String blog;
     @SerializedName("location")
     @Expose
-    private String location;
+    public String location;
     @SerializedName("email")
     @Expose
-    private String email;
+    public String email;
     @SerializedName("hireable")
     @Expose
-    private Boolean hireable;
+    public Boolean hireable;
     @SerializedName("bio")
     @Expose
-    private String bio;
+    public String bio;
     @SerializedName("public_repos")
     @Expose
-    private Long publicRepos;
+    public Long publicRepos;
     @SerializedName("public_gists")
     @Expose
-    private Long publicGists;
+    public Long publicGists;
     @SerializedName("followers")
     @Expose
-    private Long followers;
+    public Long followers;
     @SerializedName("following")
     @Expose
-    private Long following;
+    public Long following;
+    @TypeConverters(DateConverter.class)
     @SerializedName("created_at")
     @Expose
-    private String createdAt;
+    public Date createdAt;
+    @TypeConverters(DateConverter.class)
     @SerializedName("updated_at")
     @Expose
-    private String updatedAt;
+    public Date updatedAt;
+    @SerializedName("private_gists")
+    @Expose
+    public Long privateGists;
+    @SerializedName("total_private_repos")
+    @Expose
+    public Long totalPrivateRepos;
+    @SerializedName("owned_private_repos")
+    @Expose
+    public Long ownedPrivateRepos;
+    @SerializedName("disk_usage")
+    @Expose
+    public Long diskUsage;
+    @SerializedName("collaborators")
+    @Expose
+    public Long collaborators;
+    @SerializedName("two_factor_authentication")
+    @Expose
+    public Boolean twoFactorAuthentication;
+
+    public boolean equals(User user) {
+        return id.equals(user.getId());
+    }
+    // TODO: 9/10/17 Create type converter for Plan class
+//    @SerializedName("plan")
+//    @Expose
+//    public Plan plan;
 }

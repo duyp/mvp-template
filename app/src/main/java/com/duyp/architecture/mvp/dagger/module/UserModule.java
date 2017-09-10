@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.duyp.architecture.mvp.dagger.qualifier.OkHttpAuth;
 import com.duyp.architecture.mvp.dagger.scopes.UserScope;
+import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.remote.RemoteConstants;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
@@ -24,18 +25,16 @@ import okhttp3.Request;
 @Module
 public class UserModule {
 
-    private final User mUser;
     private final String mToken;
 
-    public UserModule(@NonNull User user, @NonNull String token) {
-        this.mUser = user;
+    public UserModule(@NonNull String token) {
         mToken = token;
     }
 
     @UserScope
     @Provides
-    User provideUser() {
-        return mUser;
+    User provideUser(UserRepo userRepo) {
+        return userRepo.getUser();
     }
 
     @Provides

@@ -31,7 +31,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import io.reactivex.schedulers.Schedulers;
-import io.realm.RealmObject;
 import okhttp3.Cache;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
@@ -134,23 +133,12 @@ public class ServiceFactory {
     }
 
     /**
-     * Make gson which Realm object exclusion strategy
+     * Make gson which {@link DateDeserializer}
      * @return {@link Gson} object
      */
     public static Gson makeGsonForRealm() {
         return new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateDeserializer())
-                .setExclusionStrategies(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getDeclaringClass().equals(RealmObject.class);
-                    }
-
-                    @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
-                        return false;
-                    }
-                })
                 .create();
     }
 

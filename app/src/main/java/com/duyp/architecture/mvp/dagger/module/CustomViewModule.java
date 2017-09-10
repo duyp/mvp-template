@@ -6,8 +6,11 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.duyp.androidutils.CommonUtils;
+import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
+import com.duyp.androidutils.image.glide.loader.TransitionGlideLoader;
 import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.Navigator;
+import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import dagger.Module;
@@ -21,6 +24,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Module
+@PerActivity
 public class CustomViewModule {
     View view;
 
@@ -40,7 +44,12 @@ public class CustomViewModule {
     }
 
     @Provides
-    RequestManager provideGlide() {
-        return Glide.with(view.getContext());
+    protected SimpleGlideLoader provideDefaultGlide() {
+        return new SimpleGlideLoader(view.getContext());
+    }
+
+    @Provides
+    protected TransitionGlideLoader provideTransitionGlide() {
+        return new TransitionGlideLoader(view.getContext());
     }
 }

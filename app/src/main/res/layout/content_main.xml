@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.duyp.architecture.mvp.ui.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -13,7 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
         android:id="@+id/ll1">
         <EditText
             android:layout_width="match_parent"
@@ -27,18 +28,28 @@
             android:layout_height="wrap_content"
             android:hint="password"
             android:id="@+id/edtPassword"
+            android:layout_marginTop="@dimen/margin_small"
             android:inputType="textPassword"/>
     </LinearLayout>
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        style="@style/avatar_circle_large"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:id="@+id/imvAvatar"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Basic"
-        android:layout_below="@id/ll1"
+        android:id="@+id/tvName"
+        android:layout_marginTop="@dimen/margin_default"
         android:textSize="20sp"
-        android:id="@+id/tvBasic"/>
+        android:text="Please login"/>
 
-</RelativeLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll1"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        android:id="@+id/pb"/>
+</LinearLayout>

@@ -3,9 +3,11 @@ package com.duyp.architecture.mvp.dagger.component;
 import android.support.v4.app.FragmentManager;
 
 import com.duyp.androidutils.navigator.Navigator;
+import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.dagger.module.ActivityModule;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
+import com.duyp.architecture.mvp.ui.MainActivity;
 
 import dagger.Component;
 
@@ -31,4 +33,5 @@ public interface ActivityComponent {
 
     Navigator navigator();
 
+    void inject(MainActivity activity);
 }
