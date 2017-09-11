@@ -45,7 +45,7 @@ ext {
             googleServiceVersion: "11.0.2",
             okHttpVersion: "3.6.0",
             rxJavaVersion: "2.1.0",
-            daggerVersion: "2.8",
+            daggerVersion: "2.11",
             mockitoVersion: "1.10.19",
             dexMakerVersion: "1.4"
     ]
