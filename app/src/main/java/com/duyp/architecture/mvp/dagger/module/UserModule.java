@@ -1,5 +1,6 @@
 package com.duyp.architecture.mvp.dagger.module;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -34,8 +35,8 @@ public class UserModule {
 
     @UserScope
     @Provides
-    User provideUser(UserRepo userRepo) {
-        return userRepo.getUser();
+    LiveData<User> provideUser(UserRepo userRepo) {
+        return userRepo.getUserLiveData();
     }
 
     @Provides

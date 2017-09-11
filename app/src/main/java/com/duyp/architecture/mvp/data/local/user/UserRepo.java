@@ -25,6 +25,8 @@ import javax.inject.Singleton;
 
 public class UserRepo {
 
+    private static final long USER_ID_NOT_EXIST = -1;
+
     @NonNull
     private final Gson mGson;
 
@@ -53,9 +55,8 @@ public class UserRepo {
      * @param user {@link User} to be saved
      */
     public void setUser(@NonNull User user, @Nullable PlainConsumer<LiveData<User>> userConsumer) {
-        // save to shared preferences
-        String userJson = mGson.toJson(user);
-        mSharedPreferences.setPreferences(Constants.PREF_USER, userJson);
+        // save userId to shared preferences
+        mSharedPreferences.setPreferences(Constants.PREF_USER_ID, user.getId());
 
         // save to database
         DbTaskHelper.doTaskOnBackground(() -> {
@@ -77,8 +78,8 @@ public class UserRepo {
      * @return true if user updated
      */
     public boolean updateUserIfEquals(@NonNull User newUser, @Nullable PlainConsumer<LiveData<User>> consumer) {
-        User user = getUser();
-        if (user != null && user.getId().equals(newUser.getId())) {
+        Long userId = getSavedUserId();
+        if (newUser.getId().equals(userId)) {
             setUser(newUser, consumer);
             return true;
         }
@@ -93,29 +94,20 @@ public class UserRepo {
     @Nullable
     public LiveData<User> getUserLiveData() {
         if (mUserLiveData == null) {
-            User savedUser = getSavedUser();
-            if (savedUser != null) {
-                mUserLiveData = mUserDao.getUser(savedUser.getId());
+            Long savedUserId = getSavedUserId();
+            if (savedUserId != USER_ID_NOT_EXIST) {
+                mUserLiveData = mUserDao.getUser(savedUserId);
             }
         }
         return mUserLiveData;
     }
 
-    @Nullable
-    public User getUser() {
-        LiveData<User> userLiveData = getUserLiveData();
-        if (userLiveData != null) {
-            return userLiveData.getValue();
-        }
-        return null;
+    private Long getSavedUserId() {
+        return mSharedPreferences.getPreferences(Constants.PREF_USER_ID, USER_ID_NOT_EXIST);
     }
 
-    User getSavedUser() {
-        String userJson = mSharedPreferences.getPreferences(Constants.PREF_USER, "");
-        if (!TextUtils.isEmpty(userJson)) {
-            return fromJson(userJson);
-        }
-        return null;
+    boolean isUserExisted() {
+        return getSavedUserId() != USER_ID_NOT_EXIST;
     }
 
     /**
@@ -137,9 +129,9 @@ public class UserRepo {
      * Clear user from database
      */
     public void clearUser() {
-        mSharedPreferences.setPreferences(Constants.PREF_USER, "");
+        mSharedPreferences.setPreferences(Constants.PREF_USER_ID, USER_ID_NOT_EXIST);
         mSharedPreferences.setPreferences(Constants.PREF_USER_TOKEN, "");
-        DbTaskHelper.doTaskOnBackground(() -> mUserDao.deleteUser(getUser()), Throwable::printStackTrace);
+        DbTaskHelper.doTaskOnBackground(() -> mUserDao.deleteUser(getSavedUserId()), Throwable::printStackTrace);
     }
 
     /**

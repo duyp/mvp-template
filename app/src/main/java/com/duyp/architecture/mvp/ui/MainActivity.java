@@ -109,10 +109,7 @@ public class MainActivity extends BaseActivity {
             }, () -> {
                 progressBar.setVisibility(View.GONE);
             }, user -> {
-                userManager.doAfterLogin(user, basic, userLiveData -> {
-                    mUserLiveData = userLiveData;
-                    populateUserData();
-                });
+                userManager.doAfterLogin(user, basic, this::initUserLiveData);
             }, error -> {
                 AlertUtils.showToastLongMessage(MainActivity.this, error.getMessage());
             });
@@ -126,12 +123,17 @@ public class MainActivity extends BaseActivity {
     }
 
     private void init() {
-        if (!userManager.checkForSavedUserAndStartSessionIfHas(userLiveData -> {
-            mUserLiveData = userLiveData;
-            populateUserData();
-        })) {
+        if (!userManager.checkForSavedUserAndStartSessionIfHas(this::initUserLiveData)) {
             AlertUtils.showToastLongMessage(this, "Please login!");
         }
+    }
+
+    private void initUserLiveData(LiveData<User> userLiveData) {
+        if (mUserLiveData != null) {
+            mUserLiveData.removeObservers(this);
+        }
+        mUserLiveData = userLiveData;
+        populateUserData();
     }
 
     private void populateUserData() {

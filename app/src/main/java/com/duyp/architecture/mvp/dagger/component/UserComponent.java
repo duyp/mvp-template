@@ -1,5 +1,7 @@
 package com.duyp.architecture.mvp.dagger.component;
 
+import android.arch.lifecycle.LiveData;
+
 import com.duyp.architecture.mvp.dagger.module.ActivityModule;
 import com.duyp.architecture.mvp.dagger.module.CustomViewModule;
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
@@ -23,7 +25,7 @@ public interface UserComponent {
 
     UserService getUserService();
 
-    User getUser();
+    LiveData<User> getUserLiveData();
 
     // subComponents
     UserFragmentComponent getUserFragmentComponent(FragmentModule module);

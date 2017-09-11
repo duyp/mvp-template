@@ -55,7 +55,7 @@ public class UserManager {
         this.mGithubService = service;
     }
 
-    protected UserComponent createUserComponent(@NonNull User user, @NonNull String token) {
+    protected UserComponent createUserComponent(@NonNull String token) {
         return InjectionHelper.getAppComponent(mContext).getUserComponent(new UserModule(token));
     }
 
@@ -80,20 +80,20 @@ public class UserManager {
      * @param token user auth token
      */
     public void doAfterLogin(@NonNull User user, @NonNull String token, @Nullable PlainConsumer<LiveData<User>> consumer) {
-        startUserSession(user, token, consumer);
+        mUserRepo.setUser(user, consumer);
+        mUserRepo.setUserToken(token);
+        startUserSession(token);
     }
 
     /**
      * Start user session in test environment
-     * @param user user info
      * @param token user token
      */
-    private void startUserSession(@NonNull User user, String token, @Nullable PlainConsumer<LiveData<User>> consumer) {
+    private void startUserSession(String token) {
         if (mUserComponent != null) {
             stopUserSession();
         }
-        setUser(user, token, consumer);
-        mUserComponent = createUserComponent(user, token);
+        mUserComponent = createUserComponent(token);
         Log.d(TAG, "User session started!");
     }
 
@@ -116,30 +116,19 @@ public class UserManager {
      * @return true if has saved user
      */
     public boolean checkForSavedUserAndStartSessionIfHas(@Nullable PlainConsumer<LiveData<User>> consumer) {
+        boolean pass = true;
         if (mUserComponent == null) {
-            User user = mUserRepo.getSavedUser();
-            if (user != null) {
-                startUserSession(user, mUserRepo.getUserToken(), consumer);
-                return true;
+            if (mUserRepo.isUserExisted()) {
+                startUserSession(mUserRepo.getUserToken());
             } else {
-                return false;
+                pass = false;
             }
-        } else {
-            if (consumer != null) {
-                // noinspection ConstantConditions
-                consumer.accept(mUserRepo.getUserLiveData());
-            }
-            return true;
         }
-    }
-
-    /**
-     * set current user and save to shared preference
-     * @param user user to set
-     */
-    private void setUser(@NonNull User user, String token, @Nullable PlainConsumer<LiveData<User>> consumer) {
-        mUserRepo.setUser(user, consumer);
-        mUserRepo.setUserToken(token);
+        if (pass && consumer != null) {
+            // noinspection ConstantConditions
+            consumer.accept(mUserRepo.getUserLiveData());
+        }
+        return false;
     }
 
     /**
@@ -175,10 +164,6 @@ public class UserManager {
         mEventBus.post(new Events.LogoutEvent());
 
         // navigate user to Login Page
-//        Intent intent = new Intent(mContext, LoginActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        mContext.startActivity(intent);
     }
 
     public void reset() {
@@ -197,8 +182,9 @@ public class UserManager {
         mUserRepo.clearAll();
     }
 
-    // log out from our server
-    // all error will be ignored
+    /**
+     * Logout by our back-end api
+     */
     private void logOutApi() {
         if (mUserComponent != null) {
             // call logout api here
