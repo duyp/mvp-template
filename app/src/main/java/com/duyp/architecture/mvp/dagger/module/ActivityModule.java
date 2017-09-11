@@ -1,5 +1,6 @@
 package com.duyp.architecture.mvp.dagger.module;
 
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
 import com.duyp.androidutils.image.glide.loader.TransitionGlideLoader;
 import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.Navigator;
+import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
@@ -47,6 +49,11 @@ public class ActivityModule {
     @Provides
     @PerActivity
     protected FragmentActivity provideActivity() { return mActivity; }
+
+    @Provides
+    @PerActivity
+    @ActivityContext
+    protected Context provideContext() { return mActivity; }
 
     @Provides
     @PerActivity

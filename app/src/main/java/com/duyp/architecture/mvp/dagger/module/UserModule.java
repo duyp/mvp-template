@@ -3,6 +3,7 @@ package com.duyp.architecture.mvp.dagger.module;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.dagger.qualifier.OkHttpAuth;
 import com.duyp.architecture.mvp.dagger.scopes.UserScope;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
@@ -40,7 +41,7 @@ public class UserModule {
     @Provides
     @UserScope
     @OkHttpAuth
-    OkHttpClient provideOkHttpClientNoAuth(Context context) {
+    OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context) {
         OkHttpClient.Builder builder = ServiceFactory.makeOkHttpClientBuilder(context);
         builder.addInterceptor(chain -> {
             Request request = chain.request().newBuilder()

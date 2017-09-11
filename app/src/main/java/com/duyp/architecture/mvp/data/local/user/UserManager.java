@@ -13,6 +13,7 @@ import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.dagger.InjectionHelper;
 import com.duyp.architecture.mvp.dagger.component.UserComponent;
 import com.duyp.architecture.mvp.dagger.module.UserModule;
+import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.utils.Events;
@@ -34,26 +35,20 @@ public class UserManager {
     // debug tag
     private static final String TAG = "UserManager";
 
-    @NonNull
     protected Context mContext;
 
     // user data store
-    @NonNull
     protected final UserRepo mUserRepo;
 
     // user component
-    @Nullable
     protected UserComponent mUserComponent;
 
-    @NonNull
     protected EventBus mEventBus;
 
-    @NonNull
     protected GithubService mGithubService;
 
     @Inject
-    public UserManager(@NonNull Context context, @NonNull UserRepo userRepo,
-                       @NonNull EventBus eventBus, @NonNull GithubService service) {
+    public UserManager(@ApplicationContext Context context, UserRepo userRepo, EventBus eventBus, GithubService service) {
         this.mContext = context;
         this.mUserRepo = userRepo;
         this.mEventBus = eventBus;

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.architecture.mvp.app.AppDatabase;
+import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -34,6 +35,7 @@ public class AppModule {
 
     @Provides
     @Singleton
+    @ApplicationContext
     Context provideContext() {
         return application;
     }
@@ -52,7 +54,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    CustomSharedPreferences provideMySharedPreferences(Context context) {
+    CustomSharedPreferences provideMySharedPreferences(@ApplicationContext Context context) {
         return CustomSharedPreferences.getInstance(context);
     }
 
@@ -64,7 +66,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    protected UserManager provideUserManager(Context context, UserRepo userDataStore,
+    protected UserManager provideUserManager(@ApplicationContext Context context, UserRepo userDataStore,
                                              EventBus eventBus, GithubService service) {
         return new UserManager(context, userDataStore, eventBus, service);
     }

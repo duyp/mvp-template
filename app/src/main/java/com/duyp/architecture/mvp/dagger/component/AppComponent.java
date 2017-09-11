@@ -7,6 +7,7 @@ import com.duyp.architecture.mvp.app.MyApplication;
 import com.duyp.architecture.mvp.dagger.module.AppModule;
 import com.duyp.architecture.mvp.dagger.module.NetworkModule;
 import com.duyp.architecture.mvp.dagger.module.UserModule;
+import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -29,7 +30,7 @@ import dagger.Component;
 )
 public interface AppComponent {
 
-    Context context();
+    @ApplicationContext Context context();
 
     UserManager userManager();
 

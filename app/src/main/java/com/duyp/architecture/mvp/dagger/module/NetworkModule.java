@@ -2,6 +2,7 @@ package com.duyp.architecture.mvp.dagger.module;
 
 import android.content.Context;
 
+import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.dagger.qualifier.OkHttpNoAuth;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
@@ -30,7 +31,7 @@ public class NetworkModule {
     @Provides
     @OkHttpNoAuth
     @Singleton
-    static OkHttpClient provideOkHttpClientNoAuth(Context context) {
+    static OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context) {
         return ServiceFactory.makeOkHttpClientBuilder(context).build();
     }
 
