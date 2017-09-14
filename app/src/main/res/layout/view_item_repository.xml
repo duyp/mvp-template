@@ -3,5 +3,4 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/repositoryView"
-    android:layout_marginTop="@dimen/margin_default"
-    android:background="@color/white"/>
+    android:background="@color/white" />

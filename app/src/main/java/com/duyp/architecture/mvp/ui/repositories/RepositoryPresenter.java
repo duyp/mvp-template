@@ -55,8 +55,11 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     @Override
     public void bindView(RepositoryView view) {
         super.bindView(view);
+        long t = System.currentTimeMillis();
         repositories.observe(getLifeCircleOwner(), repositories1 -> {
             adapter.setData(repositories1);
+            long time = System.currentTimeMillis() - t;
+            Log.d("repo", "Got " + repositories1.size() + " in " + time + "ms");
         });
     }
 

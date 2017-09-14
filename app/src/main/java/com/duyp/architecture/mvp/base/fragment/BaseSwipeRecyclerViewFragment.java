@@ -66,6 +66,12 @@ public abstract class BaseSwipeRecyclerViewFragment<
         initRecyclerView();
         scrollTopView = view.findViewById(R.id.scrollTop);
         noDataView = view.findViewById(R.id.noDataView);
+        if (scrollTopView != null) {
+            scrollTopView.setVisibility(View.GONE);
+            scrollTopView.setOnClickListener(view1 -> {
+                recyclerView.scrollToPosition(0);
+            });
+        }
     }
 
     @NonNull
@@ -130,12 +136,12 @@ public abstract class BaseSwipeRecyclerViewFragment<
 
     @CallSuper
     public void doneRefresh() {
-        super.doneRefresh();
-        updateNoDataState();
-        updateScrollTop();
         if (adapter != null) {
             adapter.removeFooter(getFooterView());
         }
+        updateNoDataState();
+        updateScrollTop();
+        new android.os.Handler().postDelayed(super::doneRefresh, 300);
     }
 
     // footer for load more state
