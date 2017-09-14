@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.duyp.androidutils.adapter.BaseHeaderFooterAdapter;
@@ -33,6 +34,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends BaseHeaderFooterAdapter
     }
 
     public void setData(@NonNull List<T> newData) {
+        Log.d("repo", "setting data: " + newData.size());
         if (!newData.equals(mAdapterData)) {
             mAdapterData = newData;
         }

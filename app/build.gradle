@@ -110,4 +110,7 @@ dependencies {
 
     // place holder view
     compile 'com.mindorks:placeholderview:0.7.1'
+
+    // Rx Binding
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
 }

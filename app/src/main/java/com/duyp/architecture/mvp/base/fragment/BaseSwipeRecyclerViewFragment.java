@@ -72,6 +72,9 @@ public abstract class BaseSwipeRecyclerViewFragment<
                 recyclerView.scrollToPosition(0);
             });
         }
+        if (noDataView != null) {
+            noDataView.setVisibility(View.GONE);
+        }
     }
 
     @NonNull
@@ -116,10 +119,10 @@ public abstract class BaseSwipeRecyclerViewFragment<
     }
 
     public void loadMore() {
-        isRefresh = true;
-        adapter.addFooter(getFooterView());
         if (presenter instanceof LoadMoreable && ((LoadMoreable) presenter).canLoadMore()) {
             ((LoadMoreable) presenter).loadMore();
+            isRefresh = true;
+            adapter.addFooter(getFooterView());
         }
     }
 

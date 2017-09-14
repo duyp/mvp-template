@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="repo_filter">
+        <item>Search by</item>
+        <item>Repository name</item>
+        <item>User name</item>
+        <item>Language</item>
+    </string-array>
+
+</resources>

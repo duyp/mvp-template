@@ -1,24 +1,21 @@
 package com.duyp.architecture.mvp.ui.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.util.Pair;
 
 import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
-import com.duyp.architecture.mvp.base.presenter.BasePresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.local.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.utils.DbTaskHelper;
-import com.duyp.architecture.mvp.utils.api.OnRequestSuccessListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,8 +23,8 @@ import javax.inject.Inject;
 import lombok.Getter;
 
 /**
- * Created by phamd on 9/14/2017.
- *
+ * Created by phamd on 9/14/2017.\
+ * Presenter for repositories fragment
  */
 
 @PerFragment
@@ -38,38 +35,86 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     private final RepositoryAdapter adapter;
 
     private final RepositoryDao repositoryDao;
-
     @NonNull
-    private final LiveData<List<Repository>> repositories;
+    @Getter
+    private final MutableLiveData<Pair<Integer, String>> options = new MutableLiveData<>();
 
+    private LiveData<List<Repository>> repositories;
     private Long sinceRepoId;
+    private boolean canLoadMore = false;
 
     @Inject
-    public RepositoryPresenter(@ActivityContext Context context, UserManager userManager, AppDatabase appDatabase, RepositoryAdapter adapter) {
+    RepositoryPresenter(@ActivityContext Context context, UserManager userManager, AppDatabase appDatabase, @NonNull RepositoryAdapter adapter) {
         super(context, userManager);
         this.adapter = adapter;
         this.repositoryDao = appDatabase.repositoryDao();
-        repositories = repositoryDao.getAllRepositories();
     }
 
     @Override
     public void bindView(RepositoryView view) {
         super.bindView(view);
-        long t = System.currentTimeMillis();
-        repositories.observe(getLifeCircleOwner(), repositories1 -> {
-            adapter.setData(repositories1);
-            long time = System.currentTimeMillis() - t;
-            Log.d("repo", "Got " + repositories1.size() + " in " + time + "ms");
+
+        // first time open: load local data
+        getView().showProgress();
+        repositories = repositoryDao.getAllRepositories();
+        initRepoObserver();
+
+        options.observe(getLifeCircleOwner(), options -> {
+            if (options != null) {
+                if (options.first == 0) return;
+                canLoadMore = false; // not allow load more for offline filter
+                getView().showProgress();
+                if (repositories != null) {
+                    repositories.removeObservers(getLifeCircleOwner());
+                }
+                if (options.second.isEmpty()) {
+                    repositories = repositoryDao.getAllRepositories();
+                } else {
+                    String search = "%" + options.second + "%";
+                    switch (options.first) {
+                        case 1: // repo name
+                            repositories = repositoryDao.findAllByName(search);
+                            break;
+                        case 2: // user name
+                            repositories = repositoryDao.findAllByUser(search);
+                            break;
+                        case 3: // language
+                            repositories = repositoryDao.findAllByLanguage(search);
+                            break;
+                        default: break;
+                    }
+                }
+                initRepoObserver();
+            }
+        });
+    }
+
+    private void initRepoObserver() {
+        repositories.observe(getLifeCircleOwner(), data -> {
+            if (data != null) {
+                adapter.setData(data);
+            }
+            getView().hideProgress();
         });
     }
 
     public void fetchAllRepositories() {
         addRequest(getGithubService().getAllPublicRepositories(sinceRepoId), true, response -> {
-            Log.d("repo", "Got repositories: " + response.size());
-            DbTaskHelper.doTaskOnBackground(() -> repositoryDao.addAllRepositories(response));
+            options.setValue(new Pair<>(0, ""));
+            if (isRefreshed()) {
+                // clear all after inserting
+                DbTaskHelper.doTaskOnBackground(repositoryDao::deleteAllRepositories, () -> addAll(response));
+            } else {
+                addAll(response);
+            }
+            canLoadMore = true;
             sinceRepoId = response.get(response.size() - 1).getId();
             setRefreshed(false);
         });
+    }
+
+    private void addAll(List<Repository> response) {
+        DbTaskHelper.doTaskOnBackground(() -> repositoryDao.addAllRepositories(response));
     }
 
     @Override
@@ -79,7 +124,7 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
 
     @Override
     public boolean canLoadMore() {
-        return true;
+        return canLoadMore;
     }
 
     @Override

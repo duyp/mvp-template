@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/base40"
+        android:layout_margin="@dimen/margin_small"
+        android:background="@drawable/bg_corner_gray_thin">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/tvSearch"
+            android:gravity="center_vertical"
+            android:hint="Search"
+            android:background="@color/transparent"
+            android:padding="@dimen/margin_small" />
+
+        <View style="@style/line_ver_gray_thin" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:layout_width="@dimen/base120"
+            android:layout_height="match_parent"
+            android:padding="@dimen/margin_small"
+            android:gravity="center_vertical"
+            android:id="@+id/spinnerFilter"/>
+    </LinearLayout>
+
+    <include layout="@layout/swipe_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSearch"/>
+</LinearLayout>

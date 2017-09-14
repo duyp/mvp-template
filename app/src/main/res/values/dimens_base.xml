@@ -18,6 +18,7 @@
     <dimen name="base70">70dp</dimen>
     <dimen name="base80">80dp</dimen>
     <dimen name="base100">100dp</dimen>
+    <dimen name="base120">120dp</dimen>
     <dimen name="base150">150dp</dimen>
     <dimen name="base180">180dp</dimen>
     <dimen name="base200">200dp</dimen>

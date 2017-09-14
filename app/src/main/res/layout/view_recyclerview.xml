@@ -10,4 +10,6 @@
         android:id="@+id/rcv" />
 
     <include layout="@layout/view_scroll_top" />
+
+    <include layout="@layout/view_no_data" />
 </FrameLayout>
