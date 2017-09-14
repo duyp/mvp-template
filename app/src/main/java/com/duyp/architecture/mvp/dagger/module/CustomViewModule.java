@@ -13,6 +13,7 @@ import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.Navigator;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
+import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import dagger.Module;
@@ -59,5 +60,11 @@ public class CustomViewModule {
     @Provides
     protected TransitionGlideLoader provideTransitionGlide() {
         return new TransitionGlideLoader(view.getContext());
+    }
+
+    @Provides
+    @PerActivity
+    protected AvatarLoader provideAvatarLoader() {
+        return new AvatarLoader(view.getContext());
     }
 }

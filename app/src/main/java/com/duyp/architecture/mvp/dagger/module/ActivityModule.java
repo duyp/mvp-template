@@ -15,6 +15,7 @@ import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import dagger.Module;
@@ -47,38 +48,36 @@ public class ActivityModule {
     }
 
     @Provides
-    @PerActivity
     protected FragmentActivity provideActivity() { return mActivity; }
 
     @Provides
-    @PerActivity
     @ActivityContext
     protected Context provideContext() { return mActivity; }
 
     @Provides
-    @PerActivity
     @ActivityFragmentManager
     protected FragmentManager provideFragmentManager() { return mActivity.getSupportFragmentManager(); }
 
     @Provides
-    @PerActivity
     protected Navigator provideNavigator() { return new ActivityNavigator(mActivity); }
 
     @Provides
-    @PerActivity
     protected NavigatorHelper provideNavigatorHelper(Navigator navigator) {
         return new NavigatorHelper(navigator);
     }
 
     @Provides
-    @PerActivity
     protected SimpleGlideLoader provideDefaultGlide() {
         return new SimpleGlideLoader(mActivity);
     }
 
     @Provides
-    @PerActivity
     protected TransitionGlideLoader provideTransitionGlide() {
         return new TransitionGlideLoader(mActivity);
+    }
+
+    @Provides
+    protected AvatarLoader provideAvatarLoader() {
+        return new AvatarLoader(mActivity);
     }
 }

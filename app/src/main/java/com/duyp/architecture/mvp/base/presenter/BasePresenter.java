@@ -1,5 +1,6 @@
 package com.duyp.architecture.mvp.base.presenter;
 
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.annotation.Nullable;
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.Lifecycle;
+import com.duyp.architecture.mvp.base.interfaces.Refreshable;
+import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.model.base.BaseResponse;
@@ -23,7 +26,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import lombok.Getter;
 
 @Getter
-public abstract class BasePresenter<V extends BaseView> implements Lifecycle {
+public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Refreshable {
 
     @Nullable
     private V mView;
@@ -37,7 +40,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle {
     @NonNull
     private CompositeDisposable mCompositeDisposable;
 
-    public BasePresenter(Context context, UserManager userManager){
+    public BasePresenter(@ActivityContext Context context, UserManager userManager){
         this.context = context;
         this.userManager = userManager;
         eventBus = EventBus.getDefault();
@@ -69,6 +72,10 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle {
         return mView;
     }
 
+    public LifecycleOwner getLifeCircleOwner() {
+        return (LifecycleOwner) mView;
+    }
+
     public GithubService getGithubService() {
         return userManager.getGithubService();
     }
@@ -79,6 +86,15 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle {
 
     public CustomSharedPreferences getSharedPreference() {
         return getUserRepo().getSharedPreferences();
+    }
+
+    public boolean isDataEmpty() {
+        return false;
+    }
+
+    @Override
+    public void refresh() {
+
     }
 
     /**
@@ -124,8 +140,10 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle {
                 successListener.onRequestSuccess(response);
             }
         }, error -> {
-            if (errorListener != null && mView != null) {
+            if (errorListener != null) {
                 errorListener.onError(error);
+            } else if (mView != null) {
+                mView.onError(error);
             }
         });
     }
@@ -164,6 +182,11 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle {
     }
 
     @Override
+    public void onCreate() {
+
+    }
+
+    @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
 
     }
@@ -189,6 +212,5 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle {
     @Override
     public void onDestroy() {
         mCompositeDisposable.dispose();
-        unbindView();
     }
 }

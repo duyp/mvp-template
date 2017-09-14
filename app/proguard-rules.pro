@@ -35,3 +35,9 @@
 # for DexGuard only
 -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 # end Glide
+
+# place holder view
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.mindorks.placeholderview.annotations.** <methods>;
+}

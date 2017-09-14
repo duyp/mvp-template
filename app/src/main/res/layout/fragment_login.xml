@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        style="@style/avatar_circle_large"
+        android:layout_margin="@dimen/margin_super_large"
+        android:id="@+id/imvAvatar"/>
+
+    <EditText
+        android:layout_width="@dimen/base200"
+        android:layout_height="wrap_content"
+        android:hint="@string/username_hint"
+        android:id="@+id/edtUserName"
+        android:lines="1"/>
+
+    <EditText
+        android:layout_width="@dimen/base200"
+        android:layout_height="wrap_content"
+        android:hint="@string/password_hint"
+        android:id="@+id/edtPassword"
+        android:layout_marginTop="@dimen/margin_small"
+        android:inputType="textPassword"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_default">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:id="@+id/pb"/>
+
+        <Button style="@style/btn_color_primary"
+            android:text="@string/login"
+            android:id="@+id/btnLogin"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+</LinearLayout>

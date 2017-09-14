@@ -1,0 +1,114 @@
+package com.duyp.architecture.mvp.ui.login;
+
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.transition.Fade;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.duyp.androidutils.CommonUtils;
+import com.duyp.androidutils.StringUtils;
+import com.duyp.androidutils.image.glide.GlideOnCompleteListener;
+import com.duyp.androidutils.navigator.FragmentNavigator;
+import com.duyp.architecture.mvp.R;
+import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
+import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.ui.profile.DetailsTransition;
+import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
+import com.duyp.architecture.mvp.utils.AvatarLoader;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import lombok.Setter;
+
+/**
+ * Created by duypham on 9/12/17.
+ *
+ */
+
+public class LoginFragment extends BasePresenterFragment<LoginView, LoginPresenter> implements LoginView {
+
+    @BindView(R.id.edtUserName)
+    EditText edtUserName;
+    @BindView(R.id.edtPassword)
+    EditText edtPassword;
+    @BindView(R.id.imvAvatar)
+    ImageView imvAvatar;
+    @BindView(R.id.pb)
+    ProgressBar pb;
+    @BindView(R.id.btnLogin)
+    Button btnLogin;
+
+    @Inject
+    AvatarLoader avatarLoader;
+
+    @Inject
+    FragmentNavigator fragmentNavigator;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fragmentComponent().inject(this);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_login;
+    }
+
+    @Override
+    protected void initialize(View view) {
+        super.initialize(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imvAvatar.setTransitionName(getString(R.string.transition_name_avatar));
+        }
+    }
+
+    @Override
+    public void showProgress() {
+        btnLogin.setVisibility(View.GONE);
+        pb.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        btnLogin.setVisibility(View.VISIBLE);
+        pb.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.btnLogin)
+    public void onViewClicked() {
+        String userName = edtUserName.getText().toString();
+        String passWord = edtPassword.getText().toString();
+        if (StringUtils.isNotEmpty(userName, passWord)) {
+            CommonUtils.hideSoftKeyboard(getActivity());
+            getPresenter().loginUser(userName, passWord);
+        } else {
+            showToastLongMessage("Please enter username and password");
+        }
+    }
+
+    @Override
+    public void onLoginSuccess(User user) {
+        avatarLoader.loadImage(user.getAvatarUrl(), imvAvatar);
+        new android.os.Handler().postDelayed(() -> {
+            ProfileFragment fragment = new ProfileFragment();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                fragment.setSharedElementEnterTransition(new DetailsTransition());
+                fragment.setEnterTransition(new Fade());
+            }
+
+            fragmentNavigator.replaceFragment(R.id.container, fragment, imvAvatar);
+        }, 800);
+    }
+}

@@ -1,9 +1,10 @@
-package com.duyp.architecture.mvp.base;
+package com.duyp.architecture.mvp.base.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -20,11 +21,20 @@ import android.view.ViewTreeObserver;
 
 import com.duyp.androidutils.AlertUtils;
 import com.duyp.androidutils.CommonUtils;
+import com.duyp.androidutils.functions.PlainAction;
+import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.app.MyApplication;
+import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.dagger.InjectionHelper;
 import com.duyp.architecture.mvp.dagger.component.ActivityComponent;
 import com.duyp.architecture.mvp.dagger.component.DaggerActivityComponent;
+import com.duyp.architecture.mvp.dagger.component.UserActivityComponent;
+import com.duyp.architecture.mvp.dagger.component.UserFragmentComponent;
 import com.duyp.architecture.mvp.dagger.module.ActivityModule;
+import com.duyp.architecture.mvp.dagger.module.FragmentModule;
+import com.duyp.architecture.mvp.data.local.user.UserManager;
+import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +56,8 @@ public abstract class BaseActivity extends BasePermissionActivity implements Bas
     }
 
     private ActivityComponent mActivityComponent;
+
+    private UserActivityComponent mUserActivityComponent;
 
     protected RefWatcher refWatcher;
 
@@ -78,6 +90,18 @@ public abstract class BaseActivity extends BasePermissionActivity implements Bas
         CommonUtils.hideSoftKeyboard(this);
     }
 
+    protected void ensureInUserScope(@NonNull PlainConsumer<UserActivityComponent> componentConsumer,
+                                     @NonNull PlainAction onError) {
+        UserManager userManager = InjectionHelper.getAppComponent(this).userManager();
+        if (userManager.checkForSavedUserAndStartSessionIfHas()) {
+            // noinspection ConstantConditions
+            mUserActivityComponent = userManager.getUserComponent().getUserActivityComponent(new ActivityModule(this));
+            componentConsumer.accept(mUserActivityComponent);
+        } else {
+            onError.run();
+        }
+    }
+
     public abstract int getLayout();
 
     @Override
@@ -104,7 +128,11 @@ public abstract class BaseActivity extends BasePermissionActivity implements Bas
                 refWatcher.watch(mActivityComponent);
             }
             refWatcher.watch(this);
+            if (mUserActivityComponent != null) {
+                refWatcher.watch(mUserActivityComponent);
+            }
         }
+        mUserActivityComponent = null;
         mActivityComponent = null;
     }
 
@@ -181,8 +209,13 @@ public abstract class BaseActivity extends BasePermissionActivity implements Bas
     }
 
     @Override
-    public void onError(int code, String message) {
-        AlertUtils.showToastLongMessage(this, message);
+    public void showMessage(String message) {
+        showToastLongMessage(message);
+    }
+
+    @Override
+    public void onError(ErrorEntity errorEntity) {
+        AlertUtils.showToastLongMessage(this, errorEntity.getMessage());
     }
 
     public void returnResult(Intent data) {

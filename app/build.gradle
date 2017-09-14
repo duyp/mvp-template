@@ -34,10 +34,11 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+}
 
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
+// to use snapshot version libraries
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
 dependencies {
@@ -50,6 +51,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile "com.android.support:support-core-utils:${libs.supportVersion}"
+    compile "com.android.support:transition:${libs.supportVersion}"
     compile "com.android.support:appcompat-v7:${libs.supportVersion}"
     compile "com.android.support:design:${libs.supportVersion}"
     compile "com.android.support:recyclerview-v7:${libs.supportVersion}"
@@ -59,7 +61,7 @@ dependencies {
 
     //lombok
     compile 'org.projectlombok:lombok:1.16.16'
-    
+
     // retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
@@ -105,4 +107,7 @@ dependencies {
 
     // custom font
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+
+    // place holder view
+    compile 'com.mindorks:placeholderview:0.7.1'
 }

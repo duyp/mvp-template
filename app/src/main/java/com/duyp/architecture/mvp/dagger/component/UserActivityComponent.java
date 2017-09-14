@@ -6,6 +6,7 @@ import com.duyp.androidutils.navigator.Navigator;
 import com.duyp.architecture.mvp.dagger.module.ActivityModule;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
+import com.duyp.architecture.mvp.ui.main.MainActivity;
 
 import dagger.Subcomponent;
 
@@ -26,4 +27,5 @@ public interface UserActivityComponent {
     Navigator navigator();
 
     // create inject methods for your Activities here
+    void inject(MainActivity activity);
 }

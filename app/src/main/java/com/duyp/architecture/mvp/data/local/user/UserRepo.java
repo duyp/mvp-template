@@ -1,10 +1,12 @@
 package com.duyp.architecture.mvp.data.local.user;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.androidutils.functions.PlainAction;
@@ -34,16 +36,13 @@ public class UserRepo {
     private final CustomSharedPreferences mSharedPreferences;
 
     @NonNull
-    private final UserDao mUserDao;
-
-    @Nullable
-    private LiveData<User> mUserLiveData;
+    private final MutableLiveData<User> mUserLiveData;
 
     @Inject
-    public UserRepo(@NonNull AppDatabase appDatabase, @NonNull CustomSharedPreferences sharedPreferences, @NonNull Gson gson) {
+    public UserRepo(@NonNull CustomSharedPreferences sharedPreferences, @NonNull Gson gson) {
         this.mSharedPreferences = sharedPreferences;
         this.mGson = gson;
-        mUserDao = appDatabase.userDao();
+        mUserLiveData = new MutableLiveData<>();
     }
 
     public CustomSharedPreferences getSharedPreferences() {
@@ -54,22 +53,19 @@ public class UserRepo {
      * Save user to shared preference
      * @param user {@link User} to be saved
      */
-    public void setUser(@NonNull User user, @Nullable PlainConsumer<LiveData<User>> userConsumer) {
-        // save userId to shared preferences
-        mSharedPreferences.setPreferences(Constants.PREF_USER_ID, user.getId());
+    public LiveData<User> setUser(@NonNull User user) {
+        mSharedPreferences.setPreferences(Constants.PREF_USER, mGson.toJson(user));
+        mUserLiveData.setValue(user);
+        return mUserLiveData;
+    }
 
-        // save to database
-        DbTaskHelper.doTaskOnBackground(() -> {
-            mUserDao.addUser(user);
-            // retrieve live data user from Room database
-            User currentUser;
-            if (mUserLiveData == null || !user.equals(mUserLiveData.getValue())) {
-                mUserLiveData = mUserDao.getUser(user.getId());
-            }
-            if (userConsumer != null) {
-                userConsumer.accept(mUserLiveData);
-            }
-        });
+    @Nullable
+    public User getUser() {
+        String userJson = mSharedPreferences.getPreferences(Constants.PREF_USER, "");
+        if (userJson != null && !userJson.equals("")) {
+            return fromJson(userJson);
+        }
+        return null;
     }
 
     /**
@@ -77,37 +73,16 @@ public class UserRepo {
      * @param newUser new User data
      * @return true if user updated
      */
-    public boolean updateUserIfEquals(@NonNull User newUser, @Nullable PlainConsumer<LiveData<User>> consumer) {
-        Long userId = getSavedUserId();
-        if (newUser.getId().equals(userId)) {
-            setUser(newUser, consumer);
+    public boolean updateUserIfEquals(@NonNull User newUser) {
+        if (newUser.equals(getUser())) {
+            setUser(newUser);
             return true;
         }
         return false;
     }
 
-    /**
-     * Get user from shared preference
-     * but we should read user data from realm database to have an observable user data
-     * @return saved {@link User} from realm database, can be observable
-     */
-    @Nullable
     public LiveData<User> getUserLiveData() {
-        if (mUserLiveData == null) {
-            Long savedUserId = getSavedUserId();
-            if (savedUserId != USER_ID_NOT_EXIST) {
-                mUserLiveData = mUserDao.getUser(savedUserId);
-            }
-        }
         return mUserLiveData;
-    }
-
-    private Long getSavedUserId() {
-        return mSharedPreferences.getPreferences(Constants.PREF_USER_ID, USER_ID_NOT_EXIST);
-    }
-
-    boolean isUserExisted() {
-        return getSavedUserId() != USER_ID_NOT_EXIST;
     }
 
     /**
@@ -131,15 +106,10 @@ public class UserRepo {
     public void clearUser() {
         mSharedPreferences.setPreferences(Constants.PREF_USER_ID, USER_ID_NOT_EXIST);
         mSharedPreferences.setPreferences(Constants.PREF_USER_TOKEN, "");
-        DbTaskHelper.doTaskOnBackground(() -> mUserDao.deleteUser(getSavedUserId()), Throwable::printStackTrace);
-    }
-
-    /**
-     * Clear all data related to user from shared preference
-     */
-    public void clearAll() {
-        clearUser();
-        DbTaskHelper.doTaskOnBackground(mUserDao::deleteAllUsers, Throwable::printStackTrace);
+        mSharedPreferences.setPreferences(Constants.PREF_USER, "");
+        if (mUserLiveData != null) {
+            mUserLiveData.setValue(null);
+        }
     }
 
     /**

@@ -1,10 +1,18 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="margin_default">16dp</dimen>
-    <dimen name="margin_small">8dp</dimen>
-    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_default">@dimen/base16</dimen>
+    <dimen name="margin_small">@dimen/base8</dimen>
+    <dimen name="margin_large">@dimen/base32</dimen>
+    <dimen name="margin_super_large">@dimen/base48</dimen>
 
-    <dimen name="avatar_size_normal">50dp</dimen>
-    <dimen name="avatar_size_large">80dp</dimen>
+    <dimen name="drawer_item_height">@dimen/base50</dimen>
+    <dimen name="drawer_header_height">@dimen/base180</dimen>
+
+    <dimen name="avatar_size_normal">@dimen/base50</dimen>
+    <dimen name="avatar_size_large">@dimen/base80</dimen>
+
+    <dimen name="progress_bar_size_small">@dimen/base25</dimen>
+
+    <dimen name="btn_height_default">@dimen/base40</dimen>
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/drawer_header_height"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    android:paddingLeft="@dimen/margin_default"
+    android:id="@+id/rootLayout">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        style="@style/avatar_circle_large"
+        android:id="@+id/imvAvatar"
+        android:layout_width="@dimen/avatar_size_normal"
+        android:layout_height="@dimen/avatar_size_normal"
+        android:src="@drawable/ic_account_circle_black_48dp"
+        android:layout_gravity="start|top"
+        android:layout_marginTop="@dimen/base55" />
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_normal"
+        android:text="@string/sample_name"
+        android:layout_marginTop="@dimen/margin_default"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tvLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/base5"
+        android:textSize="@dimen/text_normal"
+        android:text="@string/sample_link"
+        android:textStyle="normal"/>
+</LinearLayout>

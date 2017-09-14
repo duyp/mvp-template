@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">Android MVP</string>
+    <string name="home">Home</string>
+
+    // login
+    <string name="login">Login</string>
+    <string name="username_hint">Github Username</string>
+    <string name="password_hint">Password</string>
+
+    <string name="sample_name">Duy Pham</string>
+    <string name="sample_link">github.com/duyp</string>
 
     <string name="github_client_id">78dca82345b88a41244b</string>
     <string name="github_client_secret">4b0de555ea5ec45d40d9e0981c081e3b00eb5d46</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="alert_login">Please Login</string>
     <string name="alert_permission_open_app_setting">To use this feature, please allow permissions!</string>
     <string name="alert_permission_not_granted">Can not use this feature without permission!</string>
+    <string name="open_drawer">open_drawer</string>
+    <string name="close_drawer">close_drawer</string>
+    <string name="up_top">UP</string>
+    <string name="no_data">No Data</string>
 </resources>

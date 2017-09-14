@@ -74,27 +74,19 @@ public class UserManager {
         return mUserRepo;
     }
 
-    /**
-     * Save user to shared preference and start user session
-     * @param user respond user after logging in
-     * @param token user auth token
-     */
-    public void doAfterLogin(@NonNull User user, @NonNull String token, @Nullable PlainConsumer<LiveData<User>> consumer) {
-        mUserRepo.setUser(user, consumer);
-        mUserRepo.setUserToken(token);
-        startUserSession(token);
-    }
 
     /**
      * Start user session in test environment
      * @param token user token
      */
-    private void startUserSession(String token) {
+    public LiveData<User> startUserSession(User user, String token) {
         if (mUserComponent != null) {
             stopUserSession();
         }
         mUserComponent = createUserComponent(token);
         Log.d(TAG, "User session started!");
+        mUserRepo.setUserToken(token);
+        return mUserRepo.setUser(user);
     }
 
     /**
@@ -115,20 +107,16 @@ public class UserManager {
      * check if has saved user -> start new session
      * @return true if has saved user
      */
-    public boolean checkForSavedUserAndStartSessionIfHas(@Nullable PlainConsumer<LiveData<User>> consumer) {
-        boolean pass = true;
+    public boolean checkForSavedUserAndStartSessionIfHas() {
         if (mUserComponent == null) {
-            if (mUserRepo.isUserExisted()) {
-                startUserSession(mUserRepo.getUserToken());
-            } else {
-                pass = false;
+            User savedUser = mUserRepo.getUser();
+            if (savedUser != null) {
+                startUserSession(savedUser, mUserRepo.getUserToken());
+                return true;
             }
+            return false;
         }
-        if (pass && consumer != null) {
-            // noinspection ConstantConditions
-            consumer.accept(mUserRepo.getUserLiveData());
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -136,8 +124,8 @@ public class UserManager {
      * @param newUser new User data
      * @return true if user updated
      */
-    public boolean updateUserIfEquals(User newUser, PlainConsumer<LiveData<User>> consumer) {
-        return mUserRepo.updateUserIfEquals(newUser, consumer);
+    public boolean updateUserIfEquals(User newUser) {
+        return mUserRepo.updateUserIfEquals(newUser);
     }
 
     /*
@@ -148,9 +136,7 @@ public class UserManager {
         if (isUserSessionStarted()) {
             Log.d(TAG, "Refreshing user...");
             // noinspection ConstantConditions
-            ApiUtils.makeRequest(mUserComponent.getUserService().updateUser(), false, user -> {
-                updateUserIfEquals(user, done -> {});
-            });
+            ApiUtils.makeRequest(mUserComponent.getUserService().updateUser(), false, this::updateUserIfEquals);
         }
     }
 
@@ -177,9 +163,6 @@ public class UserManager {
         if (notifManager != null) {
             notifManager.cancelAll();
         }
-
-        // clear data (shared preference and realm)
-        mUserRepo.clearAll();
     }
 
     /**

@@ -61,7 +61,7 @@ public class AppModule {
     @Provides
     @Singleton
     UserRepo provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, AppDatabase appDatabase) {
-        return new UserRepo(appDatabase, sharedPreferences, gson);
+        return new UserRepo(sharedPreferences, gson);
     }
 
     @Provides

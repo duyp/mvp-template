@@ -14,11 +14,6 @@ buildscript {
     }
 }
 
-// to use snapshot version libraries
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-
 allprojects {
     repositories {
         jcenter()

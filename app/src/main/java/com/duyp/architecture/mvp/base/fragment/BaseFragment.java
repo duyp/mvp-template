@@ -2,14 +2,14 @@ package com.duyp.architecture.mvp.base.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.LiveData;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,36 +19,36 @@ import com.duyp.androidutils.CommonUtils;
 import com.duyp.androidutils.functions.PlainAction;
 import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.app.MyApplication;
-import com.duyp.architecture.mvp.base.BaseActivity;
+import com.duyp.architecture.mvp.base.activity.BaseActivity;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.UiRefreshable;
 import com.duyp.architecture.mvp.dagger.InjectionHelper;
 import com.duyp.architecture.mvp.dagger.component.DaggerFragmentComponent;
 import com.duyp.architecture.mvp.dagger.component.FragmentComponent;
+import com.duyp.architecture.mvp.dagger.component.UserFragmentComponent;
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.data.local.user.UserManager;
+import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by phamd on 5/25/2017.
  * Base Fragment
  */
 
-public abstract class BaseFragment extends Fragment implements BaseView {
+public abstract class BaseFragment extends LifecycleFragment implements BaseView {
 
-    @Getter
-    @Setter
-    public String TAG = "";
-
-    private Unbinder unbinder;
-
+    @Nullable
     private FragmentComponent mFragmentComponent;
 
+    @Nullable UserFragmentComponent mUserFragmentComponent;
+
+    private Unbinder unbinder;
     protected RefWatcher refWatcher;
 
     @Override
@@ -57,6 +57,8 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         refWatcher = MyApplication.get(this).getRefWatcher();
     }
 
+    protected abstract int getLayout();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayout(), container, false);
@@ -64,8 +66,25 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return view;
     }
 
-    @NonNull
-    protected abstract Integer getLayout();
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initialize(view);
+    }
+
+    protected abstract void initialize(View view);
+
+    protected void ensureInUserScope(@NonNull PlainConsumer<UserFragmentComponent> componentConsumer,
+                                     @NonNull PlainAction onError) {
+        UserManager userManager = InjectionHelper.getAppComponent(this).userManager();
+        if (userManager.checkForSavedUserAndStartSessionIfHas()) {
+            // noinspection ConstantConditions
+            mUserFragmentComponent = userManager.getUserComponent().getUserFragmentComponent(new FragmentModule(this));
+            componentConsumer.accept(mUserFragmentComponent);
+        } else {
+            onError.run();
+        }
+    }
 
     public FragmentComponent fragmentComponent() {
         if (mFragmentComponent == null) {
@@ -77,6 +96,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return mFragmentComponent;
     }
 
+
     @Override
     @CallSuper
     public void onDestroy() {
@@ -84,6 +104,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         if (refWatcher != null) {
             if (mFragmentComponent != null) {
                 refWatcher.watch(mFragmentComponent);
+            }
+            if (mUserFragmentComponent != null) {
+                refWatcher.watch(mUserFragmentComponent);
             }
             refWatcher.watch(this);
         }
@@ -121,44 +144,15 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         }
     }
 
-    public boolean isProgressShowing() {
-        if (progress_dialog != null) {
-            return progress_dialog.isShowing();
-        }
-        return false;
-    }
-
-    public void finishFragment() {
-        CommonUtils.hideSoftKeyboard(getActivity());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().finishAfterTransition();
-        } else {
-            getActivity().finish();
-        }
-    }
-
-    /**
-     * @return true if fragment should handle back press, false if not (activity will handle back press event)
-     */
-    public boolean onBackPressed() {
-        return false;
-    }
-
-    protected void handleError(String message) {
-        AlertUtils.showSnackBarLongMessage(getView(), message);
+    @Override
+    @CallSuper
+    public void onError(ErrorEntity errorEntity) {
+        showToastLongMessage(errorEntity.getMessage());
     }
 
     @Override
-    @CallSuper
-    public void onError(int code, String message) {
-        handleError(message);
-        hideProgress();
-    }
-
-    @Override
-    @CallSuper
     public void showProgress() {
-        showProgressDialog(Constants.PROGRESS_DIALOG_DELAY, null);
+        showProgress(null);
     }
 
     @Override
@@ -167,7 +161,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     @Override
-    @CallSuper
     public void hideProgress() {
         hideProgressDialog();
         if (this instanceof UiRefreshable) {
@@ -175,19 +168,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         }
     }
 
-    void showDialog(DialogFragment dialog) {
-        // DialogFragment.show() will take care of adding the fragment
-        // in a transaction.  We also want to remove any currently showing
-        // dialog, so make our own transaction and take care of that here.
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-
-        // show the dialog.
-        dialog.show(ft, "dialog");
+    @Override
+    public void showMessage(String message) {
+        showToastLongMessage(message);
     }
 
     public void showToastLongMessage(String message) {
@@ -196,11 +179,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     public void showToastShortMessage(String message){
         AlertUtils.showToastShortMessage(getContext(), message);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     public void requestPermission(@NonNull PlainConsumer<Boolean> onNext, String... permissions) {
@@ -239,4 +217,21 @@ public abstract class BaseFragment extends Fragment implements BaseView {
                                   @Nullable PlainAction onFailToForce, String... permissions) {
         ((BaseActivity)getActivity()).requestPermission(onGranted, isMandatory, onFailToForce, permissions);
     }
+
+    public void finishFragment() {
+        CommonUtils.hideSoftKeyboard(getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().finishAfterTransition();
+        } else {
+            getActivity().finish();
+        }
+    }
+
+    /**
+     * @return true if fragment should handle back press, false if not (activity will handle back press event)
+     */
+    public boolean onBackPressed() {
+        return false;
+    }
+
 }

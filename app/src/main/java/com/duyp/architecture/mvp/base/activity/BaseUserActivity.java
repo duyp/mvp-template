@@ -2,7 +2,6 @@ package com.duyp.architecture.mvp.base.activity;
 
 import android.os.Bundle;
 
-import com.duyp.architecture.mvp.base.BaseActivity;
 import com.duyp.architecture.mvp.dagger.InjectionHelper;
 import com.duyp.architecture.mvp.dagger.component.UserActivityComponent;
 import com.duyp.architecture.mvp.dagger.component.UserComponent;
@@ -27,7 +26,7 @@ public abstract class BaseUserActivity extends BaseActivity {
      */
     protected void setupUserComponent() {
         UserManager userManager = InjectionHelper.getAppComponent(this).userManager();
-        if (userManager.checkForSavedUserAndStartSessionIfHas(null)) {
+        if (userManager.checkForSavedUserAndStartSessionIfHas()) {
             onUserComponentSetup(userManager.getUserComponent());
         } else {
             finishAffinity();

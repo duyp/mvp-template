@@ -3,11 +3,10 @@ package com.duyp.architecture.mvp.dagger.component;
 import android.support.v4.app.FragmentManager;
 
 import com.duyp.androidutils.navigator.Navigator;
-import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.dagger.module.ActivityModule;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerActivity;
-import com.duyp.architecture.mvp.ui.MainActivity;
+import com.duyp.architecture.mvp.ui.main.MainActivity;
 
 import dagger.Component;
 

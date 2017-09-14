@@ -18,7 +18,7 @@ import com.duyp.architecture.mvp.data.model.User;
 public interface UserDao {
 
     @Query("SELECT * FROM User where id = :userId LIMIT 1")
-    LiveData<User> getUser(Long userId);
+    User getUser(Long userId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addUser(User user);
