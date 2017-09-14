@@ -133,6 +133,9 @@ public abstract class BaseSwipeRecyclerViewFragment<
         super.doneRefresh();
         updateNoDataState();
         updateScrollTop();
+        if (adapter != null) {
+            adapter.removeFooter(getFooterView());
+        }
     }
 
     // footer for load more state
