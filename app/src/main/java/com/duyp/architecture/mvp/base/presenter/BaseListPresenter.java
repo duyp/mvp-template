@@ -6,6 +6,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 import com.duyp.architecture.mvp.base.BaseView;
+import com.duyp.architecture.mvp.base.interfaces.LoadMoreable;
 import com.duyp.architecture.mvp.base.interfaces.Refreshable;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.User;
@@ -21,20 +22,13 @@ import lombok.Setter;
  */
 
 @Getter
-public abstract class BaseListPresenter<V extends BaseView> extends BasePresenter<V> implements Refreshable {
+public abstract class BaseListPresenter<V extends BaseView> extends BasePresenter<V> implements Refreshable, LoadMoreable {
 
     @Setter
     private boolean isRefreshed = false;
 
     public BaseListPresenter(Context context, UserManager userManager) {
         super(context, userManager);
-    }
-
-    /**
-     * @return true if should clear data (first page or refreshing)
-     */
-    protected boolean shouldClearData() {
-        return isRefreshed;
     }
 
     /**
@@ -57,27 +51,11 @@ public abstract class BaseListPresenter<V extends BaseView> extends BasePresente
         }
     }
 
-    protected void onResponse(BaseResponse response) {
-        if (shouldClearData()) {
-            clearData();
-        }
-        setRefreshed(false);
-    }
-
-    /**
-     * @return true if have rest pages
-     */
-    public abstract boolean canLoadMore();
-
     /**
      * Fetch data from server
      */
     protected abstract void fetchData();
 
-    /**
-     * Called when refreshing data
-     */
-    protected abstract void clearData();
 
     /**
      * @return true if our data is empty

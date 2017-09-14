@@ -14,6 +14,7 @@ import com.duyp.androidutils.navigator.Navigator;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
+import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
 
 import lombok.AllArgsConstructor;
 
@@ -27,6 +28,7 @@ public class NavigatorHelper {
 
     private static final String TAG_LOGIN = "TAG_LOGIN";
     private static final String TAG_PROFILE = "TAG_PROFILE";
+    private static final String TAG_ALL_REPO = "TAG_ALL_REPO";
 
     Navigator mNavigator;
 
@@ -44,5 +46,13 @@ public class NavigatorHelper {
             fragment = new LoginFragment();
         }
         mNavigator.replaceFragment(containerId, fragment, TAG_LOGIN, null);
+    }
+    
+    public void replaceAllRepositoriesFragment(@IdRes int containerId) {
+        RepositoriesFragment fragment = mNavigator.findFragmentByTag(TAG_ALL_REPO);
+        if (fragment == null) {
+            fragment = new RepositoriesFragment();
+        }
+        mNavigator.replaceFragment(containerId, fragment, TAG_ALL_REPO, null);
     }
 }

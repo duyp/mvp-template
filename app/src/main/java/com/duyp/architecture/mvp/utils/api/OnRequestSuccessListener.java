@@ -8,6 +8,6 @@ import com.duyp.architecture.mvp.data.model.base.BaseResponse;
  *
  */
 
-public interface OnRequestSuccessListener<T extends BaseResponse> {
+public interface OnRequestSuccessListener<T> {
     void onRequestSuccess(T response);
 }

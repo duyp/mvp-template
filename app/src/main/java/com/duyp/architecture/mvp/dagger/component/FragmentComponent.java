@@ -3,6 +3,7 @@ package com.duyp.architecture.mvp.dagger.component;
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
+import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
 
 import dagger.Component;
 
@@ -24,4 +25,5 @@ import dagger.Component;
 public interface FragmentComponent {
 
     void inject(LoginFragment fragment);
+    void inject(RepositoriesFragment fragment);
 }

@@ -21,4 +21,16 @@
     <string name="close_drawer">close_drawer</string>
     <string name="up_top">UP</string>
     <string name="no_data">No Data</string>
+
+    // repo
+    <string name="repo_owner_format">Owner: <b>%s</b></string>
+    <string name="repo_access_format">Access: <b>%s</b></string>
+    <string name="repo_language_format">Languages: <b>%s</b></string>
+    <string name="watch">Watch</string>
+    <string name="un_watch">Unwatch</string>
+    <string name="star">Star</string>
+    <string name="un_star">Unstar</string>
+
+    <string name="lorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="lorem_short">Lorem Ipsum is simply dummy text of the printing and typesetting industry</string>
 </resources>

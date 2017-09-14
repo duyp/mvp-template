@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.duyp.architecture.mvp.ui.customviews.CustomRepositoryView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/repositoryView"
+    android:layout_marginTop="@dimen/margin_default"
+    android:background="@color/white"/>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="base2">2dp</dimen>
     <dimen name="base5">5dp</dimen>
     <dimen name="base8">8dp</dimen>
     <dimen name="base10">10dp</dimen>
@@ -8,6 +9,7 @@
     <dimen name="base25">25dp</dimen>
     <dimen name="base30">30dp</dimen>
     <dimen name="base32">32dp</dimen>
+    <dimen name="base35">35dp</dimen>
     <dimen name="base40">40dp</dimen>
     <dimen name="base48">48dp</dimen>
     <dimen name="base50">50dp</dimen>

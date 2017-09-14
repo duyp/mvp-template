@@ -3,6 +3,7 @@ package com.duyp.architecture.mvp.data.remote;
 import com.duyp.architecture.mvp.data.model.User;
 
 import io.reactivex.Observable;
+import retrofit2.Response;
 import retrofit2.http.GET;
 
 /**
@@ -14,6 +15,6 @@ import retrofit2.http.GET;
 public interface UserService {
 
     @GET("user")
-    Observable<User> updateUser();
+    Observable<Response<User>> updateUser();
 
 }

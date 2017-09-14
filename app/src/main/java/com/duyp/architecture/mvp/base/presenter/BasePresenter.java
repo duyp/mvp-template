@@ -24,6 +24,7 @@ import org.greenrobot.eventbus.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import lombok.Getter;
+import retrofit2.Response;
 
 @Getter
 public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Refreshable {
@@ -110,10 +111,10 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
      *                          on io thread without observing on main thread
      *                          * no update UI in case of both success and error are null
      * @param forceResponseWithoutCheckNullView the success result will be returned without check null for view
-     * @param <T> Type of response, must extend {@link BaseResponse}
+     * @param <T> Type of response body
      */
-    protected <T extends BaseResponse> void addRequest(
-            Observable<T> request, boolean showProgress,
+    protected <T> void addRequest(
+            Observable<Response<T>> request, boolean showProgress,
             boolean forceResponseWithoutCheckNullView,
             @Nullable OnRequestSuccessListener<T> successListener,
             @Nullable OnRequestErrorListener errorListener) {
@@ -151,7 +152,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
     /**
      * Add a request with success listener and error listener
      */
-    protected <T extends BaseResponse> void addRequest(Observable<T> request, boolean showProgress,
+    protected <T> void addRequest(Observable<Response<T>> request, boolean showProgress,
                                                      @Nullable OnRequestSuccessListener<T> successListener,
                                                      @Nullable OnRequestErrorListener errorListener) {
         addRequest(request, showProgress, false, successListener, errorListener);
@@ -160,7 +161,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
     /**
      * Add a request with success listener
      */
-    protected <T extends BaseResponse> void addRequest(Observable<T> request, boolean showProgress,
+    protected <T> void addRequest(Observable<Response<T>> request, boolean showProgress,
                                                            @Nullable OnRequestSuccessListener<T> successListener) {
         addRequest(request, showProgress, false, successListener, null);
     }
@@ -168,7 +169,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
     /**
      * Add a request with success listener and forceResponseWithoutCheckNullView param
      */
-    protected <T extends BaseResponse> void addRequest(Observable<T> request, boolean showProgress,
+    protected <T> void addRequest(Observable<Response<T>> request, boolean showProgress,
                                                      boolean forceResponseWithoutCheckNullView,
                                                      @Nullable OnRequestSuccessListener<T> successListener) {
         addRequest(request, showProgress, forceResponseWithoutCheckNullView, successListener, null);
@@ -177,7 +178,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
     /**
      * Add a request without handling error and no update UI
      */
-    protected <T extends BaseResponse> void addRequest(Observable<T> request) {
+    protected <T> void addRequest(Observable<Response<T>> request) {
         addRequest(request, false, false, null, null);
     }
 

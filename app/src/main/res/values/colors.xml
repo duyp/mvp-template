@@ -7,4 +7,19 @@
     <color name="white">#fff</color>
     <color name="white_gray">#f2f3f4</color>
     <color name="red_50">#80ff0000</color>
+
+    <color name="transparent90">#E6000000</color>
+    <color name="transparent80">#CC000000</color>
+    <color name="transparent70">#B3000000</color>
+    <color name="transparent60">#99000000</color>
+    <color name="transparent50">#80000000</color>
+    <color name="transparent30">#48000000</color>
+    <color name="transparent20">#32000000</color>
+    <color name="transparent10">#16000000</color>
+    <color name="transparent25">#40000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="default_dark_gray">#777777</color>
+    <color name="default_light_gray">#E7E7E7</color>
+    <color name="default_mid_gray">#dddddd</color>
 </resources>

@@ -1,4 +1,4 @@
-package com.duyp.architecture.mvp.utils;
+package com.duyp.architecture.mvp.utils.roomConverters;
 
 import android.arch.persistence.room.TypeConverter;
 

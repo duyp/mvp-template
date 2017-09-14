@@ -53,6 +53,7 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
                 onProfileClick();
                 break;
             case DRAWER_MENU_ITEM_REQUESTS:
+                mNavigatorHelper.replaceAllRepositoriesFragment(getContainerId());
                 break;
             case DRAWER_MENU_ITEM_GROUPS:
                 break;
@@ -71,19 +72,19 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
     }
 
     private void navigateUserProfile() {
-        mNavigatorHelper.navigateUserProfile(R.id.container);
+        mNavigatorHelper.navigateUserProfile(getContainerId());
     }
 
     void onProfileClick() {
         if (getUserManager().isUserSessionStarted()) {
-            mNavigatorHelper.navigateUserProfile(R.id.container);
+            mNavigatorHelper.navigateUserProfile(getContainerId());
         } else {
             navigateLogin();
         }
     }
 
     void navigateLogin() {
-        mNavigatorHelper.replaceLoginFragment(R.id.container);
+        mNavigatorHelper.replaceLoginFragment(getContainerId());
     }
 
     private void initUserLiveData(@NonNull LiveData<User> userLiveData) {
@@ -95,5 +96,9 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
                 }
             });
         }
+    }
+
+    int getContainerId() {
+        return R.id.container;
     }
 }

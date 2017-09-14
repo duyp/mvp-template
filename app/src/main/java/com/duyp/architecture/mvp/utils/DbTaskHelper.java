@@ -9,6 +9,7 @@ import com.duyp.androidutils.functions.PlainAction;
 import com.duyp.androidutils.functions.PlainConsumer;
 
 import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
@@ -35,7 +36,8 @@ public class DbTaskHelper {
         Completable.create(e -> {
             action.run();
             e.onComplete();
-        }).subscribeOn(Schedulers.computation())
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
                 .subscribe(onComplete != null ? onComplete : () -> {},
                         throwable != null ? throwable : throwable1 -> {});
     }

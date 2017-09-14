@@ -13,6 +13,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 /**
  * Created by duypham on 9/10/17.
@@ -30,32 +31,33 @@ public final class ApiUtils {
      * @param successListener   callback for success response.
      * @param errorListener     callback for error case.
      *
-     * @param <T> Type of response, must extend {@link BaseResponse}
+     * @param <T> Type of response body
      */
-    public static <T extends BaseResponse> void makeRequest(
-            Observable<T> request, boolean shouldUpdateUi,
+    public static <T> void makeRequest(
+            Observable<Response<T>> request, boolean shouldUpdateUi,
             @Nullable Consumer<Disposable> onSubscribe,
             @Nullable Action onComplete,
             @Nullable OnRequestSuccessListener<T> successListener,
             @Nullable OnRequestErrorListener errorListener) {
 
-        Observable<T> observable = request.subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io());
+        Observable<Response<T>> observable = request.subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io());
         if (shouldUpdateUi) {
             observable = observable.observeOn(AndroidSchedulers.mainThread());
         }
 
         observable.subscribe(response -> {
-            if (!response.isSuccess()) {
-
+            if (response.isSuccessful()) {
+                if (successListener != null) {
+                    successListener.onRequestSuccess(response.body());
+                }
+            } else {
                 // get error message
-                ErrorEntity error = ErrorEntity.getError(response.message);
+                ErrorEntity error = ErrorEntity.getError(response.message());
 
                 // handle error
                 if (errorListener != null) {
                     errorListener.onError(error);
                 }
-            } else if (successListener != null){
-                successListener.onRequestSuccess(response);
             }
         }, throwable -> {
             if (throwable instanceof RuntimeException) {
@@ -83,7 +85,7 @@ public final class ApiUtils {
      * @param successListener callback for success response
      * @param <T> type of response data
      */
-    public static <T extends BaseResponse> void makeRequest(Observable<T> request, OnRequestSuccessListener<T> successListener) {
+    public static <T> void makeRequest(Observable<Response<T>> request, OnRequestSuccessListener<T> successListener) {
         makeRequest(request, false, null, null, successListener, null);
     }
 
@@ -94,7 +96,7 @@ public final class ApiUtils {
      * @param successListener callback for success response
      * @param <T> type of response data
      */
-    public static <T extends BaseResponse> void makeRequest(Observable<T> request, boolean shouldUpdateUi,
+    public static <T> void makeRequest(Observable<Response<T>> request, boolean shouldUpdateUi,
                                                             OnRequestSuccessListener<T> successListener) {
         makeRequest(request, shouldUpdateUi, null, null, successListener, null);
     }
@@ -107,7 +109,7 @@ public final class ApiUtils {
      * @param errorListener callback in error case
      * @param <T> type of response data
      */
-    public static <T extends BaseResponse> void makeRequest(Observable<T> request, boolean shouldUpdateUi,
+    public static <T> void makeRequest(Observable<Response<T>> request, boolean shouldUpdateUi,
                                                             OnRequestSuccessListener<T> successListener,
                                                             OnRequestErrorListener errorListener) {
         makeRequest(request, shouldUpdateUi, null, null, successListener, errorListener);

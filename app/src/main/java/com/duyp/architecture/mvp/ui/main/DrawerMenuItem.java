@@ -61,7 +61,7 @@ public class DrawerMenuItem {
                 imvItemIcon.setImageResource(R.drawable.ic_github_small);
                 break;
             case DRAWER_MENU_ITEM_REQUESTS:
-                tvItemName.setText("Requests");
+                tvItemName.setText("All public repositories");
                 imvItemIcon.setImageResource(R.drawable.ic_github_small);
                 break;
             case DRAWER_MENU_ITEM_GROUPS:
