@@ -5,31 +5,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.transition.Fade;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.duyp.androidutils.CommonUtils;
 import com.duyp.androidutils.StringUtils;
-import com.duyp.androidutils.image.glide.GlideOnCompleteListener;
 import com.duyp.androidutils.navigator.FragmentNavigator;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
 import com.duyp.architecture.mvp.data.model.User;
-import com.duyp.architecture.mvp.ui.profile.DetailsTransition;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
-import lombok.Setter;
 
 /**
  * Created by duypham on 9/12/17.
@@ -55,10 +48,15 @@ public class LoginFragment extends BasePresenterFragment<LoginView, LoginPresent
     @Inject
     FragmentNavigator fragmentNavigator;
 
+    private boolean isPreparingForTransition = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragmentComponent().inject(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.setExitTransition(new Fade());
+        }
     }
 
     @Override
@@ -82,8 +80,10 @@ public class LoginFragment extends BasePresenterFragment<LoginView, LoginPresent
 
     @Override
     public void hideProgress() {
-        btnLogin.setVisibility(View.VISIBLE);
-        pb.setVisibility(View.GONE);
+        if (!isPreparingForTransition) {
+            btnLogin.setVisibility(View.VISIBLE);
+            pb.setVisibility(View.GONE);
+        }
     }
 
     @OnClick(R.id.btnLogin)
@@ -100,15 +100,8 @@ public class LoginFragment extends BasePresenterFragment<LoginView, LoginPresent
 
     @Override
     public void onLoginSuccess(User user) {
+        isPreparingForTransition = true;
         avatarLoader.loadImage(user.getAvatarUrl(), imvAvatar);
-        new android.os.Handler().postDelayed(() -> {
-            ProfileFragment fragment = new ProfileFragment();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                fragment.setSharedElementEnterTransition(new DetailsTransition());
-                fragment.setEnterTransition(new Fade());
-            }
-
-            fragmentNavigator.replaceFragment(R.id.container, fragment, imvAvatar);
-        }, 800);
+        new android.os.Handler().postDelayed(() -> fragmentNavigator.replaceFragment(R.id.container,  new ProfileFragment(), imvAvatar), 800);
     }
 }

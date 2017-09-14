@@ -62,9 +62,6 @@ public class ProfileFragment extends BaseSwipeToRefreshFragment<ProfileView, Pro
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementEnterTransition(new DetailsTransition());
-        }
         ensureInUserScope(userFragmentComponent -> userFragmentComponent.inject(this), this::forceLogin);
     }
 
