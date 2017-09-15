@@ -40,17 +40,13 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
 
     void init() {
         initUserLiveData(getUserRepo().getUserLiveData());
-        if (getUserManager().isUserSessionStarted()) {
-            navigateUserProfile();
-        } else {
-            navigateLogin();
-        }
+        navigateProfile();
     }
 
     void onItemCLick(int position) {
         switch (position){
             case DRAWER_MENU_ITEM_PROFILE:
-                onProfileClick();
+                navigateProfile();
                 break;
             case DRAWER_MENU_ITEM_REQUESTS:
                 mNavigatorHelper.replaceAllRepositoriesFragment(getContainerId());
@@ -71,20 +67,12 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
         }
     }
 
-    private void navigateUserProfile() {
-        mNavigatorHelper.navigateUserProfile(getContainerId());
-    }
-
-    void onProfileClick() {
+    private void navigateProfile() {
         if (getUserManager().isUserSessionStarted()) {
             mNavigatorHelper.navigateUserProfile(getContainerId());
         } else {
-            navigateLogin();
+            mNavigatorHelper.replaceLoginFragment(getContainerId());
         }
-    }
-
-    void navigateLogin() {
-        mNavigatorHelper.replaceLoginFragment(getContainerId());
     }
 
     private void initUserLiveData(@NonNull LiveData<User> userLiveData) {
@@ -98,7 +86,7 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
         }
     }
 
-    int getContainerId() {
+    private int getContainerId() {
         return R.id.container;
     }
 }
