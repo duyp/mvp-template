@@ -1,6 +1,7 @@
 package com.duyp.architecture.mvp.ui.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataReactiveStreams;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,16 +11,19 @@ import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.data.RepositoriesRepo;
+import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.local.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.utils.DbTaskHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 
 /**
@@ -35,11 +39,14 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     private final RepositoryAdapter adapter;
 
     private final RepositoryDao repositoryDao;
+
+//    private final RepositoriesRepo repositoriesRepo;
     @NonNull
     @Getter
     private final MutableLiveData<Pair<Integer, String>> options = new MutableLiveData<>();
 
     private LiveData<List<Repository>> repositories;
+
     private Long sinceRepoId;
     private boolean canLoadMore = false;
 
@@ -53,7 +60,6 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     @Override
     public void bindView(RepositoryView view) {
         super.bindView(view);
-
         // first time open: load local data
         getView().showProgress();
         repositories = repositoryDao.getAllRepositories();
@@ -91,16 +97,15 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
 
     private void initRepoObserver() {
         repositories.observe(getLifeCircleOwner(), data -> {
-            if (data != null) {
-                adapter.setData(data);
+            adapter.setData(data);
+            if (getView() != null) {
+                getView().hideProgress();
             }
-            getView().hideProgress();
         });
     }
 
-    public void fetchAllRepositories() {
+    private void fetchAllRepositories() {
         addRequest(getGithubService().getAllPublicRepositories(sinceRepoId), true, response -> {
-            options.setValue(new Pair<>(0, ""));
             if (isRefreshed()) {
                 // clear all after inserting
                 DbTaskHelper.doTaskOnBackground(repositoryDao::deleteAllRepositories, () -> addAll(response));

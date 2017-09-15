@@ -33,9 +33,8 @@ public abstract class BaseRecyclerViewAdapter<T> extends BaseHeaderFooterAdapter
         this.context = context;
     }
 
-    public void setData(@NonNull List<T> newData) {
-        Log.d("repo", "setting data: " + newData.size());
-        if (!newData.equals(mAdapterData)) {
+    public void setData(List<T> newData) {
+        if (newData != null && !newData.equals(mAdapterData)) {
             mAdapterData = newData;
         }
         notifyDataSetChanged();

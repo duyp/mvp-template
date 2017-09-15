@@ -37,6 +37,7 @@ ext {
 
     libraries = [
             supportVersion   : "26.0.2",
+            architectureVersion   : "1.0.0-alpha8",
             googleServiceVersion: "11.0.2",
             okHttpVersion: "3.6.0",
             rxJavaVersion: "2.1.0",

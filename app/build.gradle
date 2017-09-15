@@ -77,11 +77,14 @@ dependencies {
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:${libs.daggerVersion}"
     provided 'javax.annotation:jsr250-api:1.0'
 
-    // room library and live data
-    compile "android.arch.lifecycle:extensions:1.0.0-alpha8"
-    compile "android.arch.persistence.room:runtime:1.0.0-alpha8"
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha8"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha8"
+    // google architecture components: room library and live data
+    compile "android.arch.lifecycle:runtime:${libs.architectureVersion}"
+    compile "android.arch.lifecycle:extensions:${libs.architectureVersion}"
+    compile "android.arch.lifecycle:reactivestreams:${libs.architectureVersion}"
+    compile "android.arch.persistence.room:runtime:${libs.architectureVersion}"
+    compile "android.arch.persistence.room:rxjava2:${libs.architectureVersion}"
+    annotationProcessor "android.arch.lifecycle:compiler:${libs.architectureVersion}"
+    annotationProcessor "android.arch.persistence.room:compiler:${libs.architectureVersion}"
 
     // butter knife
     compile 'com.jakewharton:butterknife:8.5.1'

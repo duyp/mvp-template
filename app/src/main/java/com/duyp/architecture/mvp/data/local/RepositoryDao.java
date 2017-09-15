@@ -12,6 +12,8 @@ import com.duyp.architecture.mvp.data.model.Repository;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 /**
  * Created by phamd on 9/14/2017.
  * {@link Repository} Data Access Object
@@ -19,6 +21,9 @@ import java.util.List;
 
 @Dao
 public interface RepositoryDao {
+
+    @Query("SELECT * FROM Repository")
+    Flowable<List<Repository>> getAllRepositoriesRx();
 
     @Query("SELECT * FROM Repository")
     LiveData<List<Repository>> getAllRepositories();

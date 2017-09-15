@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.duyp.androidutils.CustomSharedPreferences;
+import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.Lifecycle;
 import com.duyp.architecture.mvp.base.interfaces.Refreshable;
@@ -14,6 +15,7 @@ import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.model.base.BaseResponse;
+import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.utils.api.ApiUtils;
 import com.duyp.architecture.mvp.utils.api.OnRequestErrorListener;
@@ -22,7 +24,9 @@ import com.duyp.architecture.mvp.utils.api.OnRequestSuccessListener;
 import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import retrofit2.Response;
 
@@ -73,7 +77,10 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
         return mView;
     }
 
-    public LifecycleOwner getLifeCircleOwner() {
+    /**
+     * @return {@link LifecycleOwner} associate with this presenter (host activities, fragments)
+     */
+    protected LifecycleOwner getLifeCircleOwner() {
         return (LifecycleOwner) mView;
     }
 
@@ -105,8 +112,8 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
      * @param request           observable request
      * @param showProgress      true if should show loading progress
      *
-     * @param successListener   callback for success response.
-     * @param errorListener     callback for error case.
+     * @param responseConsumer   callback for success response.
+     * @param errorConsumer     callback for error case.
      *                          If both of these listeners are null, the request will be subscribed
      *                          on io thread without observing on main thread
      *                          * no update UI in case of both success and error are null
@@ -114,72 +121,71 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
      * @param <T> Type of response body
      */
     protected <T> void addRequest(
-            Observable<Response<T>> request, boolean showProgress,
+            Single<Response<T>> request, boolean showProgress,
             boolean forceResponseWithoutCheckNullView,
-            @Nullable OnRequestSuccessListener<T> successListener,
-            @Nullable OnRequestErrorListener errorListener) {
+            @Nullable PlainConsumer<T> responseConsumer,
+            @Nullable PlainConsumer<ErrorEntity> errorConsumer) {
 
-        boolean shouldUpdateUI = showProgress || successListener != null || errorListener != null;
+        boolean shouldUpdateUI = showProgress || responseConsumer != null || errorConsumer != null;
 
-        ApiUtils.makeRequest(request, shouldUpdateUI, disposable -> {
-            // on subscribe
-            if (showProgress && mView != null) {
-                mView.showProgress();
+        if (showProgress && mView != null) {
+            mView.showProgress();
+        }
+
+        Disposable disposable = ApiUtils.makeRequest(request, shouldUpdateUI, response -> {
+            if (responseConsumer != null && (forceResponseWithoutCheckNullView || mView != null)) {
+                responseConsumer.accept(response);
             }
-            // add disposable to composite disposable, dispose all requests at #onDestroy()
-            if (mCompositeDisposable.isDisposed()) {
-                mCompositeDisposable = new CompositeDisposable();
+        }, error -> {
+            if (errorConsumer != null) {
+                errorConsumer.accept(error);
+            } else if (mView != null) {
+                mView.onError(error);
             }
-            mCompositeDisposable.add(disposable);
         }, () -> {
             // complete
             if (showProgress && mView != null) {
                 mView.hideProgress();
             }
-        }, response -> {
-            if (successListener != null && (forceResponseWithoutCheckNullView || mView != null)) {
-                successListener.onRequestSuccess(response);
-            }
-        }, error -> {
-            if (errorListener != null) {
-                errorListener.onError(error);
-            } else if (mView != null) {
-                mView.onError(error);
-            }
         });
-    }
 
-    /**
-     * Add a request with success listener and error listener
-     */
-    protected <T> void addRequest(Observable<Response<T>> request, boolean showProgress,
-                                                     @Nullable OnRequestSuccessListener<T> successListener,
-                                                     @Nullable OnRequestErrorListener errorListener) {
-        addRequest(request, showProgress, false, successListener, errorListener);
-    }
-
-    /**
-     * Add a request with success listener
-     */
-    protected <T> void addRequest(Observable<Response<T>> request, boolean showProgress,
-                                                           @Nullable OnRequestSuccessListener<T> successListener) {
-        addRequest(request, showProgress, false, successListener, null);
-    }
-
-    /**
-     * Add a request with success listener and forceResponseWithoutCheckNullView param
-     */
-    protected <T> void addRequest(Observable<Response<T>> request, boolean showProgress,
-                                                     boolean forceResponseWithoutCheckNullView,
-                                                     @Nullable OnRequestSuccessListener<T> successListener) {
-        addRequest(request, showProgress, forceResponseWithoutCheckNullView, successListener, null);
+        if (mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(disposable);
     }
 
     /**
      * Add a request without handling error and no update UI
      */
-    protected <T> void addRequest(Observable<Response<T>> request) {
+    protected <T> void addRequest(Single<Response<T>> request) {
         addRequest(request, false, false, null, null);
+    }
+
+    /**
+     * Add a request with success listener
+     */
+    protected <T> void addRequest(Single<Response<T>> request, boolean showProgress,
+                                  @Nullable PlainConsumer<T> responseConsumer) {
+        addRequest(request, showProgress, false, responseConsumer, null);
+    }
+
+    /**
+     * Add a request with success listener and error listener
+     */
+    protected <T> void addRequest(Single<Response<T>> request, boolean showProgress,
+                                                     @Nullable PlainConsumer<T> responseConsumer,
+                                                     @Nullable PlainConsumer<ErrorEntity> errorListener) {
+        addRequest(request, showProgress, false, responseConsumer, errorListener);
+    }
+
+    /**
+     * Add a request with success listener and forceResponseWithoutCheckNullView param
+     */
+    protected <T> void addRequest(Single<Response<T>> request, boolean showProgress,
+                                                     boolean forceResponseWithoutCheckNullView,
+                                                     @Nullable PlainConsumer<T> responseConsumer) {
+        addRequest(request, showProgress, forceResponseWithoutCheckNullView, responseConsumer, null);
     }
 
     @Override

@@ -67,12 +67,16 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
         }
     }
 
-    private void navigateProfile() {
+    void navigateProfile() {
         if (getUserManager().isUserSessionStarted()) {
             mNavigatorHelper.navigateUserProfile(getContainerId());
         } else {
-            mNavigatorHelper.replaceLoginFragment(getContainerId());
+            navigateLogin();
         }
+    }
+
+    void navigateLogin() {
+        mNavigatorHelper.replaceLoginFragment(getContainerId());
     }
 
     private void initUserLiveData(@NonNull LiveData<User> userLiveData) {

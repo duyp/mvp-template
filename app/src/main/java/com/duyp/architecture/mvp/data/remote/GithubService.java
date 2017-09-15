@@ -8,6 +8,7 @@ import com.duyp.architecture.mvp.data.model.User;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -22,11 +23,11 @@ import retrofit2.http.Query;
 public interface GithubService {
 
     @GET("user")
-    Observable<Response<User>> login(@Header(RemoteConstants.HEADER_AUTH) String basicToken);
+    Single<Response<User>> login(@Header(RemoteConstants.HEADER_AUTH) String basicToken);
 
     @GET("users/{username}")
-    Observable<Response<User>> getUser(@Path("username") String username);
+    Single<Response<User>> getUser(@Path("username") String username);
 
     @GET("repositories")
-    Observable<Response<List<Repository>>> getAllPublicRepositories(@Query("since") @Nullable Long sinceRepoId);
+    Single<Response<List<Repository>>> getAllPublicRepositories(@Query("since") @Nullable Long sinceRepoId);
 }

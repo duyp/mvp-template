@@ -82,7 +82,7 @@ public class MainActivity extends BasePresenterActivity<MainView, MainPresenter>
     }
 
     private void onProfileClick() {
-        getPresenter().onProfileClick();
+        getPresenter().navigateProfile();
         mDrawer.closeDrawers();
     }
 
