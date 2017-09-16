@@ -1,5 +1,7 @@
 package com.duyp.architecture.mvp.dagger.component;
 
+import android.arch.lifecycle.LifecycleOwner;
+
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
@@ -23,6 +25,8 @@ import dagger.Component;
 @PerFragment
 @Component(dependencies = {AppComponent.class}, modules = {FragmentModule.class})
 public interface FragmentComponent {
+
+    LifecycleOwner lifeCycleOwner();
 
     void inject(LoginFragment fragment);
     void inject(RepositoriesFragment fragment);

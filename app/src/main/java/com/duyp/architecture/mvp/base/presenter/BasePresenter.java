@@ -1,10 +1,13 @@
 package com.duyp.architecture.mvp.base.presenter;
 
 import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.LiveDataReactiveStreams;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.androidutils.functions.PlainConsumer;
@@ -12,21 +15,22 @@ import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.Lifecycle;
 import com.duyp.architecture.mvp.base.interfaces.Refreshable;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
+import com.duyp.architecture.mvp.data.Resource;
+import com.duyp.architecture.mvp.data.Status;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
-import com.duyp.architecture.mvp.data.model.base.BaseResponse;
 import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.utils.api.ApiUtils;
-import com.duyp.architecture.mvp.utils.api.OnRequestErrorListener;
-import com.duyp.architecture.mvp.utils.api.OnRequestSuccessListener;
 
 import org.greenrobot.eventbus.EventBus;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 import retrofit2.Response;
 
@@ -103,6 +107,51 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
     @Override
     public void refresh() {
 
+    }
+
+    public <T> void addRequest(Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
+        Disposable disposable = resourceFlowable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(resource -> {
+                    if (resource != null) {
+                        Log.d("source", "addRequest: resource changed: " + resource.toString());
+                        if (getView() != null) {
+                            getView().setProgress(resource.status == Status.LOADING);
+                            if (resource.message != null) {
+                                getView().showMessage(resource.message);
+                            }
+                        }
+                        if (resource.data != null) {
+                            response.accept(resource.data);
+                        }
+                    }
+                });
+        if (mCompositeDisposable.isDisposed()) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(disposable);
+    }
+
+    public <T> LiveData<Resource<T>> addRequestLiveData(Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
+        LiveData<Resource<T>> liveData = LiveDataReactiveStreams.fromPublisher(
+                resourceFlowable.observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.newThread())
+        );
+        liveData.observe(getLifeCircleOwner(), resource -> {
+            if (resource != null) {
+                Log.d("source", "addRequest: resource changed: " + resource.toString());
+                if (getView() != null) {
+                    getView().setProgress(resource.status == Status.LOADING);
+                    if (resource.message != null) {
+                        getView().showMessage(resource.message);
+                    }
+                }
+                if (resource.data != null) {
+                    response.accept(resource.data);
+                }
+            }
+        });
+        return liveData;
     }
 
     /**

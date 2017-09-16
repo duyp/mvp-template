@@ -1,7 +1,6 @@
 package com.duyp.architecture.mvp.data.local;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -22,8 +21,21 @@ import io.reactivex.Flowable;
 @Dao
 public interface RepositoryDao {
 
+    /// RX
     @Query("SELECT * FROM Repository")
     Flowable<List<Repository>> getAllRepositoriesRx();
+
+    @Query("SELECT * FROM Repository WHERE name LIKE :name")
+    Flowable<List<Repository>> findAllByNameRx(String name);
+
+    @Query("SELECT * FROM Repository WHERE language LIKE :language")
+    Flowable<List<Repository>> findAllByLanguageRx(String language);
+
+    @Query("SELECT * FROM Repository WHERE user_name LIKE :userName")
+    Flowable<List<Repository>> findAllByUserRx(String userName);
+
+
+    // LIVE DATA
 
     @Query("SELECT * FROM Repository")
     LiveData<List<Repository>> getAllRepositories();

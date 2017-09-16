@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -29,11 +28,8 @@ import com.duyp.architecture.mvp.dagger.InjectionHelper;
 import com.duyp.architecture.mvp.dagger.component.ActivityComponent;
 import com.duyp.architecture.mvp.dagger.component.DaggerActivityComponent;
 import com.duyp.architecture.mvp.dagger.component.UserActivityComponent;
-import com.duyp.architecture.mvp.dagger.component.UserFragmentComponent;
 import com.duyp.architecture.mvp.dagger.module.ActivityModule;
-import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -206,6 +202,15 @@ public abstract class BaseActivity extends BasePermissionActivity implements Bas
     @Override
     public void hideProgress() {
         hideProgressDialog();
+    }
+
+    @Override
+    public void setProgress(boolean show) {
+        if (show) {
+            showProgress();
+        } else {
+            hideProgress();
+        }
     }
 
     @Override

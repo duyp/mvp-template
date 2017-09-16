@@ -1,11 +1,9 @@
 package com.duyp.architecture.mvp.utils;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import com.duyp.androidutils.adapter.BaseHeaderFooterAdapter;
@@ -101,6 +99,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends BaseHeaderFooterAdapter
         }
     }
 
+    @Nullable
     public List<T> getData() {
         return mAdapterData;
     }

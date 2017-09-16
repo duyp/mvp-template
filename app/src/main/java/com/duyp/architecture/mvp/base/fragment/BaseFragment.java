@@ -3,13 +3,11 @@ package com.duyp.architecture.mvp.base.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleFragment;
-import android.arch.lifecycle.LiveData;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +17,8 @@ import com.duyp.androidutils.CommonUtils;
 import com.duyp.androidutils.functions.PlainAction;
 import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.app.MyApplication;
-import com.duyp.architecture.mvp.base.activity.BaseActivity;
 import com.duyp.architecture.mvp.base.BaseView;
+import com.duyp.architecture.mvp.base.activity.BaseActivity;
 import com.duyp.architecture.mvp.base.interfaces.UiRefreshable;
 import com.duyp.architecture.mvp.dagger.InjectionHelper;
 import com.duyp.architecture.mvp.dagger.component.DaggerFragmentComponent;
@@ -29,7 +27,6 @@ import com.duyp.architecture.mvp.dagger.component.UserFragmentComponent;
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -171,6 +168,15 @@ public abstract class BaseFragment extends LifecycleFragment implements BaseView
     @Override
     public void showMessage(String message) {
         showToastLongMessage(message);
+    }
+
+    @Override
+    public void setProgress(boolean show) {
+        if (show) {
+            showProgress();
+        } else {
+            hideProgress();
+        }
     }
 
     public void showToastLongMessage(String message) {

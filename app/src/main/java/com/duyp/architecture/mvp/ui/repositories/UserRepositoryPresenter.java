@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
-import com.duyp.architecture.mvp.data.local.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 
 import javax.inject.Inject;
@@ -14,7 +13,7 @@ import javax.inject.Inject;
  * presenter for current user 's repositories fragment (IN USER SCOPE)
  */
 
-public class UserRepositoryPresenter extends RepositoryPresenter {
+public class UserRepositoryPresenter extends RepositoryPresenterOld {
 
     @Inject
     public UserRepositoryPresenter(@ActivityContext Context context, UserManager userManager, AppDatabase appDatabase, RepositoryAdapter adapter) {

@@ -1,19 +1,23 @@
 package com.duyp.architecture.mvp.dagger.module;
 
-import android.app.Activity;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
+import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
+import com.duyp.androidutils.image.glide.loader.TransitionGlideLoader;
+import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.ChildFragmentNavigator;
 import com.duyp.androidutils.navigator.FragmentNavigator;
+import com.duyp.androidutils.navigator.Navigator;
+import com.duyp.architecture.mvp.base.fragment.BaseFragment;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.qualifier.ChildFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import dagger.Module;
@@ -23,12 +27,11 @@ import dagger.Provides;
  * Module for fragment component, modified by Duy Pham (Copyright 2016 Patrick Löwenstein)
  */
 @Module
-public class FragmentModule extends ActivityModule {
+public class FragmentModule {
 
-    private final Fragment mFragment;
+    private final BaseFragment mFragment;
 
-    public FragmentModule(Fragment fragment) {
-        super((AppCompatActivity) fragment.getActivity());
+    public FragmentModule(BaseFragment fragment) {
         mFragment = fragment;
     }
 
@@ -51,5 +54,47 @@ public class FragmentModule extends ActivityModule {
     @PerFragment
     NavigatorHelper provideNavigatorHelper(FragmentNavigator navigator) {
         return new NavigatorHelper(navigator);
+    }
+
+    @Provides
+    protected FragmentActivity provideActivity() {
+        return mFragment.getActivity();
+    }
+
+    @Provides
+    @ActivityContext
+    protected Context provideContext() {
+        return mFragment.getContext();
+    }
+
+    @Provides
+    @ActivityFragmentManager
+    protected FragmentManager provideFragmentManager() {
+        return mFragment.getActivity().getSupportFragmentManager();
+    }
+
+    @Provides
+    protected Navigator provideNavigator() {
+        return new ActivityNavigator(mFragment.getActivity());
+    }
+
+    @Provides
+    protected SimpleGlideLoader provideDefaultGlide() {
+        return new SimpleGlideLoader(mFragment);
+    }
+
+    @Provides
+    protected TransitionGlideLoader provideTransitionGlide() {
+        return new TransitionGlideLoader(mFragment);
+    }
+
+    @Provides
+    protected AvatarLoader provideAvatarLoader() {
+        return new AvatarLoader(mFragment);
+    }
+
+    @Provides
+    protected LifecycleOwner provideLifeCycleOwner() {
+        return mFragment;
     }
 }

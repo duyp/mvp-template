@@ -1,29 +1,19 @@
 package com.duyp.architecture.mvp.ui.repositories;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.LiveDataReactiveStreams;
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Pair;
 
-import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.RepositoriesRepo;
-import com.duyp.architecture.mvp.data.Resource;
-import com.duyp.architecture.mvp.data.local.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
-import com.duyp.architecture.mvp.utils.DbTaskHelper;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
 
 /**
@@ -32,99 +22,56 @@ import lombok.Getter;
  */
 
 @PerFragment
-public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
+class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
 
     @NonNull
     @Getter
     private final RepositoryAdapter adapter;
 
-    private final RepositoryDao repositoryDao;
+    private final RepositoriesRepo repositoriesRepo;
 
-//    private final RepositoriesRepo repositoriesRepo;
-    @NonNull
-    @Getter
-    private final MutableLiveData<Pair<Integer, String>> options = new MutableLiveData<>();
-
-    private LiveData<List<Repository>> repositories;
-
-    private Long sinceRepoId;
+    private Long sinceRepoId = null;
     private boolean canLoadMore = false;
+    private String searchRepoName = "";
 
     @Inject
-    RepositoryPresenter(@ActivityContext Context context, UserManager userManager, AppDatabase appDatabase, @NonNull RepositoryAdapter adapter) {
+    RepositoryPresenter(@ActivityContext Context context, UserManager userManager, RepositoriesRepo repositoriesRepo, @NonNull RepositoryAdapter adapter) {
         super(context, userManager);
         this.adapter = adapter;
-        this.repositoryDao = appDatabase.repositoryDao();
-    }
-
-    @Override
-    public void bindView(RepositoryView view) {
-        super.bindView(view);
-        // first time open: load local data
-        getView().showProgress();
-        repositories = repositoryDao.getAllRepositories();
-        initRepoObserver();
-
-        options.observe(getLifeCircleOwner(), options -> {
-            if (options != null) {
-                if (options.first == 0) return;
-                canLoadMore = false; // not allow load more for offline filter
-                getView().showProgress();
-                if (repositories != null) {
-                    repositories.removeObservers(getLifeCircleOwner());
-                }
-                if (options.second.isEmpty()) {
-                    repositories = repositoryDao.getAllRepositories();
-                } else {
-                    String search = "%" + options.second + "%";
-                    switch (options.first) {
-                        case 1: // repo name
-                            repositories = repositoryDao.findAllByName(search);
-                            break;
-                        case 2: // user name
-                            repositories = repositoryDao.findAllByUser(search);
-                            break;
-                        case 3: // language
-                            repositories = repositoryDao.findAllByLanguage(search);
-                            break;
-                        default: break;
-                    }
-                }
-                initRepoObserver();
-            }
-        });
-    }
-
-    private void initRepoObserver() {
-        repositories.observe(getLifeCircleOwner(), data -> {
-            adapter.setData(data);
-            if (getView() != null) {
-                getView().hideProgress();
-            }
-        });
+        this.repositoriesRepo = repositoriesRepo;
     }
 
     private void fetchAllRepositories() {
-        addRequest(getGithubService().getAllPublicRepositories(sinceRepoId), true, response -> {
-            if (isRefreshed()) {
-                // clear all after inserting
-                DbTaskHelper.doTaskOnBackground(repositoryDao::deleteAllRepositories, () -> addAll(response));
-            } else {
-                addAll(response);
-            }
+        addRequest(repositoriesRepo.getAllRepositories(sinceRepoId), repositories -> {
+            populateData(repositories);
             canLoadMore = true;
-            sinceRepoId = response.get(response.size() - 1).getId();
-            setRefreshed(false);
+            sinceRepoId = repositories.get(repositories.size() - 1).getId();
         });
     }
 
-    private void addAll(List<Repository> response) {
-        DbTaskHelper.doTaskOnBackground(() -> repositoryDao.addAllRepositories(response));
+    void findRepositories(String name) {
+        searchRepoName = name;
+        if (!name.isEmpty()) {
+            canLoadMore = false;
+            addRequest(repositoriesRepo.findRepositories(searchRepoName), this::populateData);
+        }
+    }
+
+    private void populateData(List<Repository> repositories) {
+        adapter.setData(repositories);
+        setRefreshed(false);
     }
 
     @Override
     protected void fetchData() {
-        fetchAllRepositories();
+        if (!searchRepoName.isEmpty()) {
+            findRepositories(searchRepoName);
+        } else {
+            if (isRefreshed()) {
+                sinceRepoId = null;
+            }
+            fetchAllRepositories();
+        }
     }
 
     @Override
@@ -134,6 +81,6 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
 
     @Override
     public boolean isDataEmpty() {
-        return repositories.getValue() == null || repositories.getValue().size() == 0;
+        return adapter.getData() != null && adapter.getData().isEmpty();
     }
 }
