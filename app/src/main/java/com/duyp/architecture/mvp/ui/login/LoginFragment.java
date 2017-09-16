@@ -16,6 +16,7 @@ import com.duyp.androidutils.navigator.FragmentNavigator;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
 import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.ui.main.MainView;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 
@@ -102,6 +103,11 @@ public class LoginFragment extends BasePresenterFragment<LoginView, LoginPresent
     public void onLoginSuccess(User user) {
         isPreparingForTransition = true;
         avatarLoader.loadImage(user.getAvatarUrl(), imvAvatar);
-        new android.os.Handler().postDelayed(() -> fragmentNavigator.replaceFragment(R.id.container,  new ProfileFragment(), imvAvatar), 800);
+        new android.os.Handler().postDelayed(() -> {
+            fragmentNavigator.replaceFragment(R.id.container,  new ProfileFragment(), imvAvatar);
+            if (getActivity() instanceof MainView) {
+                ((MainView) getActivity()).setTitle("Profile");
+            }
+        }, 800);
     }
 }

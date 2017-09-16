@@ -21,24 +21,12 @@ import io.reactivex.Flowable;
 @Dao
 public interface RepositoryDao {
 
-    /// RX
-    @Query("SELECT * FROM Repository")
-    Flowable<List<Repository>> getAllRepositoriesRx();
-
-    @Query("SELECT * FROM Repository WHERE name LIKE :name")
-    Flowable<List<Repository>> findAllByNameRx(String name);
-
-    @Query("SELECT * FROM Repository WHERE language LIKE :language")
-    Flowable<List<Repository>> findAllByLanguageRx(String language);
-
-    @Query("SELECT * FROM Repository WHERE user_name LIKE :userName")
-    Flowable<List<Repository>> findAllByUserRx(String userName);
-
-
-    // LIVE DATA
 
     @Query("SELECT * FROM Repository")
     LiveData<List<Repository>> getAllRepositories();
+
+    @Query("SELECT * FROM Repository WHERE user_name = :userName")
+    LiveData<List<Repository>> getUserRepositories(String userName);
 
     @Query("SELECT * FROM Repository LIMIT :limit")
     LiveData<List<Repository>> getAllRepositories(int limit);

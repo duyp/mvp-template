@@ -1,4 +1,4 @@
-package com.duyp.architecture.mvp.data;
+package com.duyp.architecture.mvp.data.repos;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
@@ -6,8 +6,10 @@ import android.util.Log;
 
 import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.base.repo.BaseRepo;
+import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.local.RepositoryDao;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.data.model.def.RepoTypes;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class RepositoriesRepo extends BaseRepo {
 
     public static final int PER_PAGE = 100;
 
-    private final RepositoryDao repositoryDao;
+    protected final RepositoryDao repositoryDao;
 
     private LiveData<List<Repository>> liveData;
 
@@ -34,7 +36,7 @@ public class RepositoriesRepo extends BaseRepo {
 
     @Inject
     public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, AppDatabase appDatabase) {
-        super(owner, githubService);
+        super(owner, githubService, appDatabase);
         this.repositoryDao = appDatabase.repositoryDao();
     }
 
@@ -56,6 +58,13 @@ public class RepositoriesRepo extends BaseRepo {
         removeObserves();
         liveData = repositoryDao.findAllByName(nameToSearch);
         return createResource(getGithubService().getAllPublicRepositories(null), liveData, repositoryDao::addAllRepositories);
+    }
+
+    public Flowable<Resource<List<Repository>>> getUserRepositories(String userName) {
+        removeObserves();
+        liveData = repositoryDao.getUserRepositories(userName);
+        return createResource(getGithubService().getUserRepositories(userName, RepoTypes.ALL),
+                liveData, repositoryDao::addAllRepositories);
     }
 
     private void removeObserves() {

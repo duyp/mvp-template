@@ -10,6 +10,8 @@ import com.duyp.architecture.mvp.utils.roomConverters.DateConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.util.Date;
 
 import lombok.Getter;
@@ -23,6 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Parcel
 public class User extends BaseResponse {
 
     @PrimaryKey(autoGenerate = true)

@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.data.model.def.RepoTypes;
 
 import java.util.List;
 
@@ -30,4 +31,9 @@ public interface GithubService {
 
     @GET("repositories")
     Single<Response<List<Repository>>> getAllPublicRepositories(@Query("since") @Nullable Long sinceRepoId);
+
+    @GET("users/{username}/repos")
+    Single<Response<List<Repository>>> getUserRepositories(
+            @Path("username") String userName, @Query("type") @RepoTypes String type
+    );
 }

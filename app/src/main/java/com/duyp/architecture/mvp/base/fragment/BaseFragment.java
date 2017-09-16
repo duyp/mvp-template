@@ -3,6 +3,7 @@ package com.duyp.architecture.mvp.base.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.LifecycleFragment;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -28,6 +29,7 @@ import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
+import com.duyp.architecture.mvp.ui.listeners.AccountListener;
 import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
@@ -47,6 +49,25 @@ public abstract class BaseFragment extends LifecycleFragment implements BaseView
 
     private Unbinder unbinder;
     protected RefWatcher refWatcher;
+    private ProgressDialog progress_dialog;
+    private boolean shouldShowProgressDialog;
+
+    @Nullable
+    private AccountListener mAccountListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AccountListener) {
+            mAccountListener = (AccountListener) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mAccountListener = null;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,18 +92,6 @@ public abstract class BaseFragment extends LifecycleFragment implements BaseView
 
     protected abstract void initialize(View view);
 
-    protected void ensureInUserScope(@NonNull PlainConsumer<UserFragmentComponent> componentConsumer,
-                                     @NonNull PlainAction onError) {
-        UserManager userManager = InjectionHelper.getAppComponent(this).userManager();
-        if (userManager.checkForSavedUserAndStartSessionIfHas()) {
-            // noinspection ConstantConditions
-            mUserFragmentComponent = userManager.getUserComponent().getUserFragmentComponent(new FragmentModule(this));
-            componentConsumer.accept(mUserFragmentComponent);
-        } else {
-            onError.run();
-        }
-    }
-
     public FragmentComponent fragmentComponent() {
         if (mFragmentComponent == null) {
             mFragmentComponent = DaggerFragmentComponent.builder()
@@ -93,6 +102,43 @@ public abstract class BaseFragment extends LifecycleFragment implements BaseView
         return mFragmentComponent;
     }
 
+    //////// USER MANAGER ////////////////
+    protected void ensureInUserScope(@NonNull PlainConsumer<UserFragmentComponent> componentConsumer) {
+        ensureInUserScope(true, componentConsumer, null);
+    }
+
+    protected void ensureInUserScope(boolean forceLogin, @NonNull PlainConsumer<UserFragmentComponent> componentConsumer) {
+        ensureInUserScope(forceLogin, componentConsumer, null);
+    }
+
+    protected void ensureInUserScope(@NonNull PlainConsumer<UserFragmentComponent> componentConsumer, @Nullable PlainAction onError) {
+        ensureInUserScope(false, componentConsumer, onError);
+    }
+
+    /**
+     * Ensure we are in user scope (has saved user)
+     * @param forceLogin true if should force user to login in case of saved user is not exist
+     * @param componentConsumer consume {@link UserFragmentComponent} for fragment injecting
+     * @param onError will run if no user found
+     */
+    protected void ensureInUserScope(boolean forceLogin,
+                                     @NonNull PlainConsumer<UserFragmentComponent> componentConsumer,
+                                     @Nullable PlainAction onError) {
+        UserManager userManager = InjectionHelper.getAppComponent(this).userManager();
+        if (userManager.checkForSavedUserAndStartSessionIfHas()) {
+            // noinspection ConstantConditions
+            mUserFragmentComponent = userManager.getUserComponent().getUserFragmentComponent(new FragmentModule(this));
+            componentConsumer.accept(mUserFragmentComponent);
+        } else {
+            if (forceLogin && mAccountListener != null) {
+                mAccountListener.forceLogin();
+            }
+            if (onError != null) {
+                onError.run();
+            }
+        }
+    }
+    ////// END USER MANAGER ///////////////////
 
     @Override
     @CallSuper
@@ -110,9 +156,6 @@ public abstract class BaseFragment extends LifecycleFragment implements BaseView
         unbinder.unbind();
         mFragmentComponent = null;
     }
-
-    private ProgressDialog progress_dialog;
-    private boolean shouldShowProgressDialog;
 
     public void showProgressDialog(int delay, String message) {
         if (progress_dialog == null) {

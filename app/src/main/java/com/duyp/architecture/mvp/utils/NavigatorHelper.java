@@ -1,9 +1,11 @@
 package com.duyp.architecture.mvp.utils;
 
 import android.arch.lifecycle.LiveData;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
@@ -15,6 +17,7 @@ import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
+import com.duyp.architecture.mvp.ui.user_repositories.UserRepositoryFragment;
 
 import lombok.AllArgsConstructor;
 
@@ -54,5 +57,16 @@ public class NavigatorHelper {
             fragment = new RepositoriesFragment();
         }
         mNavigator.replaceFragment(containerId, fragment, TAG_ALL_REPO, null);
+    }
+
+    public void replaceMyRepositoriesFragment(@IdRes int containerId) {
+        mNavigator.replaceFragment(containerId, UserRepositoryFragment.createInstance(null, true));
+    }
+
+    public static <T extends Fragment> T createFragmentWithArguments(T fragment, @NonNull PlainConsumer<Bundle> bundlePlainConsumer) {
+        Bundle bundle = new Bundle();
+        bundlePlainConsumer.accept(bundle);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 }

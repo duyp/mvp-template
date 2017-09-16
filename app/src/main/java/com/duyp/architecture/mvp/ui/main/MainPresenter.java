@@ -13,14 +13,7 @@ import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import javax.inject.Inject;
 
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_GROUPS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_LOGOUT;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_MESSAGE;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_NOTIFICATIONS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_PROFILE;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_REQUESTS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_SETTINGS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TERMS;
+import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.*;
 
 /**
  * Created by duypham on 9/12/17.
@@ -48,10 +41,11 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
             case DRAWER_MENU_ITEM_PROFILE:
                 navigateProfile();
                 break;
-            case DRAWER_MENU_ITEM_REQUESTS:
-                mNavigatorHelper.replaceAllRepositoriesFragment(getContainerId());
+            case DRAWER_MENU_ITEM_MY_REPOSITORIES:
+                mNavigatorHelper.replaceMyRepositoriesFragment(getContainerId());
                 break;
-            case DRAWER_MENU_ITEM_GROUPS:
+            case DRAWER_MENU_ITEM_ALL_REPOSITORIES:
+                mNavigatorHelper.replaceAllRepositoriesFragment(getContainerId());
                 break;
             case DRAWER_MENU_ITEM_MESSAGE:
                 break;
@@ -69,6 +63,7 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
 
     void navigateProfile() {
         if (getUserManager().isUserSessionStarted()) {
+            getView().setTitle(MENU_TITLES[DRAWER_MENU_ITEM_PROFILE]);
             mNavigatorHelper.navigateUserProfile(getContainerId());
         } else {
             navigateLogin();
@@ -76,6 +71,7 @@ import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TE
     }
 
     void navigateLogin() {
+        getView().setTitle("Login");
         mNavigatorHelper.replaceLoginFragment(getContainerId());
     }
 

@@ -16,18 +16,23 @@ import com.mindorks.placeholderview.annotations.View;
 
 import java.lang.ref.WeakReference;
 
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_GROUPS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_LOGOUT;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_MESSAGE;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_NOTIFICATIONS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_PROFILE;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_REQUESTS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_SETTINGS;
-import static com.duyp.architecture.mvp.ui.main.MainActivity.DRAWER_MENU_ITEM_TERMS;
-
-
 @Layout(R.layout.view_drawer_item)
 public class DrawerMenuItem {
+
+    public static final int DRAWER_MENU_ITEM_PROFILE = 0;
+    public static final int DRAWER_MENU_ITEM_MY_REPOSITORIES = 1;
+    public static final int DRAWER_MENU_ITEM_ALL_REPOSITORIES = 2;
+    public static final int DRAWER_MENU_ITEM_MESSAGE = 3;
+    public static final int DRAWER_MENU_ITEM_NOTIFICATIONS = 4;
+    public static final int DRAWER_MENU_ITEM_SETTINGS = 5;
+    public static final int DRAWER_MENU_ITEM_TERMS = 6;
+    public static final int DRAWER_MENU_ITEM_LOGOUT = 7;
+
+    public static final String[] MENU_TITLES = new String[] {"Profile", "All public repositories", "My Repositories",
+            "Messages", "Notifications", "Settings", "Terms", "Logout"};
+
+    public static final int[] MENU_ICONS = new int[] {R.drawable.ic_github_small, R.drawable.ic_github_small, R.drawable.ic_github_small,
+            R.drawable.ic_github_small, R.drawable.ic_github_small, R.drawable.ic_github_small, R.drawable.ic_github_small, R.drawable.ic_github_small};
 
     @View(R.id.tvItemName)
     private TextView tvItemName;
@@ -46,7 +51,9 @@ public class DrawerMenuItem {
 
     private final PlainConsumer<Integer> onItemClick;
 
-    public DrawerMenuItem(@ApplicationContext Context context, CustomDrawerView drawerView, int menuPosition, @NonNull PlainConsumer<Integer> onItemClick) {
+    public DrawerMenuItem(@ApplicationContext Context context, CustomDrawerView drawerView,
+                          int menuPosition,
+                          @NonNull PlainConsumer<Integer> onItemClick) {
         mContext = context;
         mMenuPosition = menuPosition;
         mDrawerViewReference = new WeakReference<>(drawerView);
@@ -55,40 +62,8 @@ public class DrawerMenuItem {
 
     @Resolve
     private void onResolved() {
-        switch (mMenuPosition){
-            case DRAWER_MENU_ITEM_PROFILE:
-                tvItemName.setText("Profile");
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                break;
-            case DRAWER_MENU_ITEM_REQUESTS:
-                tvItemName.setText("All public repositories");
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                break;
-            case DRAWER_MENU_ITEM_GROUPS:
-                tvItemName.setText("Groups");
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                break;
-            case DRAWER_MENU_ITEM_MESSAGE:
-                tvItemName.setText("Messages");
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                break;
-            case DRAWER_MENU_ITEM_NOTIFICATIONS:
-                tvItemName.setText("Notifications");
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                break;
-            case DRAWER_MENU_ITEM_SETTINGS:
-                tvItemName.setText("Settings");
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                break;
-            case DRAWER_MENU_ITEM_TERMS:
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                tvItemName.setText("Terms");
-                break;
-            case DRAWER_MENU_ITEM_LOGOUT:
-                imvItemIcon.setImageResource(R.drawable.ic_github_small);
-                tvItemName.setText("Logout");
-                break;
-        }
+        tvItemName.setText(MENU_TITLES[mMenuPosition]);
+        imvItemIcon.setImageResource(MENU_ICONS[mMenuPosition]);
         itemLayout.setBackgroundColor(mContext.getResources().getColor(
                 mDrawerViewReference.get().getSelectedItem() == mMenuPosition ? R.color.white_gray : R.color.white));
     }

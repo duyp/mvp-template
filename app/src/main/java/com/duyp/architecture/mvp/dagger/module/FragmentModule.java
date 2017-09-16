@@ -12,11 +12,13 @@ import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.ChildFragmentNavigator;
 import com.duyp.androidutils.navigator.FragmentNavigator;
 import com.duyp.androidutils.navigator.Navigator;
+import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.fragment.BaseFragment;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.qualifier.ChildFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.ui.repositories.RepositoryPresenter;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
@@ -57,44 +59,44 @@ public class FragmentModule {
     }
 
     @Provides
-    protected FragmentActivity provideActivity() {
+    FragmentActivity provideActivity() {
         return mFragment.getActivity();
     }
 
     @Provides
     @ActivityContext
-    protected Context provideContext() {
+    Context provideContext() {
         return mFragment.getContext();
     }
 
     @Provides
     @ActivityFragmentManager
-    protected FragmentManager provideFragmentManager() {
+    FragmentManager provideFragmentManager() {
         return mFragment.getActivity().getSupportFragmentManager();
     }
 
     @Provides
-    protected Navigator provideNavigator() {
+    Navigator provideNavigator() {
         return new ActivityNavigator(mFragment.getActivity());
     }
 
     @Provides
-    protected SimpleGlideLoader provideDefaultGlide() {
+    SimpleGlideLoader provideDefaultGlide() {
         return new SimpleGlideLoader(mFragment);
     }
 
     @Provides
-    protected TransitionGlideLoader provideTransitionGlide() {
+    TransitionGlideLoader provideTransitionGlide() {
         return new TransitionGlideLoader(mFragment);
     }
 
     @Provides
-    protected AvatarLoader provideAvatarLoader() {
+    AvatarLoader provideAvatarLoader() {
         return new AvatarLoader(mFragment);
     }
 
     @Provides
-    protected LifecycleOwner provideLifeCycleOwner() {
+    LifecycleOwner provideLifeCycleOwner() {
         return mFragment;
     }
 }

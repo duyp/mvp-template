@@ -9,26 +9,19 @@ import android.support.v7.widget.Toolbar;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.activity.BasePresenterActivity;
 import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.ui.listeners.AccountListener;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.interfaces.SimpleActionBarToggle;
 
+import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.*;
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class MainActivity extends BasePresenterActivity<MainView, MainPresenter> implements MainView, ProfileFragment.Callback {
+public class MainActivity extends BasePresenterActivity<MainView, MainPresenter> implements MainView, AccountListener {
 
     private static final String TAG = "MainActivity";
-
-    public static final int DRAWER_MENU_ITEM_PROFILE = 0;
-    public static final int DRAWER_MENU_ITEM_REQUESTS = 1;
-    public static final int DRAWER_MENU_ITEM_GROUPS = 2;
-    public static final int DRAWER_MENU_ITEM_MESSAGE = 3;
-    public static final int DRAWER_MENU_ITEM_NOTIFICATIONS = 4;
-    public static final int DRAWER_MENU_ITEM_SETTINGS = 5;
-    public static final int DRAWER_MENU_ITEM_TERMS = 6;
-    public static final int DRAWER_MENU_ITEM_LOGOUT = 7;
 
     @BindView(R.id.drawerView)
     CustomDrawerView mDrawerView;
@@ -43,6 +36,7 @@ public class MainActivity extends BasePresenterActivity<MainView, MainPresenter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setSupportActionBar(mToolbar);
         ensureInUserScope(userActivityComponent -> {
             userActivityComponent.inject(this);
             initialize();
@@ -68,13 +62,14 @@ public class MainActivity extends BasePresenterActivity<MainView, MainPresenter>
     }
 
     private void initDrawerItems() {
-        mDrawerView.addView(new DrawerHeader(this, avatarLoader, mDrawerView, this::onProfileClick));
+        mDrawerView.addView(new DrawerHeader(this, avatarLoader, mDrawerView, () -> this.onItemSelected(0)));
         for (int i = 0; i < 8; i++) {
             mDrawerView.addView(new DrawerMenuItem(this.getApplicationContext(), mDrawerView, i, this::onItemSelected));
         }
     }
 
     private void onItemSelected(int position) {
+        setTitle(MENU_TITLES[position]);
         mDrawer.closeDrawers();
         mDrawerView.setSelectedItem(position);
         new Handler().postDelayed(() -> mDrawerView.refresh(), 800);
@@ -94,7 +89,13 @@ public class MainActivity extends BasePresenterActivity<MainView, MainPresenter>
     }
 
     @Override
-    public void onForceLogin() {
+    public void setTitle(String title) {
+        // noinspection ConstantConditions
+        getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void forceLogin() {
         getPresenter().navigateLogin();
     }
 }

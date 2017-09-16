@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 
 import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -27,9 +28,12 @@ public abstract class BaseRepo {
 
     private final LifecycleOwner owner;
 
-    public BaseRepo(LifecycleOwner owner, GithubService githubService) {
+    private final AppDatabase appDatabase;
+
+    public BaseRepo(LifecycleOwner owner, GithubService githubService, AppDatabase appDatabase) {
         this.githubService = githubService;
         this.owner = owner;
+        this.appDatabase = appDatabase;
     }
 
     protected <T> Flowable<Resource<T>> createResource(@Nullable Single<Response<T>> remote,

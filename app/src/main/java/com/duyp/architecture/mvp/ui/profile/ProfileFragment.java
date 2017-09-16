@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BaseSwipeToRefreshFragment;
 import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.ui.listeners.AccountListener;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 
 import javax.inject.Inject;
@@ -24,9 +25,6 @@ import butterknife.BindView;
 
 public class ProfileFragment extends BaseSwipeToRefreshFragment<ProfileView, ProfilePresenter> implements ProfileView{
 
-    public interface Callback {
-        void onForceLogin();
-    }
     @BindView(R.id.imvAvatar)
     ImageView imvAvatar;
     @BindView(R.id.tvName)
@@ -38,13 +36,13 @@ public class ProfileFragment extends BaseSwipeToRefreshFragment<ProfileView, Pro
     AvatarLoader avatarLoader;
 
     @Nullable
-    private Callback mCallback;
+    private AccountListener mCallback;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Callback) {
-            mCallback = (Callback)context;
+        if (context instanceof AccountListener) {
+            mCallback = (AccountListener)context;
         }
     }
 
@@ -91,7 +89,7 @@ public class ProfileFragment extends BaseSwipeToRefreshFragment<ProfileView, Pro
 
     private void forceLogin() {
         if (mCallback != null) {
-            mCallback.onForceLogin();
+            mCallback.forceLogin();
         }
     }
 }

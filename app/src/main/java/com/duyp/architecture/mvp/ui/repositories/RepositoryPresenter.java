@@ -7,7 +7,7 @@ import android.util.Log;
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
-import com.duyp.architecture.mvp.data.RepositoriesRepo;
+import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
 
@@ -24,12 +24,13 @@ import lombok.Getter;
  */
 
 @PerFragment
-class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
+public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
 
     @NonNull
     @Getter
     private final RepositoryAdapter adapter;
 
+    @Getter
     private final RepositoriesRepo repositoriesRepo;
 
     private Long sinceRepoId = null;
@@ -37,7 +38,7 @@ class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     private String searchRepoName = "";
 
     @Inject
-    RepositoryPresenter(@ActivityContext Context context, UserManager userManager, RepositoriesRepo repositoriesRepo, @NonNull RepositoryAdapter adapter) {
+    public RepositoryPresenter(@ActivityContext Context context, UserManager userManager, RepositoriesRepo repositoriesRepo, @NonNull RepositoryAdapter adapter) {
         super(context, userManager);
         this.adapter = adapter;
         this.repositoriesRepo = repositoriesRepo;
@@ -60,7 +61,7 @@ class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
         }
     }
 
-    private void populateData(List<Repository> repositories) {
+    protected void populateData(List<Repository> repositories) {
         Log.d(TAG, "RepositoryPresenter: GOT " + repositories.size() + " items");
         adapter.setData(repositories);
         setRefreshed(false);

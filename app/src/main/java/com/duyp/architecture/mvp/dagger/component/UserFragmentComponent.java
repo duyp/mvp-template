@@ -7,6 +7,7 @@ import com.duyp.androidutils.navigator.FragmentNavigator;
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.dagger.qualifier.ChildFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.ui.user_repositories.UserRepositoryFragment;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 
 import dagger.Subcomponent;
@@ -29,4 +30,5 @@ public interface UserFragmentComponent {
     Fragment baseFragment();
 
     void inject(ProfileFragment fragment);
+    void inject(UserRepositoryFragment fragment);
 }
