@@ -71,14 +71,8 @@ public class MainActivity extends BasePresenterActivity<MainView, MainPresenter>
     private void onItemSelected(int position) {
         setTitle(MENU_TITLES[position]);
         mDrawer.closeDrawers();
-        mDrawerView.setSelectedItem(position);
-        new Handler().postDelayed(() -> mDrawerView.refresh(), 800);
+        updateSelectedItem(position);
         getPresenter().onItemCLick(position);
-    }
-
-    private void onProfileClick() {
-        getPresenter().navigateProfile();
-        mDrawer.closeDrawers();
     }
 
     @Override
@@ -92,6 +86,12 @@ public class MainActivity extends BasePresenterActivity<MainView, MainPresenter>
     public void setTitle(String title) {
         // noinspection ConstantConditions
         getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void updateSelectedItem(int item) {
+        mDrawerView.setSelectedItem(item);
+        new Handler().postDelayed(() -> mDrawerView.refresh(), 800);
     }
 
     @Override

@@ -60,10 +60,10 @@ public class RepositoriesRepo extends BaseRepo {
         return createResource(getGithubService().getAllPublicRepositories(null), liveData, repositoryDao::addAllRepositories);
     }
 
-    public Flowable<Resource<List<Repository>>> getUserRepositories(String userName) {
+    public Flowable<Resource<List<Repository>>> getUserRepositories(String userNameLogin) {
         removeObserves();
-        liveData = repositoryDao.getUserRepositories(userName);
-        return createResource(getGithubService().getUserRepositories(userName, RepoTypes.ALL),
+        liveData = repositoryDao.getUserRepositories(userNameLogin);
+        return createResource(getGithubService().getUserRepositories(userNameLogin, RepoTypes.ALL),
                 liveData, repositoryDao::addAllRepositories);
     }
 

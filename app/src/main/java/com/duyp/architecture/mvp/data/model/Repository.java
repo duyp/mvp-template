@@ -1,7 +1,9 @@
 package com.duyp.architecture.mvp.data.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
@@ -20,6 +22,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+//@ForeignKey(
+//        entity = User.class,
+//        parentColumns = "id",
+//        childColumns = "user_id"
+//)
 public class Repository{
 
     @PrimaryKey(autoGenerate = true)
@@ -38,6 +45,8 @@ public class Repository{
 //    @TypeConverters(UserConverter.class)
     @Embedded(prefix = "user_")
     private User owner;
+//    @ColumnInfo(name = "user_id")
+//    private String userId;
     @SerializedName("private")
     @Expose
     private Boolean _private;
@@ -233,8 +242,4 @@ public class Repository{
     @SerializedName("default_branch")
     @Expose
     private String defaultBranch;
-    @SerializedName("permissions")
-    @Expose
-    @TypeConverters(PermissionsConverter.class)
-    private Permissions permissions;
 }

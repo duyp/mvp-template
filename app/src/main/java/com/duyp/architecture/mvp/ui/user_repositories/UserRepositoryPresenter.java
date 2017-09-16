@@ -35,7 +35,7 @@ public class UserRepositoryPresenter extends RepositoryPresenter {
     }
 
     private void getUserRepositories() {
-        addRequest(getRepositoriesRepo().getUserRepositories(targetUser.getName()), this::populateData);
+        addRequest(getRepositoriesRepo().getUserRepositories(targetUser.getLogin()), this::populateData);
     }
 
     @Override

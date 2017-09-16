@@ -11,4 +11,5 @@ import com.duyp.architecture.mvp.data.model.User;
 public interface MainView extends BaseView {
     void onUserUpdated(User user);
     void setTitle(String title);
+    void updateSelectedItem(int item);
 }

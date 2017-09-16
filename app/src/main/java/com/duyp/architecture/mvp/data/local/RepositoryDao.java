@@ -25,8 +25,11 @@ public interface RepositoryDao {
     @Query("SELECT * FROM Repository")
     LiveData<List<Repository>> getAllRepositories();
 
-    @Query("SELECT * FROM Repository WHERE user_name = :userName")
-    LiveData<List<Repository>> getUserRepositories(String userName);
+//    @Query("SELECT * FROM Repository " +
+//            "INNER JOIN User ON User.id = Repository.user_id " +
+//            "WHERE User.login = :userName")
+    @Query("SELECT * FROM Repository WHERE user_login = :userLogin")
+    LiveData<List<Repository>> getUserRepositories(String userLogin);
 
     @Query("SELECT * FROM Repository LIMIT :limit")
     LiveData<List<Repository>> getAllRepositories(int limit);

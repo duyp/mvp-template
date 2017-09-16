@@ -42,7 +42,7 @@ import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.*;
                 navigateProfile();
                 break;
             case DRAWER_MENU_ITEM_MY_REPOSITORIES:
-                mNavigatorHelper.replaceMyRepositoriesFragment(getContainerId());
+                navigateMyRepositories();
                 break;
             case DRAWER_MENU_ITEM_ALL_REPOSITORIES:
                 mNavigatorHelper.replaceAllRepositoriesFragment(getContainerId());
@@ -61,9 +61,8 @@ import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.*;
         }
     }
 
-    void navigateProfile() {
+    private void navigateProfile() {
         if (getUserManager().isUserSessionStarted()) {
-            getView().setTitle(MENU_TITLES[DRAWER_MENU_ITEM_PROFILE]);
             mNavigatorHelper.navigateUserProfile(getContainerId());
         } else {
             navigateLogin();
@@ -72,7 +71,16 @@ import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.*;
 
     void navigateLogin() {
         getView().setTitle("Login");
+        getView().updateSelectedItem(DRAWER_MENU_ITEM_PROFILE);
         mNavigatorHelper.replaceLoginFragment(getContainerId());
+    }
+
+    private void navigateMyRepositories() {
+        if (getUserManager().isUserSessionStarted()) {
+            mNavigatorHelper.replaceMyRepositoriesFragment(getContainerId());
+        } else {
+            navigateLogin();
+        }
     }
 
     private void initUserLiveData(@NonNull LiveData<User> userLiveData) {

@@ -60,7 +60,7 @@ public class NavigatorHelper {
     }
 
     public void replaceMyRepositoriesFragment(@IdRes int containerId) {
-        mNavigator.replaceFragment(containerId, UserRepositoryFragment.createInstance(null, true));
+        mNavigator.replaceFragment(containerId, UserRepositoryFragment.createInstance(null));
     }
 
     public static <T extends Fragment> T createFragmentWithArguments(T fragment, @NonNull PlainConsumer<Bundle> bundlePlainConsumer) {

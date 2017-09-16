@@ -22,26 +22,26 @@ import org.parceler.Parcels;
 public class UserRepositoryFragment extends BaseSwipeRecyclerViewFragment<RepositoryAdapter, RepositoryView, UserRepositoryPresenter>
         implements RepositoryView {
 
-    public static UserRepositoryFragment createInstance(@Nullable User user, boolean forceLogin) {
+    public static UserRepositoryFragment createInstance(@Nullable User user) {
         return NavigatorHelper.createFragmentWithArguments(new UserRepositoryFragment(), bundle -> {
             bundle.putParcelable("user", Parcels.wrap(user));
-            bundle.putBoolean("force_login", forceLogin);
-        });
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        ensureInUserScope(bundle.getBoolean("force_login", true), userFragmentComponent -> userFragmentComponent.inject(this), () -> {
-            fragmentComponent().inject(this);
-            getPresenter().initTargetUser(Parcels.unwrap(bundle.getParcelable("user")));
         });
     }
 
     @Override
     protected void initialize(View view) {
+
+        Bundle bundle = getArguments();
+        ensureInUserScope(userFragmentComponent -> {
+            userFragmentComponent.inject(this);
+            getPresenter().initTargetUser(null);
+        }, () -> {
+            fragmentComponent().inject(this);
+            getPresenter().initTargetUser(Parcels.unwrap(bundle.getParcelable("user")));
+        });
+
         super.initialize(view);
+        refresh();
     }
 
     @NonNull

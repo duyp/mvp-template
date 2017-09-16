@@ -28,7 +28,7 @@ public class DrawerMenuItem {
     public static final int DRAWER_MENU_ITEM_TERMS = 6;
     public static final int DRAWER_MENU_ITEM_LOGOUT = 7;
 
-    public static final String[] MENU_TITLES = new String[] {"Profile", "All public repositories", "My Repositories",
+    public static final String[] MENU_TITLES = new String[] {"Profile", "My Repositories", "All public repositories",
             "Messages", "Notifications", "Settings", "Terms", "Logout"};
 
     public static final int[] MENU_ICONS = new int[] {R.drawable.ic_github_small, R.drawable.ic_github_small, R.drawable.ic_github_small,

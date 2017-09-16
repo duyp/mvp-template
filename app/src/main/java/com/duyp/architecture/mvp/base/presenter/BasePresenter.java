@@ -113,16 +113,14 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
         Disposable disposable = resourceFlowable.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(resource -> {
-                    if (resource != null) {
+                    if (resource != null && getView() != null) {
                         Log.d("source", "addRequest: resource changed: " + resource.toString());
-                        if (getView() != null) {
-                            getView().setProgress(resource.status == Status.LOADING);
-                            if (resource.message != null) {
-                                getView().showMessage(resource.message);
-                            }
-                        }
                         if (resource.data != null) {
                             response.accept(resource.data);
+                        }
+                        getView().setProgress(resource.status == Status.LOADING);
+                        if (resource.message != null) {
+                            getView().showMessage(resource.message);
                         }
                     }
                 });
