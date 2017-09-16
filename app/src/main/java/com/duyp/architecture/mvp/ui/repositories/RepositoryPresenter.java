@@ -2,6 +2,7 @@ package com.duyp.architecture.mvp.ui.repositories;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
@@ -10,6 +11,7 @@ import com.duyp.architecture.mvp.data.RepositoriesRepo;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
 
+import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.*;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -50,6 +52,7 @@ class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     }
 
     void findRepositories(String name) {
+        sinceRepoId = null;
         searchRepoName = name;
         if (!name.isEmpty()) {
             canLoadMore = false;
@@ -58,6 +61,7 @@ class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     }
 
     private void populateData(List<Repository> repositories) {
+        Log.d(TAG, "RepositoryPresenter: GOT " + repositories.size() + " items");
         adapter.setData(repositories);
         setRefreshed(false);
     }

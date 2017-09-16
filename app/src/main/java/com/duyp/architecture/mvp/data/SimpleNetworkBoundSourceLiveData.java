@@ -20,11 +20,9 @@ import retrofit2.Response;
  */
 public abstract class SimpleNetworkBoundSourceLiveData<T> {
 
-    public static final String TAG = "resource";
+    public static final String TAG = "sourcew";
 
     private boolean apiRespond = false;
-
-    private T data;
 
     public SimpleNetworkBoundSourceLiveData(LifecycleOwner lifecycleOwner, FlowableEmitter<Resource<T>> emitter) {
 
@@ -32,8 +30,7 @@ public abstract class SimpleNetworkBoundSourceLiveData<T> {
         final Single<Response<T>> remote = getRemote();
 
         if (local != null) {
-            local.observe(lifecycleOwner, t -> {
-                data = t;
+            local.observe(lifecycleOwner, data -> {
                 Log.d(TAG, "SimpleNetworkBoundSource: loaded from local success!: " + data);
                 if (remote != null && !apiRespond) {
                     emitter.onNext(Resource.loading(data));
@@ -48,7 +45,6 @@ public abstract class SimpleNetworkBoundSourceLiveData<T> {
                 Log.d(TAG, "SimpleNetworkBoundSource: call API success!");
                 apiRespond = true;
                 saveCallResult(response);
-                emitter.onNext(Resource.success(data));
             }, errorEntity -> {
                 Log.d(TAG, "SimpleNetworkBoundSource: call API error: " + errorEntity.getMessage());
                 emitter.onNext(Resource.error(errorEntity.getMessage(), null));

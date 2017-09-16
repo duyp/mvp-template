@@ -2,8 +2,7 @@ package com.duyp.architecture.mvp.utils.roomConverters;
 
 import android.arch.persistence.room.TypeConverter;
 
-import com.duyp.architecture.mvp.data.Permissions;
-import com.duyp.architecture.mvp.data.model.User;
+import com.duyp.architecture.mvp.data.model.Permissions;
 import com.google.gson.Gson;
 
 /**

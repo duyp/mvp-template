@@ -1,4 +1,4 @@
-package com.duyp.architecture.mvp.data;
+package com.duyp.architecture.mvp.data.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

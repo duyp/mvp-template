@@ -40,6 +40,9 @@ public interface RepositoryDao {
     @Query("SELECT * FROM Repository")
     LiveData<List<Repository>> getAllRepositories();
 
+    @Query("SELECT * FROM Repository LIMIT :limit")
+    LiveData<List<Repository>> getAllRepositories(int limit);
+
     @Query("SELECT * FROM Repository WHERE name LIKE :name")
     LiveData<List<Repository>> findAllByName(String name);
 

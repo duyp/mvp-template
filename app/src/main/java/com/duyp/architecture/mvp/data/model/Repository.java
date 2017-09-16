@@ -5,10 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
-import com.duyp.architecture.mvp.data.Permissions;
-import com.duyp.architecture.mvp.data.model.base.BaseResponse;
 import com.duyp.architecture.mvp.utils.roomConverters.PermissionsConverter;
-import com.duyp.architecture.mvp.utils.roomConverters.UserConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 
+import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.*;
 /**
  * Created by duypham on 9/15/17.
  *
@@ -23,9 +24,13 @@ import io.reactivex.Flowable;
 
 public class RepositoriesRepo extends BaseRepo {
 
+    public static final int PER_PAGE = 100;
+
     private final RepositoryDao repositoryDao;
 
     private LiveData<List<Repository>> liveData;
+
+    private int currentPage = 1;
 
     @Inject
     public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, AppDatabase appDatabase) {
@@ -34,20 +39,23 @@ public class RepositoriesRepo extends BaseRepo {
     }
 
     public Flowable<Resource<List<Repository>>> getAllRepositories(Long sinceId) {
-        Log.d("source", "RepositoriesRepo: getting all repo with sinceId = " + sinceId);
+        Log.d(TAG, "RepositoriesRepo: getting all repo with sinceId = " + sinceId);
+        if (sinceId != null) {
+            currentPage ++;
+        } else {
+            currentPage = 1;
+        }
         removeObserves();
-        liveData = repositoryDao.getAllRepositories();
-        return createResource(getGithubService().getAllPublicRepositories(sinceId),
-                liveData,
-                repositoryDao::addAllRepositories);
+        liveData = repositoryDao.getAllRepositories(currentPage * PER_PAGE);
+        return createResource(getGithubService().getAllPublicRepositories(sinceId), liveData, repositoryDao::addAllRepositories);
     }
 
     public Flowable<Resource<List<Repository>>> findRepositories(String repoName) {
-        Log.d("source", "RepositoriesRepo: finding repo: " + repoName);
+        Log.d(TAG, "RepositoriesRepo: finding repo: " + repoName);
         String nameToSearch = "%" + repoName + "%";
         removeObserves();
         liveData = repositoryDao.findAllByName(nameToSearch);
-        return createResource(getGithubService().getAllPublicRepositories(null), liveData, null);
+        return createResource(getGithubService().getAllPublicRepositories(null), liveData, repositoryDao::addAllRepositories);
     }
 
     private void removeObserves() {
