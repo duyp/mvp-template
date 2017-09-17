@@ -2,6 +2,8 @@ package com.duyp.architecture.mvp.data.remote;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.duyp.androidutils.network.CustomTrustManager;
@@ -43,6 +45,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Header;
 
 /**
  * Created by duypham on 7/23/17.
@@ -61,7 +64,7 @@ public class ServiceFactory {
         return retrofit.create(serviceClass);
     }
 
-    public static OkHttpClient.Builder makeOkHttpClientBuilder(Context context) {
+    public static OkHttpClient.Builder makeOkHttpClientBuilder(Context context, @Nullable String token) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
         if (BuildConfig.DEBUG) {
@@ -75,10 +78,15 @@ public class ServiceFactory {
                 .addInterceptor(chain -> {
                     // github accept header
                     // https://developer.github.com/v3/#current-version
-                    Request request = chain.request().newBuilder()
-                            .addHeader("Accept", "application/vnd.github.v3+json")
-                            .build();
-                    return chain.proceed(request);
+                    Request.Builder requestBuilder = chain.request().newBuilder()
+                            .addHeader("Accept", "application/vnd.github.v3+json");
+
+                    String header = chain.request().header(RemoteConstants.HEADER_AUTH);
+
+                    if (TextUtils.isEmpty(header) && token != null && token.isEmpty()) {
+                        requestBuilder.addHeader(RemoteConstants.HEADER_AUTH, token);
+                    }
+                    return chain.proceed(requestBuilder.build());
                 })
                 .addInterceptor(logging)
                 .followRedirects(true)

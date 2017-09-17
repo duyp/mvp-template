@@ -4,15 +4,21 @@ import android.content.Context;
 
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.dagger.qualifier.OkHttpNoAuth;
+import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
+import com.duyp.architecture.mvp.data.remote.RemoteConstants;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
 import com.google.gson.Gson;
 
+import static com.duyp.architecture.mvp.dagger.module.AppModule.*;
+
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * Created by Duy Pham on 4/30/17.
@@ -31,8 +37,8 @@ public class NetworkModule {
     @Provides
     @OkHttpNoAuth
     @Singleton
-    static OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context) {
-        return ServiceFactory.makeOkHttpClientBuilder(context).build();
+    static OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context, UserRepo userRepo) {
+        return ServiceFactory.makeOkHttpClientBuilder(context, userRepo.getUserToken()).build();
     }
 
     @Provides
