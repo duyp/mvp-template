@@ -43,14 +43,7 @@ public class UserModule {
     @UserScope
     @OkHttpAuth
     OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context) {
-        OkHttpClient.Builder builder = ServiceFactory.makeOkHttpClientBuilder(context);
-        builder.addInterceptor(chain -> {
-            Request request = chain.request().newBuilder()
-                    .addHeader(RemoteConstants.HEADER_AUTH, mToken)
-                    .build();
-            return chain.proceed(request);
-        });
-        return builder.build();
+        return ServiceFactory.makeOkHttpClientBuilder(context, mToken).build();
     }
 
     @Provides
