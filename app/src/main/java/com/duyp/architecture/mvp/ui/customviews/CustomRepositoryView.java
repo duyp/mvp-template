@@ -1,17 +1,20 @@
 package com.duyp.architecture.mvp.ui.customviews;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
+import com.duyp.architecture.mvp.utils.functions.PlainBiConsumer;
 import com.mikhaellopez.circularimageview.CircularImageView;
+
 
 import butterknife.BindView;
 
@@ -45,6 +48,9 @@ public class CustomRepositoryView extends BaseRelativeLayout<Repository> {
     @Override
     protected void initView(Context context) {
         super.initView(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imvAvatar.setTransitionName(getString(R.string.transition_name_avatar));
+        }
     }
 
     @Override
@@ -59,5 +65,13 @@ public class CustomRepositoryView extends BaseRelativeLayout<Repository> {
         avatarLoader.loadImage(data.getOwner().getAvatarUrl(), imvAvatar);
         tvLanguage.setText(getContext().getString(R.string.repo_language_format, data.getLanguage()));
         tvAccess.setText(getContext().getString(R.string.repo_access_format, data.get_private() ? "Private" : "Public"));
+    }
+
+    public void setItemClickListener(PlainBiConsumer<Repository, View> consumer) {
+        this.setOnClickListener(view -> {
+            if (getData() != null && consumer != null) {
+                consumer.accept(getData(), imvAvatar);
+            }
+        });
     }
 }

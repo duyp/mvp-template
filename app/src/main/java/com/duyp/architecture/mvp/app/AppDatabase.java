@@ -5,12 +5,14 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.duyp.architecture.mvp.data.local.IssuesDao;
 import com.duyp.architecture.mvp.data.local.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserDao;
+import com.duyp.architecture.mvp.data.model.Issue;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
 
-@Database(entities = {User.class, Repository.class}, version = 1)
+@Database(entities = {User.class, Repository.class, Issue.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
@@ -26,4 +28,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
     public abstract RepositoryDao repositoryDao();
+    public abstract IssuesDao issuesDao();
 }

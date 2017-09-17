@@ -20,6 +20,6 @@
     <color name="transparent">#00000000</color>
 
     <color name="default_dark_gray">#777777</color>
-    <color name="default_light_gray">#E7E7E7</color>
+    <color name="default_light_gray">#EFEFEF</color>
     <color name="default_mid_gray">#dddddd</color>
 </resources>

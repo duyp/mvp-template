@@ -13,11 +13,16 @@ import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.androidutils.navigator.ChildFragmentNavigator;
 import com.duyp.androidutils.navigator.FragmentNavigator;
 import com.duyp.androidutils.navigator.Navigator;
+import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
+import com.duyp.architecture.mvp.ui.repository_detail.RepositoryDetailActivity;
 import com.duyp.architecture.mvp.ui.user_repositories.UserRepositoryFragment;
+
+import org.parceler.Parcels;
 
 import lombok.AllArgsConstructor;
 
@@ -61,6 +66,12 @@ public class NavigatorHelper {
 
     public void replaceMyRepositoriesFragment(@IdRes int containerId) {
         mNavigator.replaceFragment(containerId, UserRepositoryFragment.createInstance(null));
+    }
+
+    public void navigateRepositoryDetail(@NonNull Repository repository, View... views) {
+        mNavigator.startActivityWithTransition(RepositoryDetailActivity.class, intent -> {
+            intent.putExtra(Constants.EXTRA_DATA, Parcels.wrap(repository));
+        }, false, false, views);
     }
 
     public static <T extends Fragment> T createFragmentWithArguments(T fragment, @NonNull PlainConsumer<Bundle> bundlePlainConsumer) {

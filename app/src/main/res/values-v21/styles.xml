@@ -19,4 +19,9 @@
         <item name="android:windowEnterTransition">@transition/fade</item>
         <item name="android:windowExitTransition">@transition/fade</item>
     </style>
+
+    <style name="AppThemeTranslucent" parent="AppTheme">
+        <item name="android:colorPrimaryDark">@color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 </resources>

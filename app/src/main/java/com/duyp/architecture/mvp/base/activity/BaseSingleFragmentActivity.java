@@ -25,7 +25,7 @@ public abstract class BaseSingleFragmentActivity<T extends BaseFragment> extends
 
     @Override
     public int getLayout() {
-        return getContainerId();
+        return R.layout.container;
     }
 
     protected abstract T createFragment();

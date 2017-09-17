@@ -16,6 +16,7 @@ import com.duyp.architecture.mvp.ui.customviews.CustomRepositoryView;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.BaseRecyclerViewAdapter;
 import com.duyp.architecture.mvp.utils.BaseViewHolder;
+import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import java.util.List;
 
@@ -33,10 +34,13 @@ public class RepositoryAdapter extends BaseRecyclerViewAdapter<Repository> {
 
     private final AvatarLoader mAvatarLoader;
 
+    private final NavigatorHelper mNavigator;
+
     @Inject
-    public RepositoryAdapter(@ActivityContext @NonNull Context context, AvatarLoader avatarLoader) {
+    public RepositoryAdapter(@ActivityContext @NonNull Context context, AvatarLoader avatarLoader, NavigatorHelper navigatorHelper) {
         super(context);
         mAvatarLoader = avatarLoader;
+        mNavigator = navigatorHelper;
     }
 
     @Override
@@ -56,6 +60,7 @@ public class RepositoryAdapter extends BaseRecyclerViewAdapter<Repository> {
 
         public RepoViewHolder(View itemView) {
             super(itemView);
+            repositoryView.setItemClickListener(mNavigator::navigateRepositoryDetail);
         }
     }
 }

@@ -24,13 +24,16 @@ public abstract class SimpleNetworkBoundSourceLiveData<T> {
 
     private boolean apiRespond = false;
 
+    private T data;
+
     public SimpleNetworkBoundSourceLiveData(LifecycleOwner lifecycleOwner, FlowableEmitter<Resource<T>> emitter) {
 
         final LiveData<T> local = getLocal();
         final Single<Response<T>> remote = getRemote();
 
         if (local != null) {
-            local.observe(lifecycleOwner, data -> {
+            local.observe(lifecycleOwner, t -> {
+                data = t;
                 Log.d(TAG, "SimpleNetworkBoundSource: loaded from local success!: " + data);
                 if (remote != null && !apiRespond) {
                     emitter.onNext(Resource.loading(data));
@@ -45,6 +48,7 @@ public abstract class SimpleNetworkBoundSourceLiveData<T> {
                 Log.d(TAG, "SimpleNetworkBoundSource: call API success!");
                 apiRespond = true;
                 saveCallResult(response);
+                emitter.onNext(Resource.success(data));
             }, errorEntity -> {
                 Log.d(TAG, "SimpleNetworkBoundSource: call API error: " + errorEntity.getMessage());
                 emitter.onNext(Resource.error(errorEntity.getMessage(), null));

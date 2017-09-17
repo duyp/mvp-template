@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
 
     <LinearLayout style="@style/repo_action_container"
         android:id="@+id/btnStar">
 
         <ImageView style="@style/icon_repo_action"
             android:padding="@dimen/base2"
-            android:src="@drawable/ic_un_star"/>
+            android:src="@drawable/ic_star"/>
 
         <TextView style="@style/text_repo_action"
             android:text="@string/star" />
@@ -20,7 +21,7 @@
 
         <TextView style="@style/text_repo_action"
             android:layout_marginLeft="@dimen/base5"
-            android:text="12"/>
+            android:text="0"/>
     </LinearLayout>
 
     <LinearLayout style="@style/repo_action_container"
@@ -29,7 +30,7 @@
         android:id="@+id/btnWatch">
 
         <ImageView style="@style/icon_repo_action"
-            android:src="@drawable/ic_un_watch"/>
+            android:src="@drawable/ic_watch"/>
 
         <TextView style="@style/text_repo_action"
             android:text="@string/watch" />
@@ -41,6 +42,6 @@
 
         <TextView style="@style/text_repo_action"
             android:layout_marginLeft="@dimen/base5"
-            android:text="12"/>
+            android:text="0"/>
     </LinearLayout>
 </LinearLayout>

@@ -12,6 +12,9 @@
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
     </style>
 
+    <style name="AppThemeTranslucent" parent="AppTheme">
+    </style>
+
     <!--use item name="drawerArrowStyle" if you are using dark primaryColor in your app, else remove it-->
     <style name="MaterialDrawer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">false</item>
@@ -69,7 +72,7 @@
     <style name="repo_action_container">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/base35</item>
-        <item name="android:background">@drawable/bg_corner_gray_thin</item>
+        <item name="android:background">@drawable/bg_corner_gray_thin_solid_white</item>
         <item name="android:paddingLeft">@dimen/margin_small</item>
         <item name="android:paddingRight">@dimen/margin_small</item>
     </style>

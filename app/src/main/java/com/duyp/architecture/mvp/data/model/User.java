@@ -3,6 +3,7 @@ package com.duyp.architecture.mvp.data.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.duyp.architecture.mvp.data.model.base.BaseResponse;
