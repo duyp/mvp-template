@@ -7,6 +7,7 @@
     android:textColor="#999"
     android:textSize="@dimen/text_large"
     android:textStyle="normal"
-    android:layout_centerInParent="true"
-    android:layout_gravity="center"
+    android:layout_gravity="center_horizontal"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="@dimen/margin_large"
     android:visibility="visible"/>

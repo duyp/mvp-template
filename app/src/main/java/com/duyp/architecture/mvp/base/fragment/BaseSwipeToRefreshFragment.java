@@ -95,7 +95,7 @@ public abstract class BaseSwipeToRefreshFragment<V extends BaseView, P extends B
 
     protected void refreshUi() {
         new android.os.Handler().postDelayed(() -> {
-            if (shouldRefreshUi) {
+            if (shouldRefreshUi && refreshLayout != null) {
                 refreshLayout.setRefreshing(true);
             }
         }, Constants.PROGRESS_DIALOG_DELAY);

@@ -11,6 +11,8 @@ import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 
 import java.util.List;
 
+import lombok.Getter;
+
 /**
  * Created by phamd on 9/14/2017.
  */
@@ -24,6 +26,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends BaseHeaderFooterAdapter
 
     protected final LayoutInflater mInflater;
 
+    @Getter
     protected final Context context;
 
     public BaseRecyclerViewAdapter(@ActivityContext @NonNull Context context) {

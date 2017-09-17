@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_default">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_medium"
+        android:textColor="@color/default_black"
+        android:textStyle="bold"
+        android:text="@string/lorem_short"
+        android:id="@+id/tvTitle"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="horizontal"
+        android:id="@+id/labelContainer"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:text="@string/issue_description_format"
+            android:lines="1"
+            android:textColor="@color/default_dark_gray"
+            android:id="@+id/tvDes"/>
+
+        <com.duyp.architecture.mvp.utils.RelativeTimeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/base5"
+            android:textSize="@dimen/text_small"
+            android:text="@string/just_now"
+            android:id="@+id/tvTime"/>
+    </LinearLayout>
+
+    <View style="@style/line_hoz_gray_thin"
+        android:layout_marginTop="@dimen/margin_default"/>
+
+</LinearLayout>

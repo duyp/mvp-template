@@ -50,7 +50,6 @@ public class IssuesPresenter extends BaseListPresenter<IssuesView> {
     @Override
     protected void fetchData() {
         addRequest(mIssueRepo.getRepoIssues(), adapter::setData);
-
     }
 
     private void populateData(List<Issue> issues) {

@@ -9,7 +9,9 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
 
+import com.duyp.architecture.mvp.data.model.def.IssueStates;
 import com.duyp.architecture.mvp.utils.roomConverters.DateConverter;
+import com.duyp.architecture.mvp.utils.roomConverters.LabelConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -67,10 +69,11 @@ public class Issue {
     User user;
     @SerializedName("labels")
     @Expose
-    @Ignore // current limitation of ROOM
+    @TypeConverters(LabelConverter.class)
     List<Label> labels = null;
     @SerializedName("state")
     @Expose
+    @IssueStates
     String state;
     @SerializedName("locked")
     @Expose

@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +64,8 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     @BindView(R.id.tvForkCount)
     TextView tvForkCount;
 
+    private TextView[] tabTitles;
+
     @Inject
     RepoTabAdapter adapter;
 
@@ -109,12 +110,14 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     private void initTabs() {
         viewPager.setAdapter(adapter);
         tab.setupWithViewPager(viewPager);
-        for (int i = 0; i < tab.getTabCount(); i++) {
+        int n = tab.getTabCount();
+        tabTitles = new TextView[n];
+        for (int i = 0; i < n; i++) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.view_tab_item, null);
             ImageView imv = view.findViewById(R.id.imv);
-            TextView tv = view.findViewById(R.id.tvTitle);
+            tabTitles[i] = view.findViewById(R.id.tvTitle);
             imv.setImageResource(ICONS[i]);
-            tv.setText(TITLES[i]);
+            tabTitles[i].setText(TITLES[i]);
             tab.getTabAt(i).setCustomView(view);
         }
     }
@@ -127,5 +130,12 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         tvStarCount.setText(String.valueOf(repository.getStargazersCount()));
         tvWatchCount.setText(String.valueOf(repository.getWatchersCount()));
         tvForkCount.setText(String.valueOf(repository.getForksCount()));
+        updateIssuesCount(repository.getOpenIssuesCount());
+    }
+
+    private void updateIssuesCount(long count) {
+        if (tabTitles != null) {
+            tabTitles[1].setText(getString(R.string.issues_format, count));
+        }
     }
 }
