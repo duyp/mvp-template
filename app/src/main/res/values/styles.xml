@@ -64,6 +64,11 @@
         <item name="android:layout_height">@dimen/avatar_size_large</item>
     </style>
 
+    <style name="avatar_circle_small" parent="avatar_circle">
+        <item name="android:layout_width">@dimen/avatar_size_small</item>
+        <item name="android:layout_height">@dimen/avatar_size_small</item>
+    </style>
+
     <style name="icon_repo_action">
         <item name="android:layout_width">@dimen/base20</item>
         <item name="android:layout_height">match_parent</item>

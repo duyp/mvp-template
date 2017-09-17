@@ -106,7 +106,7 @@ public class RelativeTimeTextView extends AppCompatTextView {
 	 * 
 	 * @param prefix
 	 * 
-	 *            Example: [prefix] in XX minutes
+	 *            Commit: [prefix] in XX minutes
 	 */
 	public void setPrefix(String prefix) {
 		this.mPrefix = prefix;
@@ -127,7 +127,7 @@ public class RelativeTimeTextView extends AppCompatTextView {
 	 * 
 	 * @param suffix
 	 * 
-	 *            Example: in XX minutes [suffix]
+	 *            Commit: in XX minutes [suffix]
 	 */
 	public void setSuffix(String suffix) {
 		this.mSuffix = suffix;

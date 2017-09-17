@@ -19,6 +19,6 @@ public interface IssuesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Issue> issues);
 
-    @Query("SELECT * FROM Issue WHERE repo_id = :repoId")
+    @Query("SELECT * FROM Issue WHERE repo_id = :repoId ORDER BY updatedAt DESC")
     LiveData<List<Issue>> getRepoIssues(Long repoId);
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Must be inflated in Relative layout-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_default"
+    android:paddingLeft="@dimen/margin_default"
+    android:paddingRight="@dimen/margin_default"
+    android:background="?attr/selectableItemBackground">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imvAvatar"
+        style="@style/avatar_circle_small"/>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/text_name_default"
+        android:text="@string/sample_name"
+        android:layout_width="match_parent"
+        android:textColor="@color/default_black"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_toRightOf="@id/imvAvatar"
+        android:layout_toEndOf="@id/imvAvatar"/>
+
+    <TextView
+        android:id="@+id/tvSha"
+        style="@style/text_description"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginTop="@dimen/base5"
+        android:text="@string/lorem_short"
+        android:background="@color/default_light_gray"
+        android:textColor="@color/default_black"
+        android:padding="@dimen/base2"
+        android:layout_alignStart="@id/tvTitle"
+        android:layout_alignLeft="@id/tvTitle" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_below="@id/tvSha"
+        android:layout_alignStart="@id/tvTitle"
+        android:layout_alignLeft="@id/tvTitle"
+        android:layout_alignRight="@+id/tvTitle"
+        android:layout_alignEnd="@+id/tvTitle"
+        android:orientation="horizontal"
+        android:id="@+id/ll">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:text="@string/commit_description_format"
+            android:lines="1"
+            android:textColor="@color/default_dark_gray"
+            android:id="@+id/tvDes"/>
+
+        <com.duyp.architecture.mvp.utils.RelativeTimeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/base5"
+            android:textSize="@dimen/text_small"
+            android:text="@string/just_now"
+            android:id="@+id/tvTime"/>
+    </LinearLayout>
+
+    <View style="@style/line_hoz_gray_thin"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_below="@id/ll"/>
+
+</RelativeLayout>

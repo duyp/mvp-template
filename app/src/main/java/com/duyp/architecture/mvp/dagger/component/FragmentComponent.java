@@ -7,6 +7,7 @@ import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
 import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.RepositoryDetailFragment;
+import com.duyp.architecture.mvp.ui.repository_detail.commits.CommitFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.issues.IssuesFragment;
 import com.duyp.architecture.mvp.ui.user_repositories.UserRepositoryFragment;
 
@@ -36,4 +37,5 @@ public interface FragmentComponent {
     void inject(UserRepositoryFragment fragment);
     void inject(RepositoryDetailFragment fragment);
     void inject(IssuesFragment fragment);
+    void inject(CommitFragment fragment);
 }

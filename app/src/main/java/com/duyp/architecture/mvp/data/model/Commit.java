@@ -1,0 +1,36 @@
+package com.duyp.architecture.mvp.data.model;
+
+import android.arch.persistence.room.Entity;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class Commit {
+
+    @SerializedName("sha")
+    @Expose
+    private String sha;
+    @SerializedName("commit")
+    @Expose
+    private CommitDetail commitDetail;
+    @SerializedName("url")
+    @Expose
+    private String url;
+    @SerializedName("html_url")
+    @Expose
+    private String htmlUrl;
+    @SerializedName("comments_url")
+    @Expose
+    private String commentsUrl;
+    @SerializedName("committer")
+    @Expose
+    private User committer;
+//    @SerializedName("author")
+//    @Expose
+//    private User author;
+}

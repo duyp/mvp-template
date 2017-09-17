@@ -2,6 +2,7 @@ package com.duyp.architecture.mvp.data.remote;
 
 import android.support.annotation.Nullable;
 
+import com.duyp.architecture.mvp.data.model.Commit;
 import com.duyp.architecture.mvp.data.model.Issue;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
@@ -47,4 +48,7 @@ public interface GithubService {
 
     @GET("repos/{owner}/{repo}/issues")
     Single<Response<List<Issue>>> getRepoIssues(@Path("owner") String owner, @Path("repo") String repo);
+
+    @GET("repos/{owner}/{repo}/commits")
+    Single<Response<List<Commit>>> getRepoCommits(@Path("owner") String owner, @Path("repo") String repo);
 }

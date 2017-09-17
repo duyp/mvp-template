@@ -9,6 +9,7 @@
     <dimen name="drawer_item_height">@dimen/base50</dimen>
     <dimen name="drawer_header_height">@dimen/base180</dimen>
 
+    <dimen name="avatar_size_small">@dimen/base32</dimen>
     <dimen name="avatar_size_normal">@dimen/base50</dimen>
     <dimen name="avatar_size_large">@dimen/base80</dimen>
 
