@@ -5,6 +5,7 @@
     <dimen name="base8">8dp</dimen>
     <dimen name="base10">10dp</dimen>
     <dimen name="base16">16dp</dimen>
+    <dimen name="base18">18dp</dimen>
     <dimen name="base20">20dp</dimen>
     <dimen name="base25">25dp</dimen>
     <dimen name="base30">30dp</dimen>

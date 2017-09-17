@@ -65,7 +65,7 @@
     </style>
 
     <style name="icon_repo_action">
-        <item name="android:layout_width">@dimen/base25</item>
+        <item name="android:layout_width">@dimen/base20</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 

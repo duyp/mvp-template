@@ -27,6 +27,7 @@
     <string name="repo_access_format">Access: <b>%s</b></string>
     <string name="repo_language_format">Languages: <b>%s</b></string>
     <string name="watch">Watch</string>
+    <string name="fork">Fork</string>
     <string name="un_watch">Unwatch</string>
     <string name="star">Star</string>
     <string name="un_star">Unstar</string>

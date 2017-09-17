@@ -65,7 +65,7 @@ public class ServiceFactory {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
         if (BuildConfig.DEBUG) {
-            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         }
 
         // : 4/26/2017 add the UnauthorisedInterceptor to this retrofit, or 401

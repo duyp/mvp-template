@@ -33,6 +33,11 @@ public interface GithubService {
     @GET("repositories")
     Single<Response<List<Repository>>> getAllPublicRepositories(@Query("since") @Nullable Long sinceRepoId);
 
+    @GET("repos/{owner}/{repo}")
+    Single<Response<Repository>> getRepository(
+            @Path("owner") String owner, @Path("repo") String repoName
+    );
+
     @GET("users/{username}/repos")
     Single<Response<List<Repository>>> getUserRepositories(
             @Path("username") String userName, @Query("type") @RepoTypes String type

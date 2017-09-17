@@ -17,7 +17,7 @@
     <style name="text_repo_action">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textSize">@dimen/text_normal</item>
+        <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@color/default_dark_gray</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingLeft">@dimen/base5</item>

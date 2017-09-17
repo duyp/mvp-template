@@ -194,13 +194,13 @@ public class Repository{
     String homepage;
     @SerializedName("size")
     @Expose
-    Long size;
+    long size;
     @SerializedName("stargazers_count")
     @Expose
-    Long stargazersCount;
+    long stargazersCount;
     @SerializedName("watchers_count")
     @Expose
-    Long watchersCount;
+    long watchersCount;
     @SerializedName("language")
     @Expose
     String language;
@@ -221,22 +221,22 @@ public class Repository{
     Boolean hasPages;
     @SerializedName("forks_count")
     @Expose
-    Long forksCount;
+    long forksCount;
     @SerializedName("mirror_url")
     @Expose
     String mirrorUrl;
     @SerializedName("open_issues_count")
     @Expose
-    Long openIssuesCount;
+    long openIssuesCount;
     @SerializedName("forks")
     @Expose
-    Long forks;
+    long forks;
     @SerializedName("open_issues")
     @Expose
-    Long openIssues;
+    long openIssues;
     @SerializedName("watchers")
     @Expose
-    Long watchers;
+    long watchers;
     @SerializedName("default_branch")
     @Expose
     String defaultBranch;

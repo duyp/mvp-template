@@ -9,6 +9,7 @@ import com.duyp.architecture.mvp.base.fragment.BaseSwipeRecyclerViewFragment;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
+import android.os.Handler;
 
 import org.parceler.Parcels;
 
@@ -41,6 +42,6 @@ public class IssuesFragment extends BaseSwipeRecyclerViewFragment<IssuesAdapter,
     protected void initialize(View view) {
         super.initialize(view);
         getPresenter().initRepo(Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_DATA)));
-        refresh();
+        refreshWithUi(300);
     }
 }

@@ -44,8 +44,8 @@ public interface RepositoryDao {
     @Query("SELECT * FROM Repository WHERE user_name LIKE :userName")
     LiveData<List<Repository>> findAllByUser(String userName);
 
-    @Query("SELECT * FROM Repository where id = :id LIMIT 1")
-    Repository getRepository(Long id);
+    @Query("SELECT * FROM Repository where id = :id")
+    LiveData<Repository> getRepository(Long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addRepository(Repository repository);
