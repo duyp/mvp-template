@@ -1,10 +1,13 @@
 package com.duyp.architecture.mvp.ui.customviews;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
@@ -30,10 +33,6 @@ public class CustomRepositoryView extends BaseRelativeLayout<Repository> {
     TextView tvLanguage;
     @BindView(R.id.tvAccess)
     TextView tvAccess;
-    @BindView(R.id.btnStar)
-    LinearLayout btnStar;
-    @BindView(R.id.btnWatch)
-    LinearLayout btnWatch;
 
     public CustomRepositoryView(Context context) {
         super(context);
@@ -51,14 +50,6 @@ public class CustomRepositoryView extends BaseRelativeLayout<Repository> {
     @Override
     protected int getLayout() {
         return R.layout.view_custom_repository;
-    }
-
-    public void setStarClickListener(OnClickListener onClickListener) {
-        btnStar.setOnClickListener(onClickListener);
-    }
-
-    public void setWatchClickListener(OnClickListener onClickListener) {
-        btnWatch.setOnClickListener(onClickListener);
     }
 
     public void bindData(Repository data, AvatarLoader avatarLoader) {

@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
+import lombok.Getter;
 
 import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.*;
 /**
@@ -28,6 +29,7 @@ public class RepositoriesRepo extends BaseRepo {
 
     public static final int PER_PAGE = 100;
 
+    @Getter
     protected final RepositoryDao repositoryDao;
 
     private LiveData<List<Repository>> liveData;

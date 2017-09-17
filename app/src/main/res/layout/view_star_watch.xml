@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout style="@style/repo_action_container"
+        android:id="@+id/btnStar">
+
+        <ImageView style="@style/icon_repo_action"
+            android:padding="@dimen/base2"
+            android:src="@drawable/ic_un_star"/>
+
+        <TextView style="@style/text_repo_action"
+            android:text="@string/star" />
+
+        <View
+            android:layout_width="@dimen/line_thin"
+            android:layout_height="match_parent"
+            android:background="@color/default_mid_gray"/>
+
+        <TextView style="@style/text_repo_action"
+            android:layout_marginLeft="@dimen/base5"
+            android:text="12"/>
+    </LinearLayout>
+
+    <LinearLayout style="@style/repo_action_container"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:id="@+id/btnWatch">
+
+        <ImageView style="@style/icon_repo_action"
+            android:src="@drawable/ic_un_watch"/>
+
+        <TextView style="@style/text_repo_action"
+            android:text="@string/watch" />
+
+        <View
+            android:layout_width="@dimen/line_thin"
+            android:layout_height="match_parent"
+            android:background="@color/default_mid_gray"/>
+
+        <TextView style="@style/text_repo_action"
+            android:layout_marginLeft="@dimen/base5"
+            android:text="12"/>
+    </LinearLayout>
+</LinearLayout>

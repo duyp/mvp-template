@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Must be inflated in Relative layout-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_default">
+    android:paddingTop="@dimen/margin_default"
+    android:paddingLeft="@dimen/margin_default"
+    android:paddingRight="@dimen/margin_default">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/imvAvatar"
         style="@style/avatar_circle"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_default"
-        android:layout_marginRight="@dimen/margin_default"/>
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/tvName"
         style="@style/text_name_default"
         android:text="@string/sample_name"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_default"
         android:layout_toRightOf="@id/imvAvatar"
         android:layout_toEndOf="@id/imvAvatar"
-        android:background="?attr/selectableItemBackground" />
+        android:background="?attr/selectableItemBackground"/>
 
     <TextView
         android:id="@+id/tvDes"
         style="@style/text_description"
         android:layout_below="@+id/tvName"
-        android:layout_toRightOf="@+id/imvAvatar"
-        android:layout_toEndOf="@+id/imvAvatar"
         android:layout_marginTop="@dimen/base5"
-        android:text="@string/lorem_short"/>
+        android:text="@string/lorem_short"
+        android:layout_alignStart="@id/tvName"
+        android:layout_alignLeft="@id/tvName"
+        android:layout_alignRight="@+id/tvName"
+        android:layout_alignEnd="@+id/tvName" />
 
     <TextView
         android:id="@+id/tvLanguage"
@@ -52,58 +56,8 @@
         android:text="@string/repo_access_format"
         android:id="@+id/tvAccess"/>
 
-
-    <LinearLayout style="@style/repo_action_container"
-        android:layout_below="@id/tvLanguage"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_alignStart="@id/tvName"
-        android:layout_alignLeft="@id/tvName"
-        android:id="@+id/btnStar">
-
-        <ImageView style="@style/icon_repo_action"
-            android:padding="@dimen/base2"
-            android:src="@drawable/ic_un_star"/>
-
-        <TextView style="@style/text_repo_action"
-            android:text="@string/star" />
-
-        <View
-            android:layout_width="@dimen/line_thin"
-            android:layout_height="match_parent"
-            android:background="@color/default_mid_gray"/>
-
-        <TextView style="@style/text_repo_action"
-            android:layout_marginLeft="@dimen/base5"
-            android:text="12"/>
-    </LinearLayout>
-
-    <LinearLayout style="@style/repo_action_container"
-        android:layout_below="@id/tvLanguage"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_toRightOf="@id/btnStar"
-        android:layout_toEndOf="@id/btnStar"
-        android:id="@+id/btnWatch">
-
-        <ImageView style="@style/icon_repo_action"
-            android:src="@drawable/ic_un_watch"/>
-
-        <TextView style="@style/text_repo_action"
-            android:text="@string/watch" />
-
-        <View
-            android:layout_width="@dimen/line_thin"
-            android:layout_height="match_parent"
-            android:background="@color/default_mid_gray"/>
-
-        <TextView style="@style/text_repo_action"
-            android:layout_marginLeft="@dimen/base5"
-            android:text="12"/>
-    </LinearLayout>
-
     <View style="@style/line_hoz_gray_thin"
         android:layout_marginTop="@dimen/margin_default"
-        android:layout_below="@id/btnWatch"/>
+        android:layout_below="@id/tvLanguage"/>
 
 </RelativeLayout>

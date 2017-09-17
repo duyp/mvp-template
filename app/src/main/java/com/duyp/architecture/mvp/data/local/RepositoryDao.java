@@ -6,6 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.duyp.architecture.mvp.data.model.Repository;
 
@@ -60,4 +61,7 @@ public interface RepositoryDao {
 
     @Query("DELETE FROM Repository")
     void deleteAllRepositories();
+
+    @Update(onConflict = OnConflictStrategy.IGNORE)
+    void updateRepository(Repository repository);
 }

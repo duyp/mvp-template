@@ -10,6 +10,7 @@ import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.utils.DbTaskHelper;
 
 import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.*;
 import java.util.List;
@@ -48,7 +49,9 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
         addRequest(repositoriesRepo.getAllRepositories(sinceRepoId), repositories -> {
             populateData(repositories);
             canLoadMore = true;
-            sinceRepoId = repositories.get(repositories.size() - 1).getId();
+            if (!repositories.isEmpty()) {
+                sinceRepoId = repositories.get(repositories.size() - 1).getId();
+            }
         });
     }
 

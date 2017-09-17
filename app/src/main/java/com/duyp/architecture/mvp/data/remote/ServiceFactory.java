@@ -17,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +34,10 @@ import javax.net.ssl.X509TrustManager;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.ConnectionSpec;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.TlsVersion;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -68,6 +72,14 @@ public class ServiceFactory {
         OkHttpClient.Builder builder = null;
         builder = new OkHttpClient.Builder()
                 //.addInterceptor(new UnauthorisedInterceptor(context))
+                .addInterceptor(chain -> {
+                    // github accept header
+                    // https://developer.github.com/v3/#current-version
+                    Request request = chain.request().newBuilder()
+                            .addHeader("Accept", "application/vnd.github.v3+json")
+                            .build();
+                    return chain.proceed(request);
+                })
                 .addInterceptor(logging)
                 .followRedirects(true)
                 .followSslRedirects(true)
