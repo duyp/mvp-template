@@ -83,7 +83,7 @@ public class ServiceFactory {
 
                     String header = chain.request().header(RemoteConstants.HEADER_AUTH);
 
-                    if (TextUtils.isEmpty(header) && token != null && token.isEmpty()) {
+                    if (TextUtils.isEmpty(header) && token != null && !token.isEmpty()) {
                         requestBuilder.addHeader(RemoteConstants.HEADER_AUTH, token);
                     }
                     return chain.proceed(requestBuilder.build());

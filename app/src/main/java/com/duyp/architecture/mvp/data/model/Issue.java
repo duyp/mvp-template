@@ -59,7 +59,7 @@ public class Issue {
     String htmlUrl;
     @SerializedName("number")
     @Expose
-    Long number;
+    long number;
     @SerializedName("title")
     @Expose
     String title;
@@ -90,7 +90,7 @@ public class Issue {
 //    Object milestone;
     @SerializedName("comments")
     @Expose
-    Long comments;
+    long comments;
     @SerializedName("created_at")
     @Expose
     @TypeConverters(DateConverter.class)

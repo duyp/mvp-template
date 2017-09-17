@@ -55,6 +55,8 @@ public class IssuesAdapter extends BaseRecyclerViewAdapter<Issue> {
         TextView tvDes;
         @BindView(R.id.tvTime)
         RelativeTimeTextView tvTime;
+        @BindView(R.id.tvCommentCount)
+        TextView tvCommentCount;
 
         @BindDimen(R.dimen.base5)
         int defaultMargin;
@@ -68,6 +70,7 @@ public class IssuesAdapter extends BaseRecyclerViewAdapter<Issue> {
             tvDes.setText(getContext().getString(R.string.issue_description_format, issue.getNumber(),
                     issue.getUser().getLogin()));
             tvTime.setReferenceTime(issue.getCreatedAt());
+            tvCommentCount.setText(getContext().getString(R.string.issue_comments_format, issue.getComments()));
 
             labelContainer.removeAllViews();
             Log.d(TAG, "bindData: label count: " + issue.getLabels().size());
@@ -77,11 +80,11 @@ public class IssuesAdapter extends BaseRecyclerViewAdapter<Issue> {
                 textView.setText(label.getName());
                 textView.setTextColor(Color.WHITE);
                 textView.setBackgroundColor(Color.parseColor("#" + label.getColor()));
+                textView.setPadding(defaultMargin, defaultMargin, defaultMargin, defaultMargin);
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
                 );
-                params.setMargins(defaultMargin, defaultMargin, defaultMargin, defaultMargin);
 
                 labelContainer.addView(textView, params);
             }

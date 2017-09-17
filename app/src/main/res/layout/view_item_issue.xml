@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_default">
+    android:paddingTop="@dimen/margin_default"
+    android:paddingLeft="@dimen/margin_default"
+    android:paddingRight="@dimen/margin_default">
 
     <TextView
         android:layout_width="match_parent"
@@ -42,6 +44,15 @@
             android:textSize="@dimen/text_small"
             android:text="@string/just_now"
             android:id="@+id/tvTime"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_small"
+            android:text="@string/issue_comments_format"
+            android:lines="1"
+            android:textColor="@color/default_dark_gray"
+            android:id="@+id/tvCommentCount"/>
     </LinearLayout>
 
     <View style="@style/line_hoz_gray_thin"

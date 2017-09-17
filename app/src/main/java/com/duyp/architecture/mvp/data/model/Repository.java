@@ -38,13 +38,15 @@ public class Repository{
     @SerializedName("full_name")
     @Expose
     String fullName;
+
     @SerializedName("owner")
     @Expose
-//    @TypeConverters(UserConverter.class)
     @Embedded(prefix = "user_")
     User owner;
-//    @ColumnInfo(name = "user_id")
-//    String userId;
+
+    @ColumnInfo(name = "member_login_name")
+    transient String memberLoginName;
+
     @SerializedName("private")
     @Expose
     Boolean _private;

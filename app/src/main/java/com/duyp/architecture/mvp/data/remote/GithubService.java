@@ -34,9 +34,11 @@ public interface GithubService {
     Single<Response<List<Repository>>> getAllPublicRepositories(@Query("since") @Nullable Long sinceRepoId);
 
     @GET("repos/{owner}/{repo}")
-    Single<Response<Repository>> getRepository(
-            @Path("owner") String owner, @Path("repo") String repoName
+    Single<Response<Repository>> getRepository(@Path("owner") String owner, @Path("repo") String repoName
     );
+
+    @GET("user/repos")
+    Single<Response<List<Repository>>> getMyRepositories(@Query("type") @RepoTypes String type);
 
     @GET("users/{username}/repos")
     Single<Response<List<Repository>>> getUserRepositories(

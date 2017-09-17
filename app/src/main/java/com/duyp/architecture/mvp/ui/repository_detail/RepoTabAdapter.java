@@ -8,6 +8,7 @@ import com.duyp.architecture.mvp.base.fragment.BaseFragment;
 import com.duyp.architecture.mvp.dagger.qualifier.ChildFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.issues.IssuesFragment;
 
 import javax.inject.Inject;
@@ -30,7 +31,7 @@ class RepoTabAdapter extends BaseFragmentStatePagerAdapter<BaseFragment> {
 
     @Override
     public BaseFragment createFragment(int i) {
-        return IssuesFragment.newInstance(repository);
+        return i == 1 ? IssuesFragment.newInstance(repository) : new ProfileFragment();
     }
 
     @Override
