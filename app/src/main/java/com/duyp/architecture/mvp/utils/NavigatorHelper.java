@@ -73,11 +73,4 @@ public class NavigatorHelper {
             intent.putExtra(Constants.EXTRA_DATA, Parcels.wrap(repository));
         }, false, false, views);
     }
-
-    public static <T extends Fragment> T createFragmentWithArguments(T fragment, @NonNull PlainConsumer<Bundle> bundlePlainConsumer) {
-        Bundle bundle = new Bundle();
-        bundlePlainConsumer.accept(bundle);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 }

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
+import com.duyp.androidutils.navigator.NavigationUtils;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
 import com.duyp.architecture.mvp.data.Constants;
@@ -39,7 +40,7 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         implements RepositoryDetailView {
 
     public static RepositoryDetailFragment newInstance(@NonNull Repository repository) {
-        return NavigatorHelper.createFragmentWithArguments(new RepositoryDetailFragment(), bundle -> {
+        return NavigationUtils.createFragmentInstance(new RepositoryDetailFragment(), bundle -> {
             bundle.putParcelable(Constants.EXTRA_DATA, Parcels.wrap(repository));
         });
     }
