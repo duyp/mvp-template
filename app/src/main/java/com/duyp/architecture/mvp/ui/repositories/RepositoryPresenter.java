@@ -86,9 +86,4 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     public boolean canLoadMore() {
         return canLoadMore;
     }
-
-    @Override
-    public boolean isDataEmpty() {
-        return adapter.getData() == null || adapter.getData().isEmpty();
-    }
 }

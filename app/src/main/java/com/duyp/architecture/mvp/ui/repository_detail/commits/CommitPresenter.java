@@ -59,9 +59,4 @@ public class CommitPresenter extends BaseListPresenter<CommitsView> {
             setRefreshed(false);
         });
     }
-
-    @Override
-    public boolean isDataEmpty() {
-        return adapter.getData() == null || adapter.getData().isEmpty();
-    }
 }

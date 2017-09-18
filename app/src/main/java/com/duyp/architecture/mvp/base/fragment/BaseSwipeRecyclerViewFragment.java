@@ -16,6 +16,7 @@ import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.LoadMoreable;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;
+import com.duyp.architecture.mvp.utils.BaseRecyclerViewAdapter;
 
 import butterknife.BindView;
 import lombok.Getter;
@@ -31,7 +32,7 @@ import lombok.Setter;
  */
 
 public abstract class BaseSwipeRecyclerViewFragment<
-        A extends BaseHeaderFooterAdapter,
+        A extends BaseRecyclerViewAdapter,
         V extends BaseView,
         P extends BasePresenter<V>>
         extends BaseSwipeToRefreshFragment<V, P> implements SwipeRefreshLayout.OnRefreshListener {
@@ -127,7 +128,7 @@ public abstract class BaseSwipeRecyclerViewFragment<
     }
 
     protected boolean isDataEmpty() {
-        return presenter != null && presenter.isDataEmpty();
+        return adapter != null && adapter.getData() != null && adapter.getData().isEmpty();
     }
 
     @Override

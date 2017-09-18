@@ -63,8 +63,9 @@ public class ErrorEntity {
     public static ErrorEntity getError(String reason) {
         if (reason != null) {
             return new ErrorEntity(reason, 0);
+        } else {
+            return new ErrorEntity(OOPS, 0);
         }
-        return null;
     }
 
     public static ErrorEntity getErrorOops() {

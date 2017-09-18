@@ -55,10 +55,4 @@ public abstract class BaseListPresenter<V extends BaseView> extends BasePresente
      * Fetch data from server
      */
     protected abstract void fetchData();
-
-
-    /**
-     * @return true if our data is empty
-     */
-    public abstract boolean isDataEmpty();
 }

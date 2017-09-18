@@ -58,9 +58,4 @@ public class IssuesPresenter extends BaseListPresenter<IssuesView> {
         adapter.setData(issues);
         setRefreshed(false);
     }
-
-    @Override
-    public boolean isDataEmpty() {
-        return adapter.getData() == null || adapter.getData().isEmpty();
-    }
 }

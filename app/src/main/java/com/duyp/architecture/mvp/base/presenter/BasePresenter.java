@@ -100,10 +100,6 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
         return getUserRepo().getSharedPreferences();
     }
 
-    public boolean isDataEmpty() {
-        return false;
-    }
-
     @Override
     public void refresh() {
 
