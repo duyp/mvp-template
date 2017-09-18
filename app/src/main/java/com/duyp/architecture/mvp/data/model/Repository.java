@@ -45,7 +45,7 @@ public class Repository{
     User owner;
 
     @ColumnInfo(name = "member_login_name")
-    transient String memberLoginName;
+    String memberLoginName;
 
     @SerializedName("private")
     @Expose
