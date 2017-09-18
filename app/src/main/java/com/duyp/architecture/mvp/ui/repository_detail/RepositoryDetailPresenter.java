@@ -35,7 +35,7 @@ public class RepositoryDetailPresenter extends BasePresenter<RepositoryDetailVie
     }
 
     void fetchData() {
-        addRequest(repositoryDetailRepo.getRepository(), repository -> {
+        addRequest(false, repositoryDetailRepo.getRepository(), repository -> {
             getView().populateData(repository);
         });
     }

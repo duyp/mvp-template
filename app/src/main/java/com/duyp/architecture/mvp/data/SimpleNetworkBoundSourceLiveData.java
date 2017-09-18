@@ -20,7 +20,7 @@ import retrofit2.Response;
  */
 public abstract class SimpleNetworkBoundSourceLiveData<T> {
 
-    public static final String TAG = "sourcew";
+    public static final String TAG = "source";
 
     private boolean apiRespond = false;
 

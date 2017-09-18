@@ -109,7 +109,16 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
 
     }
 
-    public <T> void addRequest(Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
+
+    /**
+     * add a request with {@link Resource} flowable created by
+     * {@link com.duyp.architecture.mvp.base.repo.BaseRepo#createResource(Single, LiveData, PlainConsumer)}
+     * @param showProgress
+     * @param resourceFlowable
+     * @param response
+     * @param <T>
+     */
+    public <T> void addRequest(boolean showProgress, Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
         Disposable disposable = resourceFlowable.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(resource -> {
@@ -118,7 +127,9 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
                         if (resource.data != null) {
                             response.accept(resource.data);
                         }
-                        getView().setProgress(resource.status == Status.LOADING);
+                        if (showProgress) {
+                            getView().setProgress(resource.status == Status.LOADING);
+                        }
                         if (resource.message != null) {
                             getView().showMessage(resource.message);
                         }
@@ -130,26 +141,8 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
         mCompositeDisposable.add(disposable);
     }
 
-    public <T> LiveData<Resource<T>> addRequestLiveData(Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
-        LiveData<Resource<T>> liveData = LiveDataReactiveStreams.fromPublisher(
-                resourceFlowable.observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.newThread())
-        );
-        liveData.observe(getLifeCircleOwner(), resource -> {
-            if (resource != null) {
-                Log.d("source", "addRequest: resource changed: " + resource.toString());
-                if (getView() != null) {
-                    getView().setProgress(resource.status == Status.LOADING);
-                    if (resource.message != null) {
-                        getView().showMessage(resource.message);
-                    }
-                }
-                if (resource.data != null) {
-                    response.accept(resource.data);
-                }
-            }
-        });
-        return liveData;
+    public <T> void addRequest(Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
+        addRequest(true, resourceFlowable, response);
     }
 
     /**

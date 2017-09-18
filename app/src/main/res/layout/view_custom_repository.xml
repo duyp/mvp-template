@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Must be inflated in Relative layout-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/margin_default"
@@ -8,10 +9,19 @@
     android:paddingRight="@dimen/margin_default"
     android:background="?attr/selectableItemBackground">
 
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/imvAvatar"
-        style="@style/avatar_circle"
-        android:layout_centerVertical="true"/>
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/avatar_size_normal"
+        android:layout_height="@dimen/avatar_size_normal"
+        android:background="@color/transparent"
+        app:cardCornerRadius="@dimen/base5"
+        android:layout_centerVertical="true"
+        android:id="@+id/avatar">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imvAvatar"
+            android:src="@drawable/ic_account_circle_black_48dp"/>
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/tvName"
@@ -20,8 +30,8 @@
         android:layout_width="match_parent"
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginLeft="@dimen/margin_default"
-        android:layout_toRightOf="@id/imvAvatar"
-        android:layout_toEndOf="@id/imvAvatar"/>
+        android:layout_toRightOf="@id/avatar"
+        android:layout_toEndOf="@id/avatar"/>
 
     <TextView
         android:id="@+id/tvDes"

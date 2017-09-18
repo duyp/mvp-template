@@ -36,9 +36,20 @@ public abstract class BaseRepo {
         this.appDatabase = appDatabase;
     }
 
+    /**
+     * Create resource flowable from given remote api and local persistence by using {@link SimpleNetworkBoundSourceLiveData}
+     * @param remote
+     * @param local
+     * @param onSave
+     * @param <T>
+     * @return
+     */
     protected <T> Flowable<Resource<T>> createResource(@Nullable Single<Response<T>> remote,
                                                        @Nullable LiveData<T> local,
                                                        @Nullable PlainConsumer<T> onSave) {
+        // if our local 's had observers already, no need to send it to SimpleNetworkBoundSourceLiveData,
+        // since SimpleNetworkBoundSourceLiveData will start other observer on it
+        final LiveData<T> targetLocal = (local != null && local.hasObservers()) ? null : local;
         return Flowable.create(emitter -> {
 
             new SimpleNetworkBoundSourceLiveData<T>(owner, emitter) {
@@ -49,7 +60,7 @@ public abstract class BaseRepo {
 
                 @Override
                 public LiveData<T> getLocal() {
-                    return local;
+                    return targetLocal;
                 }
 
                 @Override

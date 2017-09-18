@@ -2,6 +2,7 @@ package com.duyp.architecture.mvp.ui.repository_detail.issues;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;
@@ -49,7 +50,8 @@ public class IssuesPresenter extends BaseListPresenter<IssuesView> {
 
     @Override
     protected void fetchData() {
-        addRequest(mIssueRepo.getRepoIssues(), adapter::setData);
+        Log.d("source", "fetchData: updating issues...");
+        addRequest(mIssueRepo.getRepoIssues(), this::populateData);
     }
 
     private void populateData(List<Issue> issues) {

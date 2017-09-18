@@ -1,6 +1,7 @@
 package com.duyp.architecture.mvp.data.model;
 
 import android.arch.persistence.room.Entity;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -30,7 +31,12 @@ public class Commit {
     @SerializedName("committer")
     @Expose
     private User committer;
-//    @SerializedName("author")
-//    @Expose
-//    private User author;
+    @SerializedName("author")
+    @Expose
+    private User author;
+
+    @Nullable
+    public User getUser() {
+        return committer != null ? committer : author;
+    }
 }

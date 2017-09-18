@@ -27,7 +27,7 @@ public class CustomRepositoryView extends BaseRelativeLayout<Repository> {
 
 
     @BindView(R.id.imvAvatar)
-    CircularImageView imvAvatar;
+    ImageView imvAvatar;
     @BindView(R.id.tvName)
     TextView tvName;
     @BindView(R.id.tvDes)

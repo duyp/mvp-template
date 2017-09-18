@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.data.model.Commit;
+import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.BaseRecyclerViewAdapter;
 import com.duyp.architecture.mvp.utils.BaseViewHolder;
@@ -62,10 +63,13 @@ public class CommitsAdapter extends BaseRecyclerViewAdapter<Commit> {
         }
 
         void bindData(@NonNull Commit commit) {
-            avatarLoader.loadImage(commit.getCommitter().getAvatarUrl(), imvAvatar);
+            User user = commit.getUser();
+            if (user!=null) {
+                avatarLoader.loadImage(user.getAvatarUrl(), imvAvatar);
+                tvDes.setText(getContext().getString(R.string.commit_description_format, user.getLogin()));
+            }
             tvTitle.setText(commit.getCommitDetail().getMessage());
             tvSha.setText(commit.getSha());
-            tvDes.setText(getContext().getString(R.string.commit_description_format, commit.getCommitter().getLogin()));
             tvTime.setReferenceTime(commit.getCommitDetail().getCommitter().getDate());
         }
     }
