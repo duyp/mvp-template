@@ -2,13 +2,10 @@ package com.duyp.architecture.mvp.ui.repositories;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.duyp.androidutils.adapter.BaseRecyclerAdapter;
-import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.data.model.Repository;
@@ -18,12 +15,9 @@ import com.duyp.architecture.mvp.utils.BaseRecyclerViewAdapter;
 import com.duyp.architecture.mvp.utils.BaseViewHolder;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import lombok.Setter;
 
 /**
  * Created by phamd on 9/14/2017.

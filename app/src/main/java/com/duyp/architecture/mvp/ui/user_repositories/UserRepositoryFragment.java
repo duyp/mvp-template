@@ -1,7 +1,6 @@
 package com.duyp.architecture.mvp.ui.user_repositories;
 
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -10,8 +9,8 @@ import com.duyp.androidutils.navigator.NavigationUtils;
 import com.duyp.architecture.mvp.base.fragment.BaseSwipeRecyclerViewFragment;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.repositories.RepositoryAdapter;
+import com.duyp.architecture.mvp.ui.repositories.RepositoryLiveAdapter;
 import com.duyp.architecture.mvp.ui.repositories.RepositoryView;
-import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import org.parceler.Parcels;
 
@@ -20,7 +19,7 @@ import org.parceler.Parcels;
  * This Fragment shows list of current user repositories
  */
 
-public class UserRepositoryFragment extends BaseSwipeRecyclerViewFragment<RepositoryAdapter, RepositoryView, UserRepositoryPresenter>
+public class UserRepositoryFragment extends BaseSwipeRecyclerViewFragment<RepositoryLiveAdapter, RepositoryView, UserRepositoryPresenter>
         implements RepositoryView {
 
     public static UserRepositoryFragment createInstance(@Nullable User user) {
@@ -47,7 +46,7 @@ public class UserRepositoryFragment extends BaseSwipeRecyclerViewFragment<Reposi
 
     @NonNull
     @Override
-    protected RepositoryAdapter createAdapter() {
+    protected RepositoryLiveAdapter createAdapter() {
         return getPresenter().getAdapter();
     }
 }

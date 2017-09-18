@@ -5,12 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Author {
+public class Author extends RealmObject{
     @SerializedName("name")
     @Expose
     private String name;

@@ -11,9 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.duyp.androidutils.adapter.BaseHeaderFooterAdapter;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.BaseView;
+import com.duyp.architecture.mvp.base.interfaces.ListData;
 import com.duyp.architecture.mvp.base.interfaces.LoadMoreable;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;
 import com.duyp.architecture.mvp.utils.BaseRecyclerViewAdapter;
@@ -32,7 +32,7 @@ import lombok.Setter;
  */
 
 public abstract class BaseSwipeRecyclerViewFragment<
-        A extends BaseRecyclerViewAdapter,
+        A extends RecyclerView.Adapter,
         V extends BaseView,
         P extends BasePresenter<V>>
         extends BaseSwipeToRefreshFragment<V, P> implements SwipeRefreshLayout.OnRefreshListener {
@@ -130,7 +130,7 @@ public abstract class BaseSwipeRecyclerViewFragment<
         if (presenter instanceof LoadMoreable && ((LoadMoreable) presenter).canLoadMore()) {
             ((LoadMoreable) presenter).loadMore();
             isRefresh = true;
-            adapter.addFooter(getFooterView());
+//            adapter.addFooter(getFooterView());
         }
     }
 
@@ -138,7 +138,7 @@ public abstract class BaseSwipeRecyclerViewFragment<
      * @return true if our adapter has no data
      */
     protected boolean isDataEmpty() {
-        return adapter != null && adapter.getData() != null && adapter.getData().isEmpty();
+        return adapter != null && adapter instanceof ListData && ((ListData) adapter).isDataEmpty();
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class BaseSwipeRecyclerViewFragment<
     @CallSuper
     public void doneRefresh() {
         if (adapter != null) {
-            adapter.removeFooter(getFooterView());
+//            adapter.removeFooter(getFooterView());
         }
         updateNoDataState();
         updateScrollTop();

@@ -20,7 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  *
  */
 
-public class RepositoriesFragment extends BaseSwipeRecyclerViewFragment<RepositoryAdapter, RepositoryView, RepositoryPresenter>
+public class RepositoriesFragment extends BaseSwipeRecyclerViewFragment<RepositoryLiveAdapter, RepositoryView, RepositoryPresenter>
         implements RepositoryView {
 
     @BindView(R.id.tvSearch)
@@ -50,7 +50,7 @@ public class RepositoriesFragment extends BaseSwipeRecyclerViewFragment<Reposito
 
     @NonNull
     @Override
-    protected RepositoryAdapter createAdapter() {
+    protected RepositoryLiveAdapter createAdapter() {
         return getPresenter().getAdapter();
     }
 }

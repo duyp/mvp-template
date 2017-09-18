@@ -1,13 +1,12 @@
 package com.duyp.architecture.mvp.data.repos;
 
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.duyp.architecture.mvp.app.AppDatabase;
-import com.duyp.architecture.mvp.base.repo.BaseRepo;
+import com.duyp.architecture.mvp.base.data.BaseRepo;
+import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
-import com.duyp.architecture.mvp.data.local.IssuesDao;
+import com.duyp.architecture.mvp.data.local.dao.IssueDao;
 import com.duyp.architecture.mvp.data.model.Issue;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -17,6 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
+import lombok.Getter;
 
 /**
  * Created by duypham on 9/17/17.
@@ -25,16 +25,17 @@ import io.reactivex.Flowable;
 
 public class IssuesRepo extends BaseRepo {
 
-    private IssuesDao mIssuesDao;
+    private IssueDao mIssuesDao;
 
     private Repository mRepository;
 
-    private LiveData<List<Issue>> data;
+    @Getter
+    private LiveRealmResults<Issue> data;
 
     @Inject
-    public IssuesRepo(LifecycleOwner owner, GithubService githubService, AppDatabase appDatabase) {
-        super(owner, githubService, appDatabase);
-        mIssuesDao = appDatabase.issuesDao();
+    public IssuesRepo(LifecycleOwner owner, GithubService githubService, IssueDao issueDao) {
+        super(owner, githubService);
+        this.mIssuesDao = issueDao;
     }
 
     public void initRepo(@NonNull Repository repository) {
@@ -43,12 +44,11 @@ public class IssuesRepo extends BaseRepo {
     }
 
     public Flowable<Resource<List<Issue>>> getRepoIssues() {
-        return createResource(getGithubService().getRepoIssues(mRepository.getOwner().getLogin(), mRepository.getName()),
-                data, issues -> {
-                    for (Issue issue : issues) {
-                        issue.setRepoId(mRepository.getId());
-                    }
-                    mIssuesDao.insertAll(issues);
-                });
+        return createResource(getGithubService().getRepoIssues(mRepository.getOwner().getLogin(), mRepository.getName()), issues -> {
+            for (Issue issue : issues) {
+                issue.setRepoId(mRepository.getId());
+            }
+            mIssuesDao.addAll(issues);
+        });
     }
 }

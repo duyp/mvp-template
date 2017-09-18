@@ -9,7 +9,6 @@ import com.duyp.architecture.mvp.dagger.qualifier.OkHttpAuth;
 import com.duyp.architecture.mvp.dagger.scopes.UserScope;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.model.User;
-import com.duyp.architecture.mvp.data.remote.RemoteConstants;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
 import com.duyp.architecture.mvp.data.remote.UserService;
 import com.google.gson.Gson;
@@ -17,7 +16,6 @@ import com.google.gson.Gson;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 /**
  * Created by air on 5/1/17.

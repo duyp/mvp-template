@@ -10,14 +10,14 @@ import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.activity.BasePresenterActivity;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.listeners.AccountListener;
-import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.interfaces.SimpleActionBarToggle;
 
-import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.*;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+
+import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.MENU_TITLES;
 
 public class MainActivity extends BasePresenterActivity<MainView, MainPresenter> implements MainView, AccountListener {
 

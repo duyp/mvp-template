@@ -2,14 +2,11 @@ package com.duyp.architecture.mvp.data.local.user;
 
 import android.app.NotificationManager;
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.duyp.androidutils.functions.PlainAction;
-import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.dagger.InjectionHelper;
 import com.duyp.architecture.mvp.dagger.component.UserComponent;
 import com.duyp.architecture.mvp.dagger.module.UserModule;

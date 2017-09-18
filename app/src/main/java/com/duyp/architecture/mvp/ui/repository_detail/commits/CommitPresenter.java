@@ -4,18 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
-import com.duyp.architecture.mvp.base.presenter.BasePresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Commit;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
 import lombok.Getter;
 
 /**
@@ -32,15 +34,19 @@ public class CommitPresenter extends BaseListPresenter<CommitsView> {
 
     private List<Commit> data = new ArrayList<>();
 
+    private final RepositoryDao repositoryDao;
+
     @Inject
-    public CommitPresenter(@ActivityContext Context context, UserManager userManager, CommitsAdapter adapter) {
+    public CommitPresenter(@ActivityContext Context context, UserManager userManager, CommitsAdapter adapter,
+                           RepositoryDao repositoryDao) {
         super(context, userManager);
         this.adapter = adapter;
         adapter.setData(data);
+        this.repositoryDao = repositoryDao;
     }
 
-    void initRepository(@NonNull Repository repository) {
-        this.repository = repository;
+    void initRepository(@NonNull Long repoId) {
+        this.repository = repositoryDao.getById(repoId).getData();
     }
 
     @Override

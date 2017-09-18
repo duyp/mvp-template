@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 
 import com.duyp.androidutils.adapter.BaseHeaderFooterAdapter;
+import com.duyp.architecture.mvp.base.interfaces.ListData;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import lombok.Getter;
  * Created by phamd on 9/14/2017.
  */
 
-public abstract class BaseRecyclerViewAdapter<T> extends BaseHeaderFooterAdapter {
+public abstract class BaseRecyclerViewAdapter<T> extends BaseHeaderFooterAdapter implements ListData{
 
     protected static final int TYPE_ITEM = 333;
 
@@ -116,5 +117,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends BaseHeaderFooterAdapter
     public int getItemViewType(int position) {
         int type = super.getItemViewType(position);
         return type == TYPE_NON_FOOTER_HEADER ? TYPE_ITEM : type;
+    }
+
+    @Override
+    public boolean isDataEmpty() {
+        return mAdapterData == null || mAdapterData.size() == 0;
     }
 }

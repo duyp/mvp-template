@@ -19,7 +19,9 @@ package com.duyp.architecture.mvp.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import static com.duyp.architecture.mvp.data.Status.*;
+import static com.duyp.architecture.mvp.data.Status.ERROR;
+import static com.duyp.architecture.mvp.data.Status.LOADING;
+import static com.duyp.architecture.mvp.data.Status.SUCCESS;
 
 /**
  * A generic class that holds a value with its loading status.

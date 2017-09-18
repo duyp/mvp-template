@@ -1,17 +1,12 @@
 package com.duyp.architecture.mvp.base.presenter;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.LoadMoreable;
 import com.duyp.architecture.mvp.base.interfaces.Refreshable;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.model.User;
-import com.duyp.architecture.mvp.data.model.base.BaseResponse;
-import com.duyp.architecture.mvp.data.remote.UserService;
 
 import lombok.Getter;
 import lombok.Setter;

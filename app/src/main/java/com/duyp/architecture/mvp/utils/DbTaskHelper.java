@@ -1,11 +1,8 @@
 package com.duyp.architecture.mvp.utils;
 
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.duyp.androidutils.functions.PlainAction;
 import com.duyp.androidutils.functions.PlainConsumer;
 
 import io.reactivex.Completable;

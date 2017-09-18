@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.duyp.androidutils.CommonUtils;
 import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
 import com.duyp.androidutils.image.glide.loader.TransitionGlideLoader;

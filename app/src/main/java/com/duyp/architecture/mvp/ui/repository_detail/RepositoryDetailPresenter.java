@@ -3,14 +3,13 @@ package com.duyp.architecture.mvp.ui.repository_detail;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.duyp.architecture.mvp.base.data.LiveRealmObject;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
-import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
 import com.duyp.architecture.mvp.data.repos.RepositoryDetailRepo;
-import com.duyp.architecture.mvp.ui.repositories.RepositoryView;
 
 import javax.inject.Inject;
 
@@ -29,9 +28,16 @@ public class RepositoryDetailPresenter extends BasePresenter<RepositoryDetailVie
         this.repositoryDetailRepo = repositoryDetailRepo;
     }
 
-    void initRepo(@NonNull Repository repository) {
-        repositoryDetailRepo.initRepo(repository);
-        fetchData();
+    Repository initRepo(@NonNull Long repoId) {
+        LiveRealmObject<Repository> data = repositoryDetailRepo.initRepo(repoId);
+        data.observe(getLifeCircleOwner(), repository -> {
+            getView().populateData(repository);
+        });
+        return data.getData();
+    }
+
+    Repository getData() {
+        return repositoryDetailRepo.getData().getValue();
     }
 
     void fetchData() {

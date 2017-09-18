@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'realm-android'
 
 def cfg = rootProject.ext.configuration;
 def libs = rootProject.ext.libraries;
@@ -82,10 +83,10 @@ dependencies {
     compile "android.arch.lifecycle:runtime:${libs.architectureVersion}"
     compile "android.arch.lifecycle:extensions:${libs.architectureVersion}"
     compile "android.arch.lifecycle:reactivestreams:${libs.architectureVersion}"
-    compile "android.arch.persistence.room:runtime:${libs.architectureVersion}"
-    compile "android.arch.persistence.room:rxjava2:${libs.architectureVersion}"
     annotationProcessor "android.arch.lifecycle:compiler:${libs.architectureVersion}"
-    annotationProcessor "android.arch.persistence.room:compiler:${libs.architectureVersion}"
+
+    // realm adapter
+    compile 'io.realm:android-adapters:2.1.0'
 
     // butter knife
     compile 'com.jakewharton:butterknife:8.5.1'

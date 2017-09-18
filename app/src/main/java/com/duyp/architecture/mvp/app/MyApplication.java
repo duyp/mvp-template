@@ -10,6 +10,7 @@ import com.duyp.architecture.mvp.dagger.component.AppComponent;
 import com.duyp.architecture.mvp.dagger.component.DaggerAppComponent;
 import com.duyp.architecture.mvp.dagger.component.UserComponent;
 import com.duyp.architecture.mvp.dagger.module.AppModule;
+import com.duyp.architecture.mvp.dagger.module.DataModule;
 import com.duyp.architecture.mvp.dagger.module.NetworkModule;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.squareup.leakcanary.LeakCanary;
@@ -52,6 +53,7 @@ public class MyApplication extends Application {
         appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .networkModule(new NetworkModule(this))
+                .dataModule(new DataModule(this))
                 .build();
         appComponent.inject(this);
     }

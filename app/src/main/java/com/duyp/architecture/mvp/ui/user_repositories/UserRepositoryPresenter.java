@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
-import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.User;
-import com.duyp.architecture.mvp.ui.repositories.RepositoryAdapter;
+import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
+import com.duyp.architecture.mvp.ui.repositories.RepositoryLiveAdapter;
 import com.duyp.architecture.mvp.ui.repositories.RepositoryPresenter;
 
 import javax.inject.Inject;
@@ -26,7 +26,7 @@ public class UserRepositoryPresenter extends RepositoryPresenter {
 
     @Inject
     UserRepositoryPresenter(@ActivityContext Context context, UserManager userManager,
-                            RepositoriesRepo repositoriesRepo, @NonNull RepositoryAdapter adapter) {
+                            RepositoriesRepo repositoriesRepo, @NonNull RepositoryLiveAdapter adapter) {
         super(context, userManager, repositoriesRepo, adapter);
     }
 
@@ -36,6 +36,7 @@ public class UserRepositoryPresenter extends RepositoryPresenter {
 
     private void getUserRepositories() {
         addRequest(getRepositoriesRepo().getUserRepositories(targetUser.getLogin()), this::populateData);
+        updateData();
     }
 
     @Override

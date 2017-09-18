@@ -7,17 +7,17 @@ import android.util.Log;
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
-import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Repository;
-import com.duyp.architecture.mvp.utils.DbTaskHelper;
+import com.duyp.architecture.mvp.data.repos.RepositoriesRepo;
 
-import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.*;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import lombok.Getter;
+
+import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.TAG;
 
 /**
  * Created by phamd on 9/14/2017.\
@@ -29,7 +29,7 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
 
     @NonNull
     @Getter
-    private final RepositoryAdapter adapter;
+    private final RepositoryLiveAdapter adapter;
 
     @Getter
     private final RepositoriesRepo repositoriesRepo;
@@ -39,7 +39,8 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
     private String searchRepoName = "";
 
     @Inject
-    public RepositoryPresenter(@ActivityContext Context context, UserManager userManager, RepositoriesRepo repositoriesRepo, @NonNull RepositoryAdapter adapter) {
+    public RepositoryPresenter(@ActivityContext Context context, UserManager userManager,
+                               RepositoriesRepo repositoriesRepo, @NonNull RepositoryLiveAdapter adapter) {
         super(context, userManager);
         this.adapter = adapter;
         this.repositoriesRepo = repositoriesRepo;
@@ -53,6 +54,7 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
                 sinceRepoId = repositories.get(repositories.size() - 1).getId();
             }
         });
+        updateData();
     }
 
     void findRepositories(String name) {
@@ -61,13 +63,19 @@ public class RepositoryPresenter extends BaseListPresenter<RepositoryView> {
         if (!name.isEmpty()) {
             canLoadMore = false;
             addRequest(repositoriesRepo.findRepositories(searchRepoName), this::populateData);
+            updateData();
         }
     }
 
     protected void populateData(List<Repository> repositories) {
         Log.d(TAG, "RepositoryPresenter: GOT " + repositories.size() + " items");
-        adapter.setData(repositories);
+        // currently, we don't need to update adapter data since adapter will automatically observe realm data changed
+//        adapter.setData(repositories);
         setRefreshed(false);
+    }
+
+    protected void updateData() {
+        adapter.updateData(repositoriesRepo.getData());
     }
 
     @Override

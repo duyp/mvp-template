@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.duyp.architecture.mvp.R;
+import com.duyp.architecture.mvp.base.interfaces.ListData;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.data.model.Commit;
 import com.duyp.architecture.mvp.data.model.User;

@@ -12,13 +12,11 @@ import com.duyp.androidutils.navigator.ActivityNavigator;
 import com.duyp.androidutils.navigator.ChildFragmentNavigator;
 import com.duyp.androidutils.navigator.FragmentNavigator;
 import com.duyp.androidutils.navigator.Navigator;
-import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.fragment.BaseFragment;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityFragmentManager;
 import com.duyp.architecture.mvp.dagger.qualifier.ChildFragmentManager;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
-import com.duyp.architecture.mvp.ui.repositories.RepositoryPresenter;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 

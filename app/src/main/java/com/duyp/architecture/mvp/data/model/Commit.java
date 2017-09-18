@@ -1,17 +1,17 @@
 package com.duyp.architecture.mvp.data.model;
 
-import android.arch.persistence.room.Entity;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Commit {
+public class Commit extends RealmObject{
 
     @SerializedName("sha")
     @Expose

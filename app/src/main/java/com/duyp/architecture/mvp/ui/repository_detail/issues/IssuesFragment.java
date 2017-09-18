@@ -9,8 +9,6 @@ import com.duyp.androidutils.navigator.NavigationUtils;
 import com.duyp.architecture.mvp.base.fragment.BaseSwipeRecyclerViewFragment;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
-import com.duyp.architecture.mvp.utils.NavigatorHelper;
-import android.os.Handler;
 
 import org.parceler.Parcels;
 
@@ -19,11 +17,11 @@ import org.parceler.Parcels;
  *
  */
 
-public class IssuesFragment extends BaseSwipeRecyclerViewFragment<IssuesAdapter, IssuesView, IssuesPresenter> {
+public class IssuesFragment extends BaseSwipeRecyclerViewFragment<IssuesLiveAdapter, IssuesView, IssuesPresenter> {
 
-    public static IssuesFragment newInstance(@NonNull Repository repository) {
+    public static IssuesFragment newInstance(@NonNull Long repoId) {
         return NavigationUtils.createFragmentInstance(new IssuesFragment(), bundle -> {
-            bundle.putParcelable(Constants.EXTRA_DATA, Parcels.wrap(repository));
+            bundle.putLong(Constants.EXTRA_DATA, repoId);
         });
     }
 
@@ -35,14 +33,14 @@ public class IssuesFragment extends BaseSwipeRecyclerViewFragment<IssuesAdapter,
 
     @NonNull
     @Override
-    protected IssuesAdapter createAdapter() {
+    protected IssuesLiveAdapter createAdapter() {
         return getPresenter().getAdapter();
     }
 
     @Override
     protected void initialize(View view) {
         super.initialize(view);
-        getPresenter().initRepo(Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_DATA)));
+        getPresenter().initRepo(getArguments().getLong(Constants.EXTRA_DATA));
         refreshWithUi(300);
     }
 }

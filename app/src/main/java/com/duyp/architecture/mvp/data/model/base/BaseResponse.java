@@ -3,8 +3,6 @@ package com.duyp.architecture.mvp.data.model.base;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import lombok.Getter;
-
 /**
  * Created by Duy Pham on 10/27/2015.
  * Base response for all respond models

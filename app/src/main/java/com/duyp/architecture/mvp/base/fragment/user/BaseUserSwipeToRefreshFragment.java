@@ -13,7 +13,6 @@ import android.view.View;
 import com.duyp.androidutils.view.AppBarStateChangeListener;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.BaseView;
-import com.duyp.architecture.mvp.base.fragment.user.BaseUserPresenterFragment;
 import com.duyp.architecture.mvp.base.interfaces.UiRefreshable;
 import com.duyp.architecture.mvp.base.presenter.BaseUserPresenter;
 import com.duyp.architecture.mvp.data.Constants;

@@ -19,7 +19,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,18 +33,16 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import io.reactivex.schedulers.Schedulers;
+import io.realm.RealmObject;
 import okhttp3.Cache;
 import okhttp3.ConnectionSpec;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.TlsVersion;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Header;
 
 /**
  * Created by duypham on 7/23/17.
@@ -153,11 +150,22 @@ public class ServiceFactory {
     }
 
     /**
-     * Make gson which {@link DateDeserializer}
+     * Make gson which {@link DateDeserializer} and compatible with {@link RealmObject}
      * @return {@link Gson} object
      */
     public static Gson makeGsonForRealm() {
         return new GsonBuilder()
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        return f.getDeclaringClass().equals(RealmObject.class);
+                    }
+
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                })
                 .registerTypeAdapter(Date.class, new DateDeserializer())
                 .create();
     }

@@ -2,7 +2,6 @@ package com.duyp.architecture.mvp.base.presenter;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.LiveDataReactiveStreams;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -108,7 +107,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
 
     /**
      * add a request with {@link Resource} flowable created by
-     * {@link com.duyp.architecture.mvp.base.repo.BaseRepo#createResource(Single, LiveData, PlainConsumer)}
+     * {@link com.duyp.architecture.mvp.base.data.BaseRepo#createResource(Single, LiveData, PlainConsumer)}
      * @param showProgress
      * @param resourceFlowable
      * @param response

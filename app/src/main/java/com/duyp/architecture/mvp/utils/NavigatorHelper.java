@@ -1,21 +1,12 @@
 package com.duyp.architecture.mvp.utils;
 
-import android.arch.lifecycle.LiveData;
-import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 
-import com.duyp.androidutils.functions.PlainConsumer;
-import com.duyp.androidutils.navigator.ChildFragmentNavigator;
-import com.duyp.androidutils.navigator.FragmentNavigator;
 import com.duyp.androidutils.navigator.Navigator;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
-import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
@@ -68,9 +59,9 @@ public class NavigatorHelper {
         mNavigator.replaceFragment(containerId, UserRepositoryFragment.createInstance(null));
     }
 
-    public void navigateRepositoryDetail(@NonNull Repository repository, View... views) {
+    public void navigateRepositoryDetail(@NonNull Long repoId, View... views) {
         mNavigator.startActivityWithTransition(RepositoryDetailActivity.class, intent -> {
-            intent.putExtra(Constants.EXTRA_DATA, Parcels.wrap(repository));
+            intent.putExtra(Constants.EXTRA_DATA, repoId);
         }, false, false, views);
     }
 }

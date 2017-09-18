@@ -5,15 +5,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
-import com.duyp.architecture.mvp.base.presenter.BasePresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.model.Issue;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.repos.IssuesRepo;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,22 +22,27 @@ import lombok.Getter;
  */
 
 @PerFragment
-public class IssuesPresenter extends BaseListPresenter<IssuesView> {
+class IssuesPresenter extends BaseListPresenter<IssuesView> {
 
     private final IssuesRepo mIssueRepo;
 
     @Getter
-    private final IssuesAdapter adapter;
+    private final IssuesLiveAdapter adapter;
+
+    private final RepositoryDao repositoryDao;
 
     @Inject
-    public IssuesPresenter(@ActivityContext Context context, UserManager userManager, IssuesRepo repo, IssuesAdapter adapter) {
+    public IssuesPresenter(@ActivityContext Context context, UserManager userManager, IssuesRepo repo,
+                           IssuesLiveAdapter adapter, RepositoryDao repositoryDao) {
         super(context, userManager);
         mIssueRepo = repo;
         this.adapter = adapter;
+        this.repositoryDao = repositoryDao;
     }
 
-    void initRepo(@NonNull Repository repository) {
-        mIssueRepo.initRepo(repository);
+    void initRepo(@NonNull Long repoId) {
+        mIssueRepo.initRepo(repositoryDao.getById(repoId).getData());
+        adapter.updateData(mIssueRepo.getData());
     }
 
     @Override
@@ -51,11 +53,6 @@ public class IssuesPresenter extends BaseListPresenter<IssuesView> {
     @Override
     protected void fetchData() {
         Log.d("source", "fetchData: updating issues...");
-        addRequest(mIssueRepo.getRepoIssues(), this::populateData);
-    }
-
-    private void populateData(List<Issue> issues) {
-        adapter.setData(issues);
-        setRefreshed(false);
+        addRequest(mIssueRepo.getRepoIssues(), issues -> this.setRefreshed(false));
     }
 }

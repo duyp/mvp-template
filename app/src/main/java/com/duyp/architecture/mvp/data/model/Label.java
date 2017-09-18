@@ -4,6 +4,7 @@ package com.duyp.architecture.mvp.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Label {
+public class Label extends RealmObject{
     @SerializedName("id")
     @Expose
     private Long id;

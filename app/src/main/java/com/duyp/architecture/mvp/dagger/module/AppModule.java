@@ -4,11 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.duyp.androidutils.CustomSharedPreferences;
-import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
-import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
-import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
 import com.google.gson.Gson;
 
@@ -42,12 +38,6 @@ public class AppModule {
 
     @Provides
     @Singleton
-    AppDatabase provideAppDatabase() {
-        return AppDatabase.getDatabase(application);
-    }
-
-    @Provides
-    @Singleton
     static Gson provideGson() {
         return ServiceFactory.makeGsonForRealm();
     }
@@ -56,19 +46,6 @@ public class AppModule {
     @Singleton
     CustomSharedPreferences provideMySharedPreferences(@ApplicationContext Context context) {
         return CustomSharedPreferences.getInstance(context);
-    }
-
-    @Provides
-    @Singleton
-    UserRepo provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, AppDatabase appDatabase) {
-        return new UserRepo(sharedPreferences, gson);
-    }
-
-    @Provides
-    @Singleton
-    protected UserManager provideUserManager(@ApplicationContext Context context, UserRepo userDataStore,
-                                             EventBus eventBus, GithubService service) {
-        return new UserManager(context, userDataStore, eventBus, service);
     }
 
     @Provides

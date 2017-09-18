@@ -23,7 +23,7 @@ class RepoTabAdapter extends BaseFragmentStatePagerAdapter<BaseFragment> {
     public static final String[] TITLES = new String[] {"Commits", "Issues", "Branches", "Releases"};
 
     @Setter
-    private Repository repository;
+    private Long repoId;
 
     @Inject
     RepoTabAdapter(@ChildFragmentManager FragmentManager fm) {
@@ -34,9 +34,9 @@ class RepoTabAdapter extends BaseFragmentStatePagerAdapter<BaseFragment> {
     public BaseFragment createFragment(int i) {
         switch (i) {
             case 0:
-                return CommitFragment.newInstance(repository);
+                return CommitFragment.newInstance(repoId);
             case 1:
-                return IssuesFragment.newInstance(repository);
+                return IssuesFragment.newInstance(repoId);
             default:
                 return new ProfileFragment();
         }

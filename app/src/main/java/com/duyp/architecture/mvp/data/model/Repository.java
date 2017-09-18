@@ -1,18 +1,12 @@
 package com.duyp.architecture.mvp.data.model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,11 +17,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Parcel
-public class Repository{
+//@Parcel
+public class Repository extends RealmObject {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     Long id;
@@ -41,10 +34,9 @@ public class Repository{
 
     @SerializedName("owner")
     @Expose
-    @Embedded(prefix = "user_")
     User owner;
 
-    @ColumnInfo(name = "member_login_name")
+    // if current user is member of this repository, save it to database since github api dose not support
     String memberLoginName;
 
     @SerializedName("private")

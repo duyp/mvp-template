@@ -5,7 +5,6 @@ import android.content.Context;
 import com.duyp.androidutils.StringUtils;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
-import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 
 import javax.inject.Inject;

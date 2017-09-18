@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.transition.TransitionInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

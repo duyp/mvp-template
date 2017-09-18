@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;
-import com.duyp.architecture.mvp.dagger.component.FragmentComponent;
 
 import javax.inject.Inject;
 

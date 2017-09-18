@@ -1,13 +1,7 @@
 package com.duyp.architecture.mvp.data.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-import com.duyp.architecture.mvp.data.model.base.BaseResponse;
-import com.duyp.architecture.mvp.utils.roomConverters.DateConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,6 +9,8 @@ import org.parceler.Parcel;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,11 +21,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
 @Parcel
-public class User extends BaseResponse {
+public class User extends RealmObject {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     public Long id;
@@ -105,48 +100,46 @@ public class User extends BaseResponse {
     public String bio;
     @SerializedName("public_repos")
     @Expose
-    public Long publicRepos;
+    public long publicRepos;
     @SerializedName("public_gists")
     @Expose
-    public Long publicGists;
+    public long publicGists;
     @SerializedName("followers")
     @Expose
-    public Long followers;
+    public long followers;
     @SerializedName("following")
     @Expose
-    public Long following;
-    @TypeConverters(DateConverter.class)
+    public long following;
     @SerializedName("created_at")
     @Expose
     public Date createdAt;
-    @TypeConverters(DateConverter.class)
     @SerializedName("updated_at")
     @Expose
     public Date updatedAt;
     @SerializedName("private_gists")
     @Expose
-    public Long privateGists;
+    public long privateGists;
     @SerializedName("total_private_repos")
     @Expose
-    public Long totalPrivateRepos;
+    public long totalPrivateRepos;
     @SerializedName("owned_private_repos")
     @Expose
-    public Long ownedPrivateRepos;
+    public long ownedPrivateRepos;
     @SerializedName("disk_usage")
     @Expose
-    public Long diskUsage;
+    public long diskUsage;
     @SerializedName("collaborators")
     @Expose
-    public Long collaborators;
+    public long collaborators;
     @SerializedName("two_factor_authentication")
     @Expose
     public Boolean twoFactorAuthentication;
+    @SerializedName("plan")
+    @Expose
+    public Plan plan;
 
     public boolean equals(@Nullable User user) {
         return user != null && id.equals(user.getId());
     }
-    // TODO: 9/10/17 Create type converter for Plan class
-//    @SerializedName("plan")
-//    @Expose
-//    public Plan plan;
+
 }

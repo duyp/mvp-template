@@ -9,7 +9,6 @@ import com.duyp.androidutils.navigator.NavigationUtils;
 import com.duyp.architecture.mvp.base.fragment.BaseSwipeRecyclerViewFragment;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
-import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import org.parceler.Parcels;
 
@@ -19,9 +18,9 @@ import org.parceler.Parcels;
 
 public class CommitFragment extends BaseSwipeRecyclerViewFragment<CommitsAdapter, CommitsView, CommitPresenter> {
 
-    public static CommitFragment newInstance(@NonNull Repository repository) {
+    public static CommitFragment newInstance(@NonNull Long repoId) {
         return NavigationUtils.createFragmentInstance(new CommitFragment(), bundle -> {
-            bundle.putParcelable(Constants.EXTRA_DATA, Parcels.wrap(repository));
+            bundle.putLong(Constants.EXTRA_DATA, repoId);
         });
     }
 
@@ -29,7 +28,7 @@ public class CommitFragment extends BaseSwipeRecyclerViewFragment<CommitsAdapter
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragmentComponent().inject(this);
-        getPresenter().initRepository(Parcels.unwrap(getArguments().getParcelable(Constants.EXTRA_DATA)));
+        getPresenter().initRepository(getArguments().getLong(Constants.EXTRA_DATA));
     }
 
     @Override

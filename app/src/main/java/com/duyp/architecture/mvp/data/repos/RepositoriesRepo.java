@@ -1,14 +1,13 @@
 package com.duyp.architecture.mvp.data.repos;
 
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.duyp.architecture.mvp.app.AppDatabase;
-import com.duyp.architecture.mvp.base.repo.BaseRepo;
+import com.duyp.architecture.mvp.base.data.BaseRepo;
+import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
-import com.duyp.architecture.mvp.data.local.RepositoryDao;
+import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
@@ -24,7 +23,7 @@ import io.reactivex.Single;
 import lombok.Getter;
 import retrofit2.Response;
 
-import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.*;
+import static com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData.TAG;
 /**
  * Created by duypham on 9/15/17.
  *
@@ -37,7 +36,8 @@ public class RepositoriesRepo extends BaseRepo {
     @Getter
     protected final RepositoryDao repositoryDao;
 
-    private LiveData<List<Repository>> liveData;
+    @Getter
+    private LiveRealmResults<Repository> data;
 
     private int currentPage = 1;
 
@@ -45,9 +45,9 @@ public class RepositoriesRepo extends BaseRepo {
     private final User mUser;
 
     @Inject
-    public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, AppDatabase appDatabase, UserRepo userRepo) {
-        super(owner, githubService, appDatabase);
-        this.repositoryDao = appDatabase.repositoryDao();
+    public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, RepositoryDao repositoryDao, UserRepo userRepo) {
+        super(owner, githubService);
+        this.repositoryDao = repositoryDao;
         mUser = userRepo.getUser();
     }
 
@@ -63,9 +63,9 @@ public class RepositoriesRepo extends BaseRepo {
         } else {
             currentPage = 1;
         }
-        removeObserves();
-        liveData = repositoryDao.getAllRepositories(currentPage * PER_PAGE);
-        return createResource(getGithubService().getAllPublicRepositories(sinceId), liveData, repositoryDao::addAllRepositories);
+//        data = repositoryDao.getAll(currentPage * PER_PAGE);
+        data = repositoryDao.getAll();
+        return createResource(getGithubService().getAllPublicRepositories(sinceId), repositoryDao::addAll);
     }
 
     /**
@@ -75,10 +75,8 @@ public class RepositoriesRepo extends BaseRepo {
      */
     public Flowable<Resource<List<Repository>>> findRepositories(String repoName) {
         Log.d(TAG, "RepositoriesRepo: finding repo: " + repoName);
-        String nameToSearch = "%" + repoName + "%";
-        removeObserves();
-        liveData = repositoryDao.findAllByName(nameToSearch);
-        return createResource(getGithubService().getAllPublicRepositories(null), liveData, repositoryDao::addAllRepositories);
+        data = repositoryDao.getRepositoriesWithNameLike(repoName);
+        return createResource(getGithubService().getAllPublicRepositories(null), repositoryDao::addAll);
     }
 
     /**
@@ -88,14 +86,13 @@ public class RepositoriesRepo extends BaseRepo {
      * @return
      */
     public Flowable<Resource<List<Repository>>> getUserRepositories(String userNameLogin) {
-        removeObserves();
-        liveData = repositoryDao.getUserRepositories(userNameLogin);
+        data = repositoryDao.getUserRepositories(userNameLogin);
 
         boolean isOwner = mUser != null && mUser.getLogin().equals(userNameLogin);
         Single<Response<List<Repository>>> remote = isOwner ? getGithubService().getMyRepositories(RepoTypes.ALL) :
                 getGithubService().getUserRepositories(userNameLogin, RepoTypes.ALL);
 
-        return createResource(remote, liveData, repositories -> {
+        return createResource(remote, repositories -> {
             if (isOwner) {
                 for (Repository repository : repositories) {
                     if (!repository.getOwner().getLogin().equals(mUser.getLogin())) {
@@ -103,13 +100,7 @@ public class RepositoriesRepo extends BaseRepo {
                     }
                 }
             }
-            repositoryDao.addAllRepositories(repositories);
+            repositoryDao.addAll(repositories);
         });
-    }
-
-    private void removeObserves() {
-        if (liveData != null) {
-            liveData.removeObservers(getOwner());
-        }
     }
 }

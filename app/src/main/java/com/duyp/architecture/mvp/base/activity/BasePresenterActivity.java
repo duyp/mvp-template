@@ -2,8 +2,6 @@ package com.duyp.architecture.mvp.base.activity;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;

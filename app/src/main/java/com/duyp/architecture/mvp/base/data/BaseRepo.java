@@ -1,12 +1,12 @@
-package com.duyp.architecture.mvp.base.repo;
+package com.duyp.architecture.mvp.base.data;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 
 import com.duyp.androidutils.functions.PlainConsumer;
-import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.data.Resource;
+import com.duyp.architecture.mvp.data.SimpleNetworkBoundSource;
 import com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 
@@ -28,12 +28,9 @@ public abstract class BaseRepo {
 
     private final LifecycleOwner owner;
 
-    private final AppDatabase appDatabase;
-
-    public BaseRepo(LifecycleOwner owner, GithubService githubService, AppDatabase appDatabase) {
+    public BaseRepo(LifecycleOwner owner, GithubService githubService) {
         this.githubService = githubService;
         this.owner = owner;
-        this.appDatabase = appDatabase;
     }
 
     /**
@@ -61,6 +58,26 @@ public abstract class BaseRepo {
                 @Override
                 public LiveData<T> getLocal() {
                     return targetLocal;
+                }
+
+                @Override
+                public void saveCallResult(T data) {
+                    if (onSave != null) {
+                        onSave.accept(data);
+                    }
+                }
+            };
+        }, BackpressureStrategy.BUFFER);
+    }
+
+    protected <T> Flowable<Resource<T>> createResource(@Nullable Single<Response<T>> remote,
+                                                       @Nullable PlainConsumer<T> onSave) {
+        return Flowable.create(emitter -> {
+            new SimpleNetworkBoundSource<T>(emitter) {
+
+                @Override
+                public Single<Response<T>> getRemote() {
+                    return remote;
                 }
 
                 @Override

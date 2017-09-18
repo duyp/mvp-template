@@ -18,15 +18,12 @@ import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
-import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import org.parceler.Parcels;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 import static com.duyp.architecture.mvp.ui.repository_detail.RepoTabAdapter.ICONS;
 import static com.duyp.architecture.mvp.ui.repository_detail.RepoTabAdapter.TITLES;
@@ -38,12 +35,6 @@ import static com.duyp.architecture.mvp.ui.repository_detail.RepoTabAdapter.TITL
 
 public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDetailView, RepositoryDetailPresenter>
         implements RepositoryDetailView {
-
-    public static RepositoryDetailFragment newInstance(@NonNull Repository repository) {
-        return NavigationUtils.createFragmentInstance(new RepositoryDetailFragment(), bundle -> {
-            bundle.putParcelable(Constants.EXTRA_DATA, Parcels.wrap(repository));
-        });
-    }
 
     @BindView(R.id.imvBackground)
     ImageView imvBackground;
@@ -98,13 +89,12 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         if (bundle == null) {
             throw new IllegalArgumentException("Must pass repository to this fragment or container activity");
         }
-        final Repository repository = Parcels.unwrap(bundle.getParcelable(Constants.EXTRA_DATA));
-
-        populateData(repository);
+        final Long repoId = bundle.getLong(Constants.EXTRA_DATA);
+        final Repository repository = getPresenter().initRepo(repoId);
         new android.os.Handler().postDelayed(() -> {
-            adapter.setRepository(repository);
+            adapter.setRepoId(repoId);
             initTabs();
-            getPresenter().initRepo(repository);
+            getPresenter().fetchData();
         }, 1000);
     }
 

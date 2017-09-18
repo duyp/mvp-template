@@ -2,23 +2,15 @@ package com.duyp.architecture.mvp.data.local.user;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.duyp.androidutils.CustomSharedPreferences;
-import com.duyp.androidutils.functions.PlainAction;
-import com.duyp.androidutils.functions.PlainConsumer;
-import com.duyp.architecture.mvp.app.AppDatabase;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.User;
-import com.duyp.architecture.mvp.utils.DbTaskHelper;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * Created by duypham on 9/7/17.

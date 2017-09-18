@@ -13,8 +13,6 @@ import com.duyp.architecture.mvp.data.remote.UserService;
 
 import javax.inject.Inject;
 
-import lombok.Getter;
-
 /**
  * Created by duypham on 9/12/17.
  *

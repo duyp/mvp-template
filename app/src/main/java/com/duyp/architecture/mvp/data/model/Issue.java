@@ -1,23 +1,14 @@
 package com.duyp.architecture.mvp.data.model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
-import android.arch.persistence.room.TypeConverters;
-
 import com.duyp.architecture.mvp.data.model.def.IssueStates;
-import com.duyp.architecture.mvp.utils.roomConverters.DateConverter;
-import com.duyp.architecture.mvp.utils.roomConverters.LabelConverter;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
-import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,16 +19,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-public class Issue {
+public class Issue extends RealmObject{
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     Long id;
 
-    @ColumnInfo(name = "repo_id")
-    transient Long repoId;
+    Long repoId;
 
     @SerializedName("url")
     @Expose
@@ -65,12 +54,10 @@ public class Issue {
     String title;
     @SerializedName("user")
     @Expose
-    @Embedded(prefix = "user_")
     User user;
     @SerializedName("labels")
     @Expose
-    @TypeConverters(LabelConverter.class)
-    List<Label> labels = null;
+    RealmList<Label> labels = null;
     @SerializedName("state")
     @Expose
     @IssueStates
@@ -80,7 +67,6 @@ public class Issue {
     Boolean locked;
     @SerializedName("assignee")
     @Expose
-    @Embedded(prefix = "assignee_")
     User assignee;
 //    @SerializedName("assignees")
 //    @Expose
@@ -93,15 +79,12 @@ public class Issue {
     long comments;
     @SerializedName("created_at")
     @Expose
-    @TypeConverters(DateConverter.class)
     Date createdAt;
     @SerializedName("updated_at")
     @Expose
-    @TypeConverters(DateConverter.class)
     Date updatedAt;
     @SerializedName("closed_at")
     @Expose
-    @TypeConverters(DateConverter.class)
     Date closedAt;
     @SerializedName("author_association")
     @Expose
