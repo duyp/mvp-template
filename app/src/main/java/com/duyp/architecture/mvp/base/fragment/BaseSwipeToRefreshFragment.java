@@ -109,6 +109,11 @@ public abstract class BaseSwipeToRefreshFragment<V extends BaseView, P extends B
         return isRefresh;
     }
 
+    /**
+     * adopt with {@link AppBarLayout} for smoother scrolling
+     * when user is interacting with appbar, we should disable swipe to refresh layout
+     * @param appBar appbar inside fragment's layout
+     */
     public void setupWithAppBarScrollingState(@NonNull AppBarLayout appBar){
         appBar.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
@@ -128,6 +133,11 @@ public abstract class BaseSwipeToRefreshFragment<V extends BaseView, P extends B
         });
     }
 
+    /**
+     * adopt with {@link ViewPager} for smoother scrolling
+     * when user is interacting with viewpager, should disable swipe to refresh layout
+     * @param pager view pager inside fragment's layout
+     */
     public void setupWithViewPagerScrollingState(@NonNull ViewPager pager) {
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 

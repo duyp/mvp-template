@@ -24,9 +24,9 @@ import lombok.Setter;
 
 /**
  * Created by Duy Pham on 14/06/2017
- * Base Fragment with swipeable recycler view (in user scope)
+ * Base Fragment with swipe to refresh and recycler view
  * All child fragments 's layout must have refresh layout with id <b>srl</b> and RecyclerView with id <b>rcv</b>
- * @param <A> Adapter with addable header and footer
+ * @param <A> Adapter with list and addable headers and footers
  * @param <V> View
  * @param <P> Presenter
  */
@@ -78,6 +78,10 @@ public abstract class BaseSwipeRecyclerViewFragment<
         }
     }
 
+    /**
+     * Create recycler view adapter
+     * @return adapter
+     */
     @NonNull
     protected abstract A createAdapter();
 
@@ -119,6 +123,9 @@ public abstract class BaseSwipeRecyclerViewFragment<
         return lm;
     }
 
+    /**
+     * Load more item after scrolling down to bottom of current list
+     */
     public void loadMore() {
         if (presenter instanceof LoadMoreable && ((LoadMoreable) presenter).canLoadMore()) {
             ((LoadMoreable) presenter).loadMore();
@@ -127,10 +134,16 @@ public abstract class BaseSwipeRecyclerViewFragment<
         }
     }
 
+    /**
+     * @return true if our adapter has no data
+     */
     protected boolean isDataEmpty() {
         return adapter != null && adapter.getData() != null && adapter.getData().isEmpty();
     }
 
+    /**
+     * refresh list by presenter
+     */
     @Override
     public void refresh() {
         if (presenter != null) {
@@ -138,6 +151,10 @@ public abstract class BaseSwipeRecyclerViewFragment<
         }
     }
 
+    /**
+     * Called after refreshing success, for both case of success or fail
+     * Should be called after {@link BaseFragment#hideProgress()}
+     */
     @CallSuper
     public void doneRefresh() {
         if (adapter != null) {
@@ -158,6 +175,10 @@ public abstract class BaseSwipeRecyclerViewFragment<
         return footerView;
     }
 
+    /**
+     * Show no data view if current adapter data is empty
+     * must be call inside or after {@link #doneRefresh()}
+     */
     protected void updateNoDataState() {
         if (noDataView != null) {
             if (isDataEmpty()) {
@@ -175,6 +196,10 @@ public abstract class BaseSwipeRecyclerViewFragment<
         return 0;
     }
 
+    /**
+     * Show scroll top view (click on it to scroll recycler view to top)
+     * if user scroll down more than {@link #DEFAULT_SCROLL_TOP_POSITION}
+     */
     protected void updateScrollTop() {
         if (layoutManager != null) {
             int visibleItemCount = layoutManager.getChildCount();
@@ -182,6 +207,10 @@ public abstract class BaseSwipeRecyclerViewFragment<
         }
     }
 
+    /**
+     * Show scroll top view (click on it to scroll recycler view to top)
+     * if user scroll down more than {@link #DEFAULT_SCROLL_TOP_POSITION}
+     */
     private void updateScrollTop(int visibleItemCount, int pastVisibleItems) {
         if (scrollTopView != null) {
             if (recyclerView != null) {
