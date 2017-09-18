@@ -50,6 +50,7 @@ public abstract class SimpleNetworkBoundSourceLiveData<T> {
                 saveCallResult(response);
                 emitter.onNext(Resource.success(data));
             }, errorEntity -> {
+                apiRespond = true;
                 Log.d(TAG, "SimpleNetworkBoundSource: call API error: " + errorEntity.getMessage());
                 emitter.onNext(Resource.error(errorEntity.getMessage(), null));
             });
