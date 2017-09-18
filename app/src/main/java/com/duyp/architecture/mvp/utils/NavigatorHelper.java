@@ -48,7 +48,7 @@ public class NavigatorHelper {
         mNavigator.replaceFragment(containerId, fragment, TAG_PROFILE, null);
     }
 
-    public void replaceLoginFragment(@IdRes int containerId) {
+    public void navigateLoginFragment(@IdRes int containerId) {
         LoginFragment fragment = mNavigator.findFragmentByTag(TAG_LOGIN);
         if (fragment == null) {
             fragment = new LoginFragment();
@@ -56,7 +56,7 @@ public class NavigatorHelper {
         mNavigator.replaceFragment(containerId, fragment, TAG_LOGIN, null);
     }
     
-    public void replaceAllRepositoriesFragment(@IdRes int containerId) {
+    public void navigateAllRepositoriesFragment(@IdRes int containerId) {
         RepositoriesFragment fragment = mNavigator.findFragmentByTag(TAG_ALL_REPO);
         if (fragment == null) {
             fragment = new RepositoriesFragment();
@@ -64,7 +64,7 @@ public class NavigatorHelper {
         mNavigator.replaceFragment(containerId, fragment, TAG_ALL_REPO, null);
     }
 
-    public void replaceMyRepositoriesFragment(@IdRes int containerId) {
+    public void navigateMyRepositoriesFragment(@IdRes int containerId) {
         mNavigator.replaceFragment(containerId, UserRepositoryFragment.createInstance(null));
     }
 
