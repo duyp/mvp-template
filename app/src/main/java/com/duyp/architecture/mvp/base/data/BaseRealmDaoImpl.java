@@ -82,14 +82,14 @@ public class BaseRealmDaoImpl<E extends RealmObject> implements BaseRealmDao<E> 
     @Override
     public void addAll(@NonNull List<E> data) {
         mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(data);
+        mRealm.insertOrUpdate(data);
         mRealm.commitTransaction();
     }
 
     @Override
     public void addOrUpdate(@NonNull E item) {
         mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(item);
+        mRealm.insertOrUpdate(item);
         mRealm.commitTransaction();
     }
 
