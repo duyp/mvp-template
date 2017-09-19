@@ -1,6 +1,7 @@
 package com.duyp.architecture.mvp.base.data;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.List;
 
@@ -20,13 +21,17 @@ public class BaseRealmDaoImpl<E extends RealmObject> implements BaseRealmDao<E> 
 
     private final Realm mRealm;
     private final Class<E> mClass;
+
+    @Nullable
     private final String mDefaultSortField;
+
+    @NonNull
     private final String mPrimaryField;
 
     @Setter
     private Sort mDefaultSort = Sort.DESCENDING;
 
-    public BaseRealmDaoImpl(Realm realm, Class<E> eClass, String primaryField, String defaultSortField) {
+    public BaseRealmDaoImpl(Realm realm, Class<E> eClass, @NonNull String primaryField, @Nullable String defaultSortField) {
         this.mRealm = realm;
         this.mClass = eClass;
         this.mPrimaryField = primaryField;
@@ -69,9 +74,22 @@ public class BaseRealmDaoImpl<E extends RealmObject> implements BaseRealmDao<E> 
         return query().equalTo(mPrimaryField, id);
     }
 
+    /**
+     * Find all item be given query, sorted by default field
+     * if default field to be sort is NULL, output items won't be sort
+     * @param query realm query
+     * @return live realm results
+     */
+    protected LiveRealmResults<E> findAllSorted(RealmQuery<E> query) {
+        if (mDefaultSortField == null) {
+            return asLiveData(query.findAll());
+        }
+        return asLiveData(query.findAllSorted(mDefaultSortField, mDefaultSort));
+    }
+
     @Override
     public LiveRealmResults<E> getAll() {
-        return asLiveData(query().findAllSorted(mDefaultSortField, mDefaultSort));
+        return findAllSorted(query());
     }
 
     @Override

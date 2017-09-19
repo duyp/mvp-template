@@ -17,22 +17,20 @@ public class RepositoryDaoImpl extends BaseRealmDaoImpl<Repository> implements R
 
     @Inject
     public RepositoryDaoImpl(Realm realm) {
-        super(realm, Repository.class, "id", "createdAt");
+        super(realm, Repository.class, "id", null); // items wont' be sorted
     }
 
     @Override
     public LiveRealmResults<Repository> getRepositoriesWithNameLike(String repoName) {
-        return asLiveData(query().like("name", repoName).findAll());
-//        return asLiveData(query().like("name", repoName).findAllSorted(defaultSortField(), defaultSort()));
+        return findAllSorted(query().like("name", repoName));
     }
 
     @Override
     public LiveRealmResults<Repository> getUserRepositories(String userLogin) {
-        return asLiveData(
+        return findAllSorted(
                 query().equalTo("owner.login", userLogin)
                         .or()
                         .equalTo("memberLoginName", userLogin)
-                        .findAllSorted(defaultSortField(), defaultSort())
         );
     }
 }
