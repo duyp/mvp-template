@@ -41,7 +41,7 @@ public class RepositoryDetailRepo extends BaseRepo {
     }
 
     public Flowable<Resource<Repository>> getRepository() {
-        return createResource(getGithubService().getRepository(data.getValue().getOwner().getLogin(), data.getValue().getName()),repository -> {
+        return createResource(getGithubService().getRepository(data.getData().getOwner().getLogin(), data.getData().getName()),repository -> {
                     // github api dose not support, so we need do it manually
                     repository.setMemberLoginName(repository.getMemberLoginName());
                     mRepositoryDao.addOrUpdate(repository);

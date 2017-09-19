@@ -22,7 +22,8 @@ public class RepositoryDaoImpl extends BaseRealmDaoImpl<Repository> implements R
 
     @Override
     public LiveRealmResults<Repository> getRepositoriesWithNameLike(String repoName) {
-        return asLiveData(query().like("name", repoName).findAllSorted(defaultSortField(), defaultSort()));
+        return asLiveData(query().like("name", repoName).findAll());
+//        return asLiveData(query().like("name", repoName).findAllSorted(defaultSortField(), defaultSort()));
     }
 
     @Override
