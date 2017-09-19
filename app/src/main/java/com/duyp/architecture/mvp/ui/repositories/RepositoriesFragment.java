@@ -45,7 +45,7 @@ public class RepositoriesFragment extends BaseSwipeRecyclerViewFragment<Reposito
                 .subscribe(charSequence -> {
                     getPresenter().findRepositories(charSequence.toString());
                 });
-        refreshWithUi(200);
+        refreshWithUi(300);
     }
 
     @NonNull

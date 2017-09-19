@@ -7,6 +7,7 @@ import com.duyp.architecture.mvp.base.data.BaseRepo;
 import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.local.dao.IssueDao;
+import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.model.Issue;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -25,21 +26,23 @@ import lombok.Getter;
 
 public class IssuesRepo extends BaseRepo {
 
-    private IssueDao mIssuesDao;
-
     private Repository mRepository;
+    private final RepositoryDao repositoryDao;
+
+    private IssueDao mIssuesDao;
 
     @Getter
     private LiveRealmResults<Issue> data;
 
     @Inject
-    public IssuesRepo(LifecycleOwner owner, GithubService githubService, IssueDao issueDao) {
+    public IssuesRepo(LifecycleOwner owner, GithubService githubService, IssueDao issueDao, RepositoryDao repositoryDao) {
         super(owner, githubService);
         this.mIssuesDao = issueDao;
+        this.repositoryDao = repositoryDao;
     }
 
-    public void initRepo(@NonNull Repository repository) {
-        this.mRepository = repository;
+    public void initRepo(@NonNull Long repoId) {
+        this.mRepository = repositoryDao.getById(repoId).getData();
         data = mIssuesDao.getRepoIssues(mRepository.getId());
     }
 

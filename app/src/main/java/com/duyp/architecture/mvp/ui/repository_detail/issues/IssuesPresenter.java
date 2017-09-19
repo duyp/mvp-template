@@ -29,19 +29,16 @@ class IssuesPresenter extends BaseListPresenter<IssuesView> {
     @Getter
     private final IssuesLiveAdapter adapter;
 
-    private final RepositoryDao repositoryDao;
-
     @Inject
     public IssuesPresenter(@ActivityContext Context context, UserManager userManager, IssuesRepo repo,
                            IssuesLiveAdapter adapter, RepositoryDao repositoryDao) {
         super(context, userManager);
         mIssueRepo = repo;
         this.adapter = adapter;
-        this.repositoryDao = repositoryDao;
     }
 
     void initRepo(@NonNull Long repoId) {
-        mIssueRepo.initRepo(repositoryDao.getById(repoId).getData());
+        mIssueRepo.initRepo(repoId);
         adapter.updateData(mIssueRepo.getData());
     }
 
