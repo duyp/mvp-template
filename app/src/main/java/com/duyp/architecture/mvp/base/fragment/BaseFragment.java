@@ -153,7 +153,9 @@ public abstract class BaseFragment extends LifecycleFragment implements BaseView
             }
             refWatcher.watch(this);
         }
-        unbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
         mFragmentComponent = null;
     }
 

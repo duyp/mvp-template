@@ -40,7 +40,7 @@ class RepoTabAdapter extends BasePagerAdapterWithIcon {
             case 1:
                 return IssuesFragment.newInstance(repoId);
             default:
-                return new CommitFragment();
+                return CommitFragment.newInstance(repoId);
         }
     }
 
