@@ -90,16 +90,19 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
             throw new IllegalArgumentException("Must pass repository to this fragment or container activity");
         }
         final Long repoId = bundle.getLong(Constants.EXTRA_DATA);
-        final Repository repository = getPresenter().initRepo(repoId);
+
+        adapter.setRepoId(repoId);
+        getPresenter().initRepo(repoId);
+
         new android.os.Handler().postDelayed(() -> {
-            adapter.setRepoId(repoId);
-            initTabs();
+            // delay for smooth transition
             getPresenter().fetchData();
-        }, 1000);
+            viewPager.setAdapter(adapter);
+            initTabs();
+        }, 800);
     }
 
     private void initTabs() {
-        viewPager.setAdapter(adapter);
         tab.setupWithViewPager(viewPager);
         int n = tab.getTabCount();
         tabTitles = new TextView[n];
