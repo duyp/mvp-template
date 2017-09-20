@@ -6,8 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.duyp.androidutils.navigator.Navigator;
-import com.duyp.architecture.mvp.data.Constants;
-import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.app.Constants;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
 import com.duyp.architecture.mvp.ui.profile.ProfileActivity;
@@ -16,7 +15,6 @@ import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.RepositoryDetailActivity;
 import com.duyp.architecture.mvp.ui.user_repositories.UserRepositoryFragment;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import lombok.AllArgsConstructor;

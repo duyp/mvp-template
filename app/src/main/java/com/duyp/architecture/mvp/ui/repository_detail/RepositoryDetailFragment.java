@@ -2,26 +2,21 @@ package com.duyp.architecture.mvp.ui.repository_detail;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
-import com.duyp.androidutils.navigator.NavigationUtils;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
-import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.app.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.ui.customviews.CustomTabTitleView;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
-
-import org.parceler.Parcels;
 
 import javax.inject.Inject;
 

@@ -15,7 +15,7 @@ import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.UiRefreshable;
 import com.duyp.architecture.mvp.base.presenter.BasePresenter;
-import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.app.Constants;
 
 import butterknife.BindView;
 

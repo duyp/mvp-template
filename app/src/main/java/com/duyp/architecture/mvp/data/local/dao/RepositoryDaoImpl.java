@@ -36,16 +36,4 @@ public class RepositoryDaoImpl extends BaseRealmDaoImpl<Repository> implements R
                         .equalTo("memberLoginName", userLogin)
         );
     }
-
-    @NonNull
-    @Override
-    protected String getPrimaryField() {
-        return "id";
-    }
-
-    @Nullable
-    @Override
-    protected String getDefaultSortField() {
-        return null;
-    }
 }

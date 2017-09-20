@@ -7,10 +7,7 @@ import android.view.View;
 
 import com.duyp.androidutils.navigator.NavigationUtils;
 import com.duyp.architecture.mvp.base.fragment.BaseSwipeRecyclerViewFragment;
-import com.duyp.architecture.mvp.data.Constants;
-import com.duyp.architecture.mvp.data.model.Repository;
-
-import org.parceler.Parcels;
+import com.duyp.architecture.mvp.app.Constants;
 
 /**
  * Created by duypham on 9/18/17.

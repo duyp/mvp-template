@@ -6,15 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.duyp.androidutils.CustomSharedPreferences;
-import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.app.Constants;
 import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.UserDao;
 import com.duyp.architecture.mvp.data.model.User;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
-
-import io.realm.Realm;
 
 /**
  * Created by duypham on 9/7/17.

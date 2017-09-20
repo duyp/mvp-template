@@ -42,14 +42,18 @@ public abstract class BaseRealmDaoImpl<E extends RealmObject> implements BaseRea
      * @return primary key of realm object
      */
     @NonNull
-    protected abstract String getPrimaryField();
+    protected String getPrimaryField() {
+        return "id";
+    };
 
     /**
      * @return default field that all queries returning {@link RealmResults} will be sorted by
      * If null, results won't be sorted
      */
     @Nullable
-    protected abstract String getDefaultSortField();
+    protected String getDefaultSortField() {
+        return null;
+    };
 
     /**
      * @return default realm sort {@link Sort#DESCENDING}

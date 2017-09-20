@@ -1,4 +1,4 @@
-package com.duyp.architecture.mvp.data;
+package com.duyp.architecture.mvp.app;
 
 /**
  * Created by duypham on 9/8/17.

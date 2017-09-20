@@ -29,12 +29,6 @@ public class IssueDaoImpl extends BaseRealmDaoImpl<Issue> implements IssueDao {
     }
 
     @Override
-    @NonNull
-    protected String getPrimaryField() {
-        return "id";
-    }
-
-    @Override
     @Nullable
     protected String getDefaultSortField() {
         return "createdAt";

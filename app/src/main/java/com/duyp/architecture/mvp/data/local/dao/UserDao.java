@@ -23,18 +23,6 @@ public class UserDao extends BaseRealmDaoImpl<User>{
         super(realm, User.class);
     }
 
-    @NonNull
-    @Override
-    protected String getPrimaryField() {
-        return "id";
-    }
-
-    @Nullable
-    @Override
-    protected String getDefaultSortField() {
-        return null;
-    }
-
     public LiveRealmObject<User> getUser(String userLogin) {
         return asLiveData(query().equalTo("login", userLogin).findFirst());
     }

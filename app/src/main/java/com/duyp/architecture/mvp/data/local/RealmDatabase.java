@@ -10,7 +10,7 @@ import io.realm.Realm;
 
 /**
  * Created by duypham on 9/20/17.
- *
+ * Database object to provide all Data Access Objects
  */
 
 public class RealmDatabase {

@@ -26,7 +26,7 @@ import com.duyp.architecture.mvp.dagger.component.DaggerFragmentComponent;
 import com.duyp.architecture.mvp.dagger.component.FragmentComponent;
 import com.duyp.architecture.mvp.dagger.component.UserFragmentComponent;
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
-import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.app.Constants;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.duyp.architecture.mvp.ui.listeners.AccountListener;
