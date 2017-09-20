@@ -20,7 +20,7 @@ public abstract class SimpleNetworkBoundSource<T> {
 
     public SimpleNetworkBoundSource(FlowableEmitter<Resource<T>> emitter) {
         emitter.onNext(Resource.loading(null));
-        // since realm was create on Main Thread, so if we need touch to realm database after calling
+        // since realm was create on Main Thread, so if we need to touch on realm database after calling
         // api, must make request on main thread by setting shouldUpdateUi params = true
         ApiUtils.makeRequest(getRemote(), true, response -> {
             Log.d(TAG, "SimpleNetworkBoundSource: call API success!");
