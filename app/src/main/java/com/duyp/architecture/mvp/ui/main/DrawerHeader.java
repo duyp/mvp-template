@@ -45,7 +45,7 @@ class DrawerHeader {
     private void onResolved() {
         User user = mDrawerViewReference.get().getUser();
         if (user != null) {
-            tvName.setText(user.getName());
+            tvName.setText(user.getDisplayName());
             tvLink.setText(user.getHtmlUrl());
             mGlideLoader.loadImage(user.getAvatarUrl(), imvAvatar);
         } else {

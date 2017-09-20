@@ -68,7 +68,7 @@ public class IssuesAdapter extends BaseRecyclerViewAdapter<Issue> {
         void bindData(@NonNull Issue issue) {
             tvTitle.setText(issue.getTitle());
             tvDes.setText(getContext().getString(R.string.issue_description_format, issue.getNumber(),
-                    issue.getUser().getLogin()));
+                    issue.getUser().getDisplayName()));
             tvTime.setReferenceTime(issue.getCreatedAt());
             tvCommentCount.setText(getContext().getString(R.string.issue_comments_format, issue.getComments()));
 

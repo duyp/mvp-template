@@ -98,7 +98,7 @@ public class ProfileFragment extends BasePresenterFragment<ProfileView, ProfileP
     @Override
     public void onUserUpdated(@Nullable User user) {
         if (user != null) {
-            tvName.setText(user.getName());
+            tvName.setText(user.getDisplayName());
             tvLink.setText(user.getHtmlUrl());
             tvBio.setText(user.getBio());
             GlideUtils.loadImageBitmap(getContext(), user.getAvatarUrl(), bitmap -> {
