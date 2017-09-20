@@ -18,6 +18,7 @@ import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.ui.customviews.CustomTabTitleView;
 
 import org.parceler.Parcels;
 
@@ -107,11 +108,10 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         int n = tab.getTabCount();
         tabTitles = new TextView[n];
         for (int i = 0; i < n; i++) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.view_tab_item, null);
-            ImageView imv = view.findViewById(R.id.imv);
-            tabTitles[i] = view.findViewById(R.id.tvTitle);
-            imv.setImageResource(ICONS[i]);
-            tabTitles[i].setText(TITLES[i]);
+            CustomTabTitleView view = new CustomTabTitleView(getContext());
+            tabTitles[i] = view.getTvTitle();
+            view.setImageResource(ICONS[i]);
+            view.setTitle(TITLES[i]);
             tab.getTabAt(i).setCustomView(view);
         }
     }

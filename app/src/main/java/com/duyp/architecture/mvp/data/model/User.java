@@ -1,6 +1,9 @@
 package com.duyp.architecture.mvp.data.model;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -142,4 +145,13 @@ public class User extends RealmObject {
         return user != null && id.equals(user.getId());
     }
 
+    public String getDisplayName() {
+        return TextUtils.isEmpty(name) ? login : name;
+    }
+
+    public MutableLiveData<User> toLiveData() {
+        MutableLiveData<User> liveData = new MutableLiveData<>();
+        liveData.setValue(this);
+        return liveData;
+    }
 }

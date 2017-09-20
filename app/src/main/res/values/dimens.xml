@@ -12,6 +12,7 @@
     <dimen name="avatar_size_small">@dimen/base32</dimen>
     <dimen name="avatar_size_normal">@dimen/base50</dimen>
     <dimen name="avatar_size_large">@dimen/base80</dimen>
+    <dimen name="avatar_size_large_extra">@dimen/base100</dimen>
 
     <dimen name="progress_bar_size_small">@dimen/base25</dimen>
 
