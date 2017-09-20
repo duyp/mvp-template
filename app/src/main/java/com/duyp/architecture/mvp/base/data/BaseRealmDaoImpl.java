@@ -56,20 +56,6 @@ public abstract class BaseRealmDaoImpl<E extends RealmObject> implements BaseRea
     };
 
     /**
-     * @return default realm sort {@link Sort#DESCENDING}
-     */
-    public Sort defaultSort() {
-        return mDefaultSort;
-    }
-
-    /**
-     * @return default sort field
-     */
-    public String defaultSortField() {
-        return mDefaultSortField;
-    }
-
-    /**
      * @return default realm instance {@link Realm}
      */
     public Realm getRealm() {

@@ -25,7 +25,7 @@ public class IssueDaoImpl extends BaseRealmDaoImpl<Issue> implements IssueDao {
 
     @Override
     public LiveRealmResults<Issue> getRepoIssues(Long repoId) {
-        return asLiveData(query().equalTo("repoId", repoId).findAllSorted(defaultSortField(), defaultSort()));
+        return findAllSorted(query().equalTo("repoId", repoId));
     }
 
     @Override

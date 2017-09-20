@@ -118,7 +118,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:orientation="vertical">
 
-        <android.support.design.widget.TabLayout
+        <com.duyp.architecture.mvp.ui.customviews.CustomIconTabLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/base45"
             android:background="@color/default_light_gray"

@@ -11,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
+import com.duyp.androidutils.image.glide.loader.TransitionGlideLoader;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
 import com.duyp.architecture.mvp.app.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.ui.customviews.CustomIconTabLayout;
 import com.duyp.architecture.mvp.ui.customviews.CustomTabTitleView;
 import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
@@ -42,7 +44,7 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     @BindView(R.id.appBar)
     AppBarLayout appBar;
     @BindView(R.id.tab)
-    TabLayout tab;
+    CustomIconTabLayout tab;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
@@ -53,13 +55,11 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     @BindView(R.id.tvForkCount)
     TextView tvForkCount;
 
-    private TextView[] tabTitles;
-
     @Inject
     RepoTabAdapter adapter;
 
     @Inject
-    SimpleGlideLoader glideLoader;
+    TransitionGlideLoader glideLoader;
 
     @Inject
     NavigatorHelper navigatorHelper;
@@ -98,23 +98,10 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
 
         adapter.setRepoId(repoId);
         viewPager.setAdapter(adapter);
-        initTabs();
+        tab.setupWithViewPager(viewPager);
 
         getPresenter().initRepo(repoId);
         getPresenter().fetchData();
-    }
-
-    private void initTabs() {
-        tab.setupWithViewPager(viewPager);
-        int n = tab.getTabCount();
-        tabTitles = new TextView[n];
-        for (int i = 0; i < n; i++) {
-            CustomTabTitleView view = new CustomTabTitleView(getContext());
-            tabTitles[i] = view.getTvTitle();
-            view.setImageResource(ICONS[i]);
-            view.setTitle(TITLES[i]);
-            tab.getTabAt(i).setCustomView(view);
-        }
     }
 
     @Override
@@ -125,12 +112,6 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         tvStarCount.setText(String.valueOf(repository.getStargazersCount()));
         tvWatchCount.setText(String.valueOf(repository.getWatchersCount()));
         tvForkCount.setText(String.valueOf(repository.getForksCount()));
-        updateIssuesCount(repository.getOpenIssuesCount());
-    }
-
-    private void updateIssuesCount(long count) {
-        if (tabTitles != null && tabTitles.length > 1) {
-            tabTitles[1].setText(getString(R.string.issues_format, count));
-        }
+        tab.setTitleAt(1, getString(R.string.issues_format, repository.getOpenIssuesCount()));
     }
 }
