@@ -97,14 +97,11 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         final Long repoId = bundle.getLong(Constants.EXTRA_DATA);
 
         adapter.setRepoId(repoId);
-        getPresenter().initRepo(repoId);
+        viewPager.setAdapter(adapter);
+        initTabs();
 
-        new android.os.Handler().postDelayed(() -> {
-            // delay for smooth transition
-            getPresenter().fetchData();
-            viewPager.setAdapter(adapter);
-            initTabs();
-        }, 800);
+        getPresenter().initRepo(repoId);
+        getPresenter().fetchData();
     }
 
     private void initTabs() {
@@ -132,7 +129,7 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     }
 
     private void updateIssuesCount(long count) {
-        if (tabTitles != null) {
+        if (tabTitles != null && tabTitles.length > 1) {
             tabTitles[1].setText(getString(R.string.issues_format, count));
         }
     }
