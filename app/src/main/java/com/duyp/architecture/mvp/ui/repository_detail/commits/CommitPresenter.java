@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.duyp.architecture.mvp.base.presenter.BaseListPresenter;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.Commit;
@@ -34,19 +35,19 @@ public class CommitPresenter extends BaseListPresenter<CommitsView> {
 
     private List<Commit> data = new ArrayList<>();
 
-    private final RepositoryDao repositoryDao;
+    private final RealmDatabase realmDatabase;
 
     @Inject
     public CommitPresenter(@ActivityContext Context context, UserManager userManager, CommitsAdapter adapter,
-                           RepositoryDao repositoryDao) {
+                           RealmDatabase realmDatabase) {
         super(context, userManager);
         this.adapter = adapter;
         adapter.setData(data);
-        this.repositoryDao = repositoryDao;
+        this.realmDatabase = realmDatabase;
     }
 
     void initRepository(@NonNull Long repoId) {
-        this.repository = repositoryDao.getById(repoId).getData();
+        this.repository = realmDatabase.getRepositoryDao().getById(repoId).getData();
     }
 
     @Override

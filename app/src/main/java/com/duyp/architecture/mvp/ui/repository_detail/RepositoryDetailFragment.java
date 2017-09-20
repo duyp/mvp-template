@@ -141,10 +141,4 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
             tabTitles[1].setText(getString(R.string.issues_format, count));
         }
     }
-
-    @Override
-    public boolean onBackPressed() {
-        getActivity().finish();
-        return true;
-    }
 }

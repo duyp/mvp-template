@@ -7,6 +7,7 @@ import com.duyp.architecture.mvp.base.data.BaseRepo;
 import com.duyp.architecture.mvp.base.data.LiveRealmObject;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.Resource;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -30,9 +31,9 @@ public class RepositoryDetailRepo extends BaseRepo {
     private LiveRealmObject<Repository> data;
 
     @Inject
-    public RepositoryDetailRepo(LifecycleOwner owner, GithubService githubService, RepositoryDao repositoryDao) {
-        super(owner, githubService);
-        mRepositoryDao = repositoryDao;
+    public RepositoryDetailRepo(LifecycleOwner owner, GithubService githubService, RealmDatabase realmDatabase) {
+        super(owner, githubService, realmDatabase);
+        mRepositoryDao = realmDatabase.getRepositoryDao();
     }
 
     public LiveRealmObject<Repository> initRepo(@NonNull Long repoId) {

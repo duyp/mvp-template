@@ -100,6 +100,13 @@ public class UserManager {
     }
 
     /**
+     * @return current user data
+     */
+    @Nullable
+    public User getCurrentUser() {
+        return mUserDataStore.getUser();
+    }
+    /**
      *
      * check if has saved user -> start new session
      * @return true if has saved user

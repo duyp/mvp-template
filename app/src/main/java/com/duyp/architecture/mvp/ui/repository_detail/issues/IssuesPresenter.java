@@ -31,7 +31,7 @@ class IssuesPresenter extends BaseListPresenter<IssuesView> {
 
     @Inject
     public IssuesPresenter(@ActivityContext Context context, UserManager userManager, IssuesRepo repo,
-                           IssuesLiveAdapter adapter, RepositoryDao repositoryDao) {
+                           IssuesLiveAdapter adapter) {
         super(context, userManager);
         mIssueRepo = repo;
         this.adapter = adapter;

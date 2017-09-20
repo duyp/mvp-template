@@ -37,7 +37,7 @@ public class ProfilePresenter extends BasePresenter<ProfileView> {
     void initUser(@Nullable User user) {
         String userLogin;
         try {
-            userLogin = user != null ? user.getLogin() : getUserManager().getUserRepo().getUser().getLogin();
+            userLogin = user != null ? user.getLogin() : getUserManager().getCurrentUser().getLogin();
         } catch (NullPointerException e) {
             throw new IllegalStateException("User session not started yet!");
         }

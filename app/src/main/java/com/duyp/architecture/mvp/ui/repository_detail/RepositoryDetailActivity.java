@@ -13,4 +13,9 @@ public class RepositoryDetailActivity extends BaseSingleFragmentActivity<Reposit
     protected RepositoryDetailFragment createFragment() {
         return new RepositoryDetailFragment();
     }
+
+    @Override
+    protected void finishWithAnimation() {
+        finish();
+    }
 }

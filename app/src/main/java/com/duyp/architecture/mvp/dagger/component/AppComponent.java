@@ -8,6 +8,7 @@ import com.duyp.architecture.mvp.dagger.module.DataModule;
 import com.duyp.architecture.mvp.dagger.module.NetworkModule;
 import com.duyp.architecture.mvp.dagger.module.UserModule;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.IssueDao;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserDataStore;
@@ -40,15 +41,11 @@ public interface AppComponent {
 
     UserDataStore userRepo();
 
-    Realm realm();
+    RealmDatabase realmDatabase();
 
     GithubService askTutorService();
 
     UserComponent getUserComponent(UserModule userModule);
-
-    RepositoryDao repositoryDao();
-
-    IssueDao issueDao();
 
     void inject(MyApplication application);
 }

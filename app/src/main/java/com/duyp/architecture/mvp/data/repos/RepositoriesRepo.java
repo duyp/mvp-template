@@ -7,6 +7,7 @@ import android.util.Log;
 import com.duyp.architecture.mvp.base.data.BaseRepo;
 import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.model.Repository;
@@ -45,9 +46,9 @@ public class RepositoriesRepo extends BaseRepo {
     private final User mUser;
 
     @Inject
-    public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, RepositoryDao repositoryDao, UserDataStore userDataStore) {
-        super(owner, githubService);
-        this.repositoryDao = repositoryDao;
+    public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, RealmDatabase realmDatabase, UserDataStore userDataStore) {
+        super(owner, githubService, realmDatabase);
+        this.repositoryDao = realmDatabase.getRepositoryDao();
         mUser = userDataStore.getUser();
     }
 

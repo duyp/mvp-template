@@ -8,6 +8,7 @@ import com.duyp.androidutils.functions.PlainConsumer;
 import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.SimpleNetworkBoundSource;
 import com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 
 import io.reactivex.BackpressureStrategy;
@@ -28,9 +29,12 @@ public abstract class BaseRepo {
 
     private final LifecycleOwner owner;
 
-    public BaseRepo(LifecycleOwner owner, GithubService githubService) {
+    private final RealmDatabase realmDatabase;
+
+    public BaseRepo(LifecycleOwner owner, GithubService githubService, RealmDatabase realmDatabase) {
         this.githubService = githubService;
         this.owner = owner;
+        this.realmDatabase = realmDatabase;
     }
 
     /**

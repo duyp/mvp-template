@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.duyp.architecture.mvp.base.data.BaseRepo;
 import com.duyp.architecture.mvp.base.data.LiveRealmObject;
 import com.duyp.architecture.mvp.data.Resource;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.UserDao;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -26,9 +27,9 @@ public class UserRepo extends BaseRepo{
     private LiveRealmObject<User> user;
 
     @Inject
-    public UserRepo(LifecycleOwner owner, GithubService githubService, UserDao userDao) {
-        super(owner, githubService);
-        this.userDao = userDao;
+    public UserRepo(LifecycleOwner owner, GithubService githubService, RealmDatabase realmDatabase) {
+        super(owner, githubService, realmDatabase);
+        this.userDao = realmDatabase.getUserDao();
     }
 
     public LiveRealmObject<User> initUser(@NonNull String userLogin) {

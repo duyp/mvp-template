@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.IssueDao;
 import com.duyp.architecture.mvp.data.local.dao.IssueDaoImpl;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
@@ -39,8 +40,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    UserDataStore provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, UserDao userDao) {
-        return new UserDataStore(sharedPreferences, gson, userDao);
+    UserDataStore provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, RealmDatabase database) {
+        return new UserDataStore(sharedPreferences, gson, database);
     }
 
     @Provides
@@ -67,19 +68,7 @@ public class DataModule {
 
     @Provides
     @Singleton
-    RepositoryDao provideRepositoryDao(Realm realm) {
-        return new RepositoryDaoImpl(realm);
-    }
-
-    @Provides
-    @Singleton
-    IssueDao provideIssueDao(Realm realm) {
-        return new IssueDaoImpl(realm);
-    }
-
-    @Provides
-    @Singleton
-    UserDao provideUserDao(Realm realm) {
-        return new UserDao(realm);
+    RealmDatabase provideRealmDatabase(Realm realm) {
+        return new RealmDatabase(realm);
     }
 }

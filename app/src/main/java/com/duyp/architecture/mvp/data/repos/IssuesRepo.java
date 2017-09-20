@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.duyp.architecture.mvp.base.data.BaseRepo;
 import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.IssueDao;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.model.Issue;
@@ -27,7 +28,6 @@ import lombok.Getter;
 public class IssuesRepo extends BaseRepo {
 
     private Repository mRepository;
-    private final RepositoryDao repositoryDao;
 
     private IssueDao mIssuesDao;
 
@@ -35,14 +35,13 @@ public class IssuesRepo extends BaseRepo {
     private LiveRealmResults<Issue> data;
 
     @Inject
-    public IssuesRepo(LifecycleOwner owner, GithubService githubService, IssueDao issueDao, RepositoryDao repositoryDao) {
-        super(owner, githubService);
-        this.mIssuesDao = issueDao;
-        this.repositoryDao = repositoryDao;
+    public IssuesRepo(LifecycleOwner owner, GithubService githubService, RealmDatabase realmDatabase) {
+        super(owner, githubService, realmDatabase);
+        this.mIssuesDao = realmDatabase.getIssueDao();
     }
 
     public void initRepo(@NonNull Long repoId) {
-        this.mRepository = repositoryDao.getById(repoId).getData();
+        this.mRepository = getRealmDatabase().getRepositoryDao().getById(repoId).getData();
         data = mIssuesDao.getRepoIssues(mRepository.getId());
     }
 
