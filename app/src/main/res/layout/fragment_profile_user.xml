@@ -90,7 +90,7 @@
                         android:layout_marginLeft="@dimen/margin_default"
                         android:layout_marginRight="@dimen/margin_default"
                         android:layout_marginTop="@dimen/margin_small"
-                        android:layout_marginBottom="@dimen/margin_small"
+                        android:layout_marginBottom="@dimen/margin_default"
                         android:text="@string/lorem_short"
                         android:textSize="@dimen/text_normal"
                         android:textColor="@color/default_dark_gray" />

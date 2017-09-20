@@ -72,7 +72,8 @@ public class CustomRepositoryView extends BaseRelativeLayout<Repository> {
         });
     }
 
-    public void setAvatarClickListener(PlainBiConsumer<User, View> consumer) {
+    // temporary disabled
+    private void setAvatarClickListener(PlainBiConsumer<User, View> consumer) {
         imvAvatar.setOnClickListener(view -> {
             if (getData() != null && consumer != null) {
                 consumer.accept(getData().getOwner().partialClone(), imvAvatar);

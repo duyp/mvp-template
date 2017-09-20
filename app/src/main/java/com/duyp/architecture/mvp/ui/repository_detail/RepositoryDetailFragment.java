@@ -19,6 +19,7 @@ import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
 import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.ui.customviews.CustomTabTitleView;
+import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import org.parceler.Parcels;
 
@@ -65,6 +66,9 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     @Inject
     SimpleGlideLoader glideLoader;
 
+    @Inject
+    NavigatorHelper navigatorHelper;
+
     @Override
     protected int getLayout() {
         return R.layout.fragment_repo_detail;
@@ -82,6 +86,11 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imvBackground.setTransitionName(getString(R.string.transition_name_avatar));
         }
+        imvBackground.setOnClickListener(v -> {
+            if (getPresenter().getData() != null) {
+                navigatorHelper.navigateUserProfileActivity(getPresenter().getData().getOwner().partialClone());
+            }
+        });
 
         Bundle bundle = getArguments();
         if (bundle == null) {

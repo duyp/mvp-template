@@ -60,7 +60,7 @@ public class RepositoryAdapter extends BaseRecyclerViewAdapter<Repository> {
 
         public RepoViewHolder(View itemView) {
             super(itemView);
-            repositoryView.setAvatarClickListener(mNavigator::navigateUserProfileActivity);
+//            repositoryView.setAvatarClickListener(mNavigator::navigateUserProfileActivity);
             repositoryView.setItemClickListener(mNavigator::navigateRepositoryDetail);
         }
     }
