@@ -93,6 +93,7 @@ public abstract class BaseSwipeToRefreshFragment<V extends BaseView, P extends B
     private boolean shouldRefreshUi = true;
 
     protected void refreshUi() {
+        shouldRefreshUi = true;
         new android.os.Handler().postDelayed(() -> {
             if (shouldRefreshUi && refreshLayout != null) {
                 refreshLayout.setRefreshing(true);

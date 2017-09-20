@@ -7,17 +7,20 @@ import android.support.annotation.Nullable;
 
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.data.local.dao.UserDao;
 import com.duyp.architecture.mvp.data.model.User;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
+
+import io.realm.Realm;
 
 /**
  * Created by duypham on 9/7/17.
  * User repository for storing and retrieving user data from database / shared preference
  */
 
-public class UserRepo {
+public class UserDataStore {
 
     private static final long USER_ID_NOT_EXIST = -1;
 
@@ -30,11 +33,14 @@ public class UserRepo {
     @NonNull
     private final MutableLiveData<User> mUserLiveData;
 
+    private final UserDao userDao;
+
     @Inject
-    public UserRepo(@NonNull CustomSharedPreferences sharedPreferences, @NonNull Gson gson) {
+    public UserDataStore(@NonNull CustomSharedPreferences sharedPreferences, @NonNull Gson gson, UserDao userDao) {
         this.mSharedPreferences = sharedPreferences;
         this.mGson = gson;
         mUserLiveData = new MutableLiveData<>();
+        this.userDao = userDao;
     }
 
     public CustomSharedPreferences getSharedPreferences() {
@@ -48,6 +54,7 @@ public class UserRepo {
     public LiveData<User> setUser(@NonNull User user) {
         mSharedPreferences.setPreferences(Constants.PREF_USER, mGson.toJson(user));
         mUserLiveData.setValue(user);
+        userDao.addOrUpdate(user);
         return mUserLiveData;
     }
 

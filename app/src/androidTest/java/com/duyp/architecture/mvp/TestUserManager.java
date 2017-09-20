@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class TestUserManager extends UserManager {
 
-    public TestUserManager(@NonNull Context context, @NonNull UserRepo userRepo, @NonNull EventBus eventBus, @NonNull GithubService service) {
-        super(context, userRepo, eventBus, service);
+    public TestUserManager(@NonNull Context context, @NonNull UserDataStore userDataStore, @NonNull EventBus eventBus, @NonNull GithubService service) {
+        super(context, userDataStore, eventBus, service);
     }
 }

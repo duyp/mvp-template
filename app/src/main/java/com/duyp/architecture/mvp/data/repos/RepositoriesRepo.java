@@ -8,7 +8,7 @@ import com.duyp.architecture.mvp.base.data.BaseRepo;
 import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.model.def.RepoTypes;
@@ -45,10 +45,10 @@ public class RepositoriesRepo extends BaseRepo {
     private final User mUser;
 
     @Inject
-    public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, RepositoryDao repositoryDao, UserRepo userRepo) {
+    public RepositoriesRepo(LifecycleOwner owner, GithubService githubService, RepositoryDao repositoryDao, UserDataStore userDataStore) {
         super(owner, githubService);
         this.repositoryDao = repositoryDao;
-        mUser = userRepo.getUser();
+        mUser = userDataStore.getUser();
     }
 
     /**

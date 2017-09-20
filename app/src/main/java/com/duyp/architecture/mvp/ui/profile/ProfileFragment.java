@@ -94,6 +94,7 @@ public class ProfileFragment extends BasePresenterFragment<ProfileView, ProfileP
         }
         viewPager.setAdapter(adapter);
         tab.setupWithViewPager(viewPager);
+        getPresenter().refresh();
     }
 
     @Override

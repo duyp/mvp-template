@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.dagger.qualifier.OkHttpAuth;
 import com.duyp.architecture.mvp.dagger.scopes.UserScope;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
 import com.duyp.architecture.mvp.data.remote.UserService;
@@ -33,8 +33,8 @@ public class UserModule {
 
     @UserScope
     @Provides
-    LiveData<User> provideUser(UserRepo userRepo) {
-        return userRepo.getUserLiveData();
+    LiveData<User> provideUser(UserDataStore userDataStore) {
+        return userDataStore.getUserLiveData();
     }
 
     @Provides

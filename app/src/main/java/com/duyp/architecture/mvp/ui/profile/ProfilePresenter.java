@@ -14,6 +14,7 @@ import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.data.remote.UserService;
+import com.duyp.architecture.mvp.data.repos.UserRepo;
 
 import javax.inject.Inject;
 
@@ -25,31 +26,27 @@ import javax.inject.Inject;
 @PerFragment
 public class ProfilePresenter extends BasePresenter<ProfileView> {
 
-    LiveData<User> userLiveData;
+    private final UserRepo userRepo;
 
     @Inject
-    ProfilePresenter(@ActivityContext Context context, UserManager userManager) {
+    ProfilePresenter(@ActivityContext Context context, UserManager userManager, UserRepo userRepo) {
         super(context, userManager);
+        this.userRepo = userRepo;
     }
 
     void initUser(@Nullable User user) {
-        if (user == null) {
-            if (getUserManager().isUserSessionStarted()) {
-                userLiveData = getUserManager().getUserRepo().getUserLiveData();
-            } else {
-                throw new IllegalStateException("User session not started yet!");
-            }
-        } else {
-            userLiveData = user.toLiveData();
+        String userLogin;
+        try {
+            userLogin = user != null ? user.getLogin() : getUserManager().getUserRepo().getUser().getLogin();
+        } catch (NullPointerException e) {
+            throw new IllegalStateException("User session not started yet!");
         }
-        userLiveData.observe(getLifeCircleOwner(), user1 -> {
+        userRepo.initUser(userLogin).observe(getLifeCircleOwner(), user1 -> {
             getView().onUserUpdated(user1);
         });
     }
 
-    void updateMyUser() {
-        addRequest(getGithubService().login(getUserRepo().getUserToken()), true, response -> {
-            getUserManager().updateUserIfEquals(response);
-        });
+    public void refresh() {
+        addRequest(false, userRepo.fetchUser());
     }
 }

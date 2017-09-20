@@ -8,8 +8,9 @@ import com.duyp.architecture.mvp.data.local.dao.IssueDao;
 import com.duyp.architecture.mvp.data.local.dao.IssueDaoImpl;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDaoImpl;
+import com.duyp.architecture.mvp.data.local.dao.UserDao;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.google.gson.Gson;
 
@@ -38,13 +39,13 @@ public class DataModule {
 
     @Provides
     @Singleton
-    UserRepo provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson) {
-        return new UserRepo(sharedPreferences, gson);
+    UserDataStore provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, UserDao userDao) {
+        return new UserDataStore(sharedPreferences, gson, userDao);
     }
 
     @Provides
     @Singleton
-    protected UserManager provideUserManager(@ApplicationContext Context context, UserRepo userDataStore,
+    protected UserManager provideUserManager(@ApplicationContext Context context, UserDataStore userDataStore,
                                              EventBus eventBus, GithubService service) {
         return new UserManager(context, userDataStore, eventBus, service);
     }
@@ -74,5 +75,11 @@ public class DataModule {
     @Singleton
     IssueDao provideIssueDao(Realm realm) {
         return new IssueDaoImpl(realm);
+    }
+
+    @Provides
+    @Singleton
+    UserDao provideUserDao(Realm realm) {
+        return new UserDao(realm);
     }
 }

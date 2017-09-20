@@ -35,7 +35,7 @@ public class UserManager {
     protected Context mContext;
 
     // user data store
-    protected final UserRepo mUserRepo;
+    protected final UserDataStore mUserDataStore;
 
     // user component
     protected UserComponent mUserComponent;
@@ -45,9 +45,9 @@ public class UserManager {
     protected GithubService mGithubService;
 
     @Inject
-    public UserManager(@ApplicationContext Context context, UserRepo userRepo, EventBus eventBus, GithubService service) {
+    public UserManager(@ApplicationContext Context context, UserDataStore userDataStore, EventBus eventBus, GithubService service) {
         this.mContext = context;
-        this.mUserRepo = userRepo;
+        this.mUserDataStore = userDataStore;
         this.mEventBus = eventBus;
         this.mGithubService = service;
     }
@@ -67,8 +67,8 @@ public class UserManager {
     }
 
     @NonNull
-    public UserRepo getUserRepo() {
-        return mUserRepo;
+    public UserDataStore getUserRepo() {
+        return mUserDataStore;
     }
 
 
@@ -82,8 +82,8 @@ public class UserManager {
         }
         mUserComponent = createUserComponent(token);
         Log.d(TAG, "User session started!");
-        mUserRepo.setUserToken(token);
-        return mUserRepo.setUser(user);
+        mUserDataStore.setUserToken(token);
+        return mUserDataStore.setUser(user);
     }
 
     /**
@@ -91,7 +91,7 @@ public class UserManager {
      */
     private void stopUserSession() {
         mUserComponent = null;
-        mUserRepo.clearUser();
+        mUserDataStore.clearUser();
         Log.d(TAG, "User session stopped!");
     }
 
@@ -106,9 +106,9 @@ public class UserManager {
      */
     public boolean checkForSavedUserAndStartSessionIfHas() {
         if (mUserComponent == null) {
-            User savedUser = mUserRepo.getUser();
+            User savedUser = mUserDataStore.getUser();
             if (savedUser != null) {
-                startUserSession(savedUser, mUserRepo.getUserToken());
+                startUserSession(savedUser, mUserDataStore.getUserToken());
                 return true;
             }
             return false;
@@ -122,7 +122,7 @@ public class UserManager {
      * @return true if user updated
      */
     public boolean updateUserIfEquals(User newUser) {
-        return mUserRepo.updateUserIfEquals(newUser);
+        return mUserDataStore.updateUserIfEquals(newUser);
     }
 
     /*
