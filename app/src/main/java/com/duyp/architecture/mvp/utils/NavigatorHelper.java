@@ -68,8 +68,8 @@ public class NavigatorHelper {
     }
 
     public void navigateRepositoryDetail(@NonNull Long repoId, View... views) {
-        mNavigator.startActivityWithTransition(RepositoryDetailActivity.class, intent -> {
+        mNavigator.startActivity(RepositoryDetailActivity.class, intent -> {
             intent.putExtra(Constants.EXTRA_DATA, repoId);
-        }, false, false, views);
+        });
     }
 }
