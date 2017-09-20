@@ -10,11 +10,13 @@ import com.duyp.architecture.mvp.data.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
+import com.duyp.architecture.mvp.ui.profile.ProfileActivity;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.RepositoryDetailActivity;
 import com.duyp.architecture.mvp.ui.user_repositories.UserRepositoryFragment;
 
+import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import lombok.AllArgsConstructor;
@@ -39,6 +41,12 @@ public class NavigatorHelper {
             fragment = ProfileFragment.newInstance(user);
         }
         mNavigator.replaceFragment(containerId, fragment, TAG_PROFILE, null);
+    }
+
+    public void navigateUserProfileActivity(@Nullable User user, View... transitionViews) {
+        mNavigator.startActivityWithTransition(ProfileActivity.class, intent -> {
+            intent.putExtra(Constants.EXTRA_DATA, Parcels.wrap(user));
+        }, false, false, transitionViews);
     }
 
     public void navigateLoginFragment(@IdRes int containerId) {

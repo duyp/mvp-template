@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Parcel
-public class User extends RealmObject {
+public class User extends RealmObject{
 
     @PrimaryKey
     @SerializedName("id")
@@ -153,5 +154,15 @@ public class User extends RealmObject {
         MutableLiveData<User> liveData = new MutableLiveData<>();
         liveData.setValue(this);
         return liveData;
+    }
+
+    public User partialClone() {
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        user.setAvatarUrl(avatarUrl);
+        user.setLogin(login);
+        user.setBio(bio);
+        return user;
     }
 }

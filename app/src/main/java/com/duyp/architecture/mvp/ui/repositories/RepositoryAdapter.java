@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
+import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.customviews.CustomRepositoryView;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.BaseRecyclerViewAdapter;
@@ -30,11 +32,15 @@ public class RepositoryAdapter extends BaseRecyclerViewAdapter<Repository> {
 
     private final NavigatorHelper mNavigator;
 
+    private final UserRepo userRepo;
+
     @Inject
-    public RepositoryAdapter(@ActivityContext @NonNull Context context, AvatarLoader avatarLoader, NavigatorHelper navigatorHelper) {
+    public RepositoryAdapter(@ActivityContext @NonNull Context context, AvatarLoader avatarLoader,
+                             NavigatorHelper navigatorHelper, UserRepo userRepo) {
         super(context);
         mAvatarLoader = avatarLoader;
         mNavigator = navigatorHelper;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -54,6 +60,7 @@ public class RepositoryAdapter extends BaseRecyclerViewAdapter<Repository> {
 
         public RepoViewHolder(View itemView) {
             super(itemView);
+            repositoryView.setAvatarClickListener(mNavigator::navigateUserProfileActivity);
             repositoryView.setItemClickListener(mNavigator::navigateRepositoryDetail);
         }
     }

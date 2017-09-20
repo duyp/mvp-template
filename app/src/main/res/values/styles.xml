@@ -57,7 +57,6 @@
         <item name="android:layout_width">@dimen/avatar_size_normal</item>
         <item name="android:layout_height">@dimen/avatar_size_normal</item>
         <item name="android:src">@drawable/ic_github_small</item>
-        <item name="android:scaleType">centerCrop</item>
     </style>
 
     <style name="avatar_circle_large" parent="avatar_circle">
