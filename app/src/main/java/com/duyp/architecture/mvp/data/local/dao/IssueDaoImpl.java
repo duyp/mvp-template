@@ -1,5 +1,8 @@
 package com.duyp.architecture.mvp.data.local.dao;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.duyp.architecture.mvp.base.data.BaseRealmDaoImpl;
 import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.model.Issue;
@@ -17,11 +20,23 @@ public class IssueDaoImpl extends BaseRealmDaoImpl<Issue> implements IssueDao {
 
     @Inject
     public IssueDaoImpl(Realm realm) {
-        super(realm, Issue.class, "id", "createdAt");
+        super(realm, Issue.class);
     }
 
     @Override
     public LiveRealmResults<Issue> getRepoIssues(Long repoId) {
         return asLiveData(query().equalTo("repoId", repoId).findAllSorted(defaultSortField(), defaultSort()));
+    }
+
+    @Override
+    @NonNull
+    protected String getPrimaryField() {
+        return "id";
+    }
+
+    @Override
+    @Nullable
+    protected String getDefaultSortField() {
+        return "createdAt";
     }
 }

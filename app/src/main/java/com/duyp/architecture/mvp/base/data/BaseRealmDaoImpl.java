@@ -17,7 +17,7 @@ import lombok.Setter;
  * Base Realm data access object
  */
 
-public class BaseRealmDaoImpl<E extends RealmObject> implements BaseRealmDao<E> {
+public abstract class BaseRealmDaoImpl<E extends RealmObject> implements BaseRealmDao<E> {
 
     private final Realm mRealm;
     private final Class<E> mClass;
@@ -31,12 +31,25 @@ public class BaseRealmDaoImpl<E extends RealmObject> implements BaseRealmDao<E> 
     @Setter
     private Sort mDefaultSort = Sort.DESCENDING;
 
-    public BaseRealmDaoImpl(Realm realm, Class<E> eClass, @NonNull String primaryField, @Nullable String defaultSortField) {
+    public BaseRealmDaoImpl(Realm realm, Class<E> eClass) {
         this.mRealm = realm;
         this.mClass = eClass;
-        this.mPrimaryField = primaryField;
-        this.mDefaultSortField = defaultSortField;
+        this.mPrimaryField = getPrimaryField();
+        this.mDefaultSortField = getDefaultSortField();
     }
+
+    /**
+     * @return primary key of realm object
+     */
+    @NonNull
+    protected abstract String getPrimaryField();
+
+    /**
+     * @return default field that all queries returning {@link RealmResults} will be sorted by
+     * If null, results won't be sorted
+     */
+    @Nullable
+    protected abstract String getDefaultSortField();
 
     /**
      * @return default realm sort {@link Sort#DESCENDING}

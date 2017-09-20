@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 
 /**
@@ -48,4 +49,13 @@ public interface BaseRealmDao<T extends RealmObject> {
      * Delete all item of current class from realm database
      */
     void deleteAll();
+
+    /**
+     * Closes the Realm instance and all its resources.
+     * <p>
+     * It's important to always remember to close Realm instances when you're done with it in order not to leak memory,
+     * file descriptors or grow the size of Realm file out of measure.
+     * {@link Realm#close()}
+     */
+//    void closeRealm();
 }

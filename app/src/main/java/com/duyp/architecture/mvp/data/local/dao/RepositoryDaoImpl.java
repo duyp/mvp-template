@@ -1,5 +1,8 @@
 package com.duyp.architecture.mvp.data.local.dao;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.duyp.architecture.mvp.base.data.BaseRealmDaoImpl;
 import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.model.Repository;
@@ -17,7 +20,7 @@ public class RepositoryDaoImpl extends BaseRealmDaoImpl<Repository> implements R
 
     @Inject
     public RepositoryDaoImpl(Realm realm) {
-        super(realm, Repository.class, "id", null); // items wont' be sorted
+        super(realm, Repository.class);
     }
 
     @Override
@@ -32,5 +35,17 @@ public class RepositoryDaoImpl extends BaseRealmDaoImpl<Repository> implements R
                         .or()
                         .equalTo("memberLoginName", userLogin)
         );
+    }
+
+    @NonNull
+    @Override
+    protected String getPrimaryField() {
+        return "id";
+    }
+
+    @Nullable
+    @Override
+    protected String getDefaultSortField() {
+        return null;
     }
 }
