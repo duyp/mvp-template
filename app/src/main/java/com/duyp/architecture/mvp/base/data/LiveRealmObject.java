@@ -15,10 +15,10 @@ public class LiveRealmObject<T extends RealmObject> extends LiveData<T> {
 
     private T mData;
 
-    private final RealmChangeListener<T> listener = this::setValue;
+    private final RealmChangeListener<T> listener = this::updateValue;
 
     public LiveRealmObject(@NonNull T data) {
-        setValue(data);
+        updateValue(data);
     }
 
     @Override
@@ -33,9 +33,25 @@ public class LiveRealmObject<T extends RealmObject> extends LiveData<T> {
         mData.removeChangeListener(listener);
     }
 
+    protected void updateValue(T t) {
+        try {
+            this.setValue(t);
+        } catch (IllegalStateException e) {
+            // if we can't set value (since current thread is a background thread), we must call postValue() instead
+            // java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+            this.postValue(t);
+        }
+    }
+
     @Override
     protected void setValue(T value) {
         super.setValue(value);
+        mData = value;
+    }
+
+    @Override
+    protected void postValue(T value) {
+        super.postValue(value);
         mData = value;
     }
 

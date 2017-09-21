@@ -63,7 +63,7 @@ public abstract class BaseRealmDaoImpl<E extends RealmObject> implements BaseRea
     }
 
     /**
-     * @return basic realm query on this class
+     * @return basic realm query on object's class
      */
     protected RealmQuery<E> query() {
         return mRealm.where(mClass);

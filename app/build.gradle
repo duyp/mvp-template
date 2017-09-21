@@ -14,7 +14,8 @@ android {
         targetSdkVersion cfg.targetSdk
         versionCode cfg.version_code
         versionName cfg.version_name
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner 'com.duyp.architecture.mvp.MockTestRunner'
     }
     buildTypes {
         release {

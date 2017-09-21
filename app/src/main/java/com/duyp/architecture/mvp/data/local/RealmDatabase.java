@@ -47,4 +47,12 @@ public class RealmDatabase {
         }
         return userDao;
     }
+
+    /**
+     * Closes the Realm instance and all its resources.
+     * see {@link Realm#close()}
+     */
+    public void close() {
+        mRealm.close();
+    }
 }
