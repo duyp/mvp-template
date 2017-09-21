@@ -60,7 +60,7 @@ dependencies {
     compile "com.android.support:cardview-v7:${libs.supportVersion}"
 
     // my utils
-    compile 'com.github.duyp:android-utils:master-SNAPSHOT'
+    compile 'com.github.duyp:android-utils:1.2.5'
 
     //lombok
     compile 'org.projectlombok:lombok:1.16.16'

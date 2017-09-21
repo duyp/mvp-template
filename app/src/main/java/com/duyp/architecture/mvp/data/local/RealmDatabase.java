@@ -5,6 +5,9 @@ import com.duyp.architecture.mvp.data.local.dao.IssueDaoImpl;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDaoImpl;
 import com.duyp.architecture.mvp.data.local.dao.UserDao;
+import com.duyp.architecture.mvp.data.model.Issue;
+import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.data.model.User;
 
 import io.realm.Realm;
 
@@ -53,6 +56,15 @@ public class RealmDatabase {
      * see {@link Realm#close()}
      */
     public void close() {
+        mRealm.close();
+    }
+
+    public void clearAll() {
+        mRealm.beginTransaction();
+        mRealm.delete(Repository.class);
+        mRealm.delete(Issue.class);
+        mRealm.delete(User.class);
+        mRealm.commitTransaction();
         mRealm.close();
     }
 }

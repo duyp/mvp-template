@@ -1,6 +1,7 @@
 package com.duyp.architecture.mvp.data.local.dao;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.duyp.architecture.mvp.base.data.LiveRealmObject;
 import com.duyp.architecture.mvp.dagger.TestAppComponent;
@@ -26,19 +27,15 @@ public class UserDaoTest extends BaseDaoTest {
     private UserDao userDao;
 
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        userDao = realmDatabase.getUserDao();
-    }
-
-    @Override
     public void inject(TestAppComponent appComponent) {
         appComponent.inject(this);
+        userDao = realmDatabase.getUserDao();
     }
 
     @Test
     public void saveAndGetUser() {
-        User user = createTestUser();
+        Log.d(TAG, "saveAndGetUser: ");
+        User user = sampleUser(123L);
         userDao.addOrUpdate(user);
 
         User savedUser = userDao.getById(user.getId()).getData();
@@ -52,15 +49,8 @@ public class UserDaoTest extends BaseDaoTest {
 
     @Test
     public void getNotExistUser() {
-        User user = userDao.getUser("abc").getData();
+        Log.d(TAG, "getNotExistUser: ");
+        User user = userDao.getUser("fgsdfg").getData();
         assertThat(user, equalTo(null));
-    }
-
-    private User createTestUser() {
-        User user = new User();
-        user.setLogin("duyp");
-        user.setBio("This is test user");
-        user.setId(123L);
-        return user;
     }
 }

@@ -1,6 +1,7 @@
 package com.duyp.architecture.mvp.dagger;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
@@ -18,6 +19,7 @@ import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import static com.duyp.architecture.mvp.data.local.dao.BaseDaoTest.*;
 
 /**
  * Created by duypham on 9/21/17.
@@ -48,6 +50,7 @@ public class TestDataModule {
     @Provides
     @Singleton
     protected Realm provideRealm() {
+        Log.d(TAG, "provideRealm: ");
         Realm.init(mContext);
         RealmConfiguration configuration = new RealmConfiguration.Builder().inMemory().name("test-realm").build();
         return Realm.getInstance(configuration);
@@ -56,6 +59,7 @@ public class TestDataModule {
     @Provides
     @Singleton
     RealmDatabase provideRealmDatabase(Realm realm) {
+        Log.d(TAG, "provideRealmDatabase: ");
         return new RealmDatabase(realm);
     }
 }

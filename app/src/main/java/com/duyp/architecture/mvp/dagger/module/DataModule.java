@@ -5,11 +5,6 @@ import android.content.Context;
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.data.local.RealmDatabase;
-import com.duyp.architecture.mvp.data.local.dao.IssueDao;
-import com.duyp.architecture.mvp.data.local.dao.IssueDaoImpl;
-import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
-import com.duyp.architecture.mvp.data.local.dao.RepositoryDaoImpl;
-import com.duyp.architecture.mvp.data.local.dao.UserDao;
 import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -36,23 +31,10 @@ public class DataModule {
 
     public DataModule(@ApplicationContext Context context) {
         mContext = context;
+        initRealm();
     }
 
-    @Provides
-    @Singleton
-    UserDataStore provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, RealmDatabase database) {
-        return new UserDataStore(sharedPreferences, gson, database);
-    }
-
-    @Provides
-    @Singleton
-    protected UserManager provideUserManager(@ApplicationContext Context context, UserDataStore userDataStore,
-                                             EventBus eventBus, GithubService service) {
-        return new UserManager(context, userDataStore, eventBus, service);
-    }
-    @Provides
-    @Singleton
-    protected Realm provideRealm() {
+    private void initRealm() {
         int schemaVersion = 1; // first version
         Realm.init(mContext);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
@@ -63,6 +45,24 @@ public class DataModule {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
+    }
+
+    @Provides
+    @Singleton
+    UserDataStore provideUserRepo(CustomSharedPreferences sharedPreferences, Gson gson, RealmDatabase database) {
+        return new UserDataStore(sharedPreferences, gson, database);
+    }
+
+    @Provides
+    @Singleton
+    UserManager provideUserManager(@ApplicationContext Context context, UserDataStore userDataStore,
+                                             EventBus eventBus, GithubService service) {
+        return new UserManager(context, userDataStore, eventBus, service);
+    }
+
+    @Provides
+    @Singleton
+    Realm provideRealm() {
         return Realm.getDefaultInstance();
     }
 

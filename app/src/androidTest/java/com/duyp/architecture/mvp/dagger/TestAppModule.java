@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.duyp.androidutils.CustomSharedPreferences;
 import com.duyp.architecture.mvp.TestApplication;
+import com.duyp.architecture.mvp.TestConstants;
 import com.duyp.architecture.mvp.dagger.module.AppModule;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
@@ -47,7 +48,9 @@ public class TestAppModule {
     @Provides
     @Singleton
     CustomSharedPreferences provideMySharedPreferences(@ApplicationContext Context context) {
-        return CustomSharedPreferences.getInstance(context);
+        // IMPORTANCE to use Test 's shared preference file separated to app Pref file
+        // else test functions on shared preferences will affect app shared preferences data
+        return CustomSharedPreferences.getInstance(context, TestConstants.TEST_PREF_NAME);
     }
 
     @Provides

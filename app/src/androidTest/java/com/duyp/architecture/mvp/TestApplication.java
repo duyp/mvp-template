@@ -33,4 +33,8 @@ public class TestApplication extends MyApplication{
         }
         return (TestAppComponent)appComponent;
     }
+
+    public void clearAppComponent() {
+        appComponent = null;
+    }
 }
