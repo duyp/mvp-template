@@ -33,7 +33,7 @@ public class NetworkModule {
     @OkHttpNoAuth
     @Singleton
     static OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context, UserDataStore userDataStore) {
-        return ServiceFactory.makeOkHttpClientBuilder(context, userDataStore.getUserToken()).build();
+        return ServiceFactory.makeOkHttpClientBuilder(context, userDataStore).build();
     }
 
     @Provides

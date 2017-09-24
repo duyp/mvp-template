@@ -40,8 +40,8 @@ public class UserModule {
     @Provides
     @UserScope
     @OkHttpAuth
-    OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context) {
-        return ServiceFactory.makeOkHttpClientBuilder(context, mToken).build();
+    OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context, UserDataStore userDataStore) {
+        return ServiceFactory.makeOkHttpClientBuilder(context, userDataStore).build();
     }
 
     @Provides

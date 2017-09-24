@@ -9,7 +9,7 @@ android {
     compileSdkVersion cfg.compileVersion
     buildToolsVersion cfg.buildToolsVersion
     defaultConfig {
-        applicationId "com.duyp.architecture.mvp"
+        applicationId cfg.package
         minSdkVersion cfg.minSdk
         targetSdkVersion cfg.targetSdk
         versionCode cfg.version_code

@@ -61,9 +61,9 @@ public class CommitPresenter extends BaseListPresenter<CommitsView> {
             if (isRefreshed()) {
                 data.clear();
             }
+            setRefreshed(false);
             data.addAll(commits);
             adapter.notifyDataSetChanged();
-            setRefreshed(false);
         });
     }
 }
