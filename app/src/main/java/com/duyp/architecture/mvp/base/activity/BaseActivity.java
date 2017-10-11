@@ -2,8 +2,6 @@ package com.duyp.architecture.mvp.base.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.LifecycleRegistry;
-import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -20,8 +18,8 @@ import android.view.ViewTreeObserver;
 
 import com.duyp.androidutils.AlertUtils;
 import com.duyp.androidutils.CommonUtils;
-import com.duyp.androidutils.functions.PlainAction;
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainAction;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 import com.duyp.architecture.mvp.app.MyApplication;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.dagger.InjectionHelper;
@@ -42,14 +40,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by Duy Pham on 12/29/2015.
  * Base activity
  */
-public abstract class BaseActivity extends BasePermissionActivity implements BaseView, LifecycleRegistryOwner {
-
-    private final LifecycleRegistry mRegistry = new LifecycleRegistry(this);
-
-    @Override
-    public LifecycleRegistry getLifecycle() {
-        return mRegistry;
-    }
+public abstract class BaseActivity extends BasePermissionActivity implements BaseView {
 
     private ActivityComponent mActivityComponent;
 

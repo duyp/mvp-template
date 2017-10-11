@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidMVP.iml" filepath="$PROJECT_DIR$/AndroidMVP.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mvp-template.iml" filepath="$PROJECT_DIR$/mvp-template.iml" />
     </modules>
   </component>
 </project>

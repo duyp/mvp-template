@@ -2,8 +2,8 @@ package com.duyp.architecture.mvp.utils;
 
 import android.support.annotation.NonNull;
 
-import com.duyp.androidutils.functions.PlainFunction;
-import com.duyp.androidutils.functions.PlainPredicate;
+import com.duyp.androidutils.rx.functions.PlainFunction;
+import com.duyp.androidutils.rx.functions.PlainPredicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class Rx {
 
     /**
-     * Map a input list to output list by a {@link PlainFunction}
+     * Map a input list to output list by a {@link com.duyp.androidutils.rx.functions.PlainFunction}
      * @param input input List
      * @param func function to map
      * @param <T> Input Type
@@ -34,7 +34,7 @@ public class Rx {
     }
 
     /**
-     * Filter a list by a {@link PlainPredicate}
+     * Filter a list by a {@link com.duyp.androidutils.rx.functions.PlainPredicate}
      * @param input input list
      * @param predicate predicate to filter
      * @param <T> input Type
