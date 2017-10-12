@@ -27,7 +27,7 @@ public interface BaseRealmDao<T extends RealmObject> {
     LiveRealmObject<T> getById(@NonNull Long id);
 
     /**
-     * Add all data into realm dataabse
+     * Add all data into realm database
      * @param data list of data
      */
     void addAll(@NonNull List<T> data);

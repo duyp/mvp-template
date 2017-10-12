@@ -3,7 +3,7 @@ package com.duyp.architecture.mvp.utils.api;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 
 import io.reactivex.Single;

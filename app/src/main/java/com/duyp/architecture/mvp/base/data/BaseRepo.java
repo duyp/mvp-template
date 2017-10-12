@@ -4,7 +4,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.SimpleNetworkBoundSource;
 import com.duyp.architecture.mvp.data.SimpleNetworkBoundSourceLiveData;
