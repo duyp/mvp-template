@@ -109,6 +109,7 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     compile 'com.mikhaellopez:circularimageview:3.0.2'
+
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
     // custom font

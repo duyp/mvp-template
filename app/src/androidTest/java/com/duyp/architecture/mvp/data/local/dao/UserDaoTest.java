@@ -1,20 +1,13 @@
 package com.duyp.architecture.mvp.data.local.dao;
 
-import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.duyp.architecture.mvp.base.data.LiveRealmObject;
 import com.duyp.architecture.mvp.dagger.TestAppComponent;
 import com.duyp.architecture.mvp.data.model.User;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import io.realm.Realm;
-
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 /**

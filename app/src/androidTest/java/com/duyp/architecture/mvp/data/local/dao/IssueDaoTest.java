@@ -3,19 +3,12 @@ package com.duyp.architecture.mvp.data.local.dao;
 import com.duyp.architecture.mvp.dagger.TestAppComponent;
 import com.duyp.architecture.mvp.data.model.Issue;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matcher.*;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by duypham on 9/21/17.

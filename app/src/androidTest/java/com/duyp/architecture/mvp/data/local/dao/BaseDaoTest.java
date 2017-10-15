@@ -1,13 +1,9 @@
 package com.duyp.architecture.mvp.data.local.dao;
 
-import android.app.Instrumentation;
 import android.support.annotation.NonNull;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.duyp.architecture.mvp.BaseTest;
-import com.duyp.architecture.mvp.TestApplication;
 import com.duyp.architecture.mvp.dagger.TestAppComponent;
 import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.model.Issue;
@@ -16,16 +12,13 @@ import com.duyp.architecture.mvp.data.model.User;
 import com.google.gson.Gson;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 
 import java.util.Date;
 
 import javax.inject.Inject;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 
 /**

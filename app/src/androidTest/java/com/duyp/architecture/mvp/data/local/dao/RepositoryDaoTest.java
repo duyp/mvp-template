@@ -6,13 +6,13 @@ import com.duyp.architecture.mvp.dagger.TestAppComponent;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.model.User;
 
-import static org.hamcrest.MatcherAssert.*;
-
-import static org.hamcrest.Matchers.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Created by duypham on 9/21/17.
