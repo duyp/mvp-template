@@ -50,6 +50,6 @@ class IssuesPresenter extends BaseListPresenter<IssuesView> {
     @Override
     protected void fetchData() {
         Log.d("source", "fetchData: updating issues...");
-        addRequest(mIssueRepo.getRepoIssues(), issues -> this.setRefreshed(false));
+        addRequest(mIssueRepo.getRepoIssues(isRefreshed()), issues -> this.setRefreshed(false));
     }
 }

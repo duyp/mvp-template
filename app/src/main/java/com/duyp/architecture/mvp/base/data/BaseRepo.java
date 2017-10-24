@@ -38,34 +38,24 @@ public abstract class BaseRepo {
     }
 
     /**
-     * Create resource flowable from given remote api and local persistence by using {@link SimpleNetworkBoundSourceLiveData}
+     * For single data
      * @param remote
-     * @param local
      * @param onSave
      * @param <T>
      * @return
      */
     protected <T> Flowable<Resource<T>> createResource(@Nullable Single<Response<T>> remote,
-                                                       @Nullable LiveData<T> local,
                                                        @Nullable PlainConsumer<T> onSave) {
-        // if our local 's had observers already, no need to send it to SimpleNetworkBoundSourceLiveData,
-        // since SimpleNetworkBoundSourceLiveData will start other observer on it
-        final LiveData<T> targetLocal = (local != null && local.hasObservers()) ? null : local;
         return Flowable.create(emitter -> {
+            new SimpleNetworkBoundSource<T>(emitter, true) {
 
-            new SimpleNetworkBoundSourceLiveData<T>(owner, emitter) {
                 @Override
                 public Single<Response<T>> getRemote() {
                     return remote;
                 }
 
                 @Override
-                public LiveData<T> getLocal() {
-                    return targetLocal;
-                }
-
-                @Override
-                public void saveCallResult(T data) {
+                public void saveCallResult(T data, boolean isRefresh) {
                     if (onSave != null) {
                         onSave.accept(data);
                     }
@@ -74,10 +64,18 @@ public abstract class BaseRepo {
         }, BackpressureStrategy.BUFFER);
     }
 
-    protected <T> Flowable<Resource<T>> createResource(@Nullable Single<Response<T>> remote,
-                                                       @Nullable PlainConsumer<T> onSave) {
+    /**
+     * For a list of data
+     * @param isRefresh
+     * @param remote
+     * @param onSave
+     * @param <T>
+     * @return
+     */
+    protected <T> Flowable<Resource<T>> createResource(boolean isRefresh, @Nullable Single<Response<T>> remote,
+                                                       @Nullable OnSaveResultListener<T> onSave) {
         return Flowable.create(emitter -> {
-            new SimpleNetworkBoundSource<T>(emitter) {
+            new SimpleNetworkBoundSource<T>(emitter, isRefresh) {
 
                 @Override
                 public Single<Response<T>> getRemote() {
@@ -85,12 +83,16 @@ public abstract class BaseRepo {
                 }
 
                 @Override
-                public void saveCallResult(T data) {
+                public void saveCallResult(T data, boolean isRefresh) {
                     if (onSave != null) {
-                        onSave.accept(data);
+                        onSave.onSave(data, isRefresh);
                     }
                 }
             };
         }, BackpressureStrategy.BUFFER);
+    }
+
+    protected interface OnSaveResultListener<T> {
+        void onSave(T data, boolean isRefresh);
     }
 }

@@ -8,7 +8,6 @@ import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.IssueDao;
-import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
 import com.duyp.architecture.mvp.data.model.Issue;
 import com.duyp.architecture.mvp.data.model.Repository;
 import com.duyp.architecture.mvp.data.remote.GithubService;
@@ -45,8 +44,11 @@ public class IssuesRepo extends BaseRepo {
         data = mIssuesDao.getRepoIssues(mRepository.getId());
     }
 
-    public Flowable<Resource<List<Issue>>> getRepoIssues() {
-        return createResource(getGithubService().getRepoIssues(mRepository.getOwner().getLogin(), mRepository.getName()), issues -> {
+    public Flowable<Resource<List<Issue>>> getRepoIssues(boolean refresh) {
+        return createResource(refresh, getGithubService().getRepoIssues(mRepository.getOwner().getLogin(), mRepository.getName()), (issues, isRefresh) -> {
+            if (isRefresh) {
+                mIssuesDao.deleteAll();
+            }
             for (Issue issue : issues) {
                 issue.setRepoId(mRepository.getId());
             }
