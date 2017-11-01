@@ -3,7 +3,7 @@ package com.duyp.architecture.mvp.data;
 
 import android.support.annotation.Nullable;
 
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;

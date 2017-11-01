@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 
 import com.duyp.androidutils.AlertUtils;
 import com.duyp.androidutils.CommonUtils;
-import com.duyp.androidutils.functions.PlainAction;
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainAction;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 import com.duyp.architecture.mvp.app.MyApplication;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.activity.BaseActivity;

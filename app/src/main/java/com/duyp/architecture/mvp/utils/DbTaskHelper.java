@@ -3,7 +3,7 @@ package com.duyp.architecture.mvp.utils;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

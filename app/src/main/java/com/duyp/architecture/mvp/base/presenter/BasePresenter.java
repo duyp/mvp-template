@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.duyp.androidutils.CustomSharedPreferences;
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 import com.duyp.architecture.mvp.base.BaseView;
 import com.duyp.architecture.mvp.base.interfaces.Lifecycle;
 import com.duyp.architecture.mvp.base.interfaces.Refreshable;
@@ -107,7 +107,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
 
     /**
      * add a request with {@link Resource} flowable created by
-     * {@link com.duyp.architecture.mvp.base.data.BaseRepo#createResource(Single, LiveData, PlainConsumer)}
+     * {@link com.duyp.architecture.mvp.base.data.BaseRepo#createResource(Single, PlainConsumer)}
      * @param showProgress
      * @param resourceFlowable
      * @param response

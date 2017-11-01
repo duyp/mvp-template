@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.duyp.androidutils.functions.PlainConsumer;
+import com.duyp.androidutils.rx.functions.PlainConsumer;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.mindorks.placeholderview.annotations.Click;

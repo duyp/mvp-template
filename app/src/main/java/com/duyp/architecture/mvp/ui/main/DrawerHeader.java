@@ -4,8 +4,8 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.duyp.androidutils.functions.PlainAction;
 import com.duyp.androidutils.image.glide.loader.GlideLoader;
+import com.duyp.androidutils.rx.functions.PlainAction;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.data.model.User;
 import com.mindorks.placeholderview.annotations.Click;
