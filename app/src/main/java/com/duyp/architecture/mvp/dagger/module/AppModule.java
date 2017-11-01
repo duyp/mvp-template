@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.duyp.androidutils.CustomSharedPreferences;
+import com.duyp.architecture.mvp.app.Constants;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
 import com.google.gson.Gson;
@@ -45,7 +46,7 @@ public class AppModule {
     @Provides
     @Singleton
     CustomSharedPreferences provideMySharedPreferences(@ApplicationContext Context context) {
-        return CustomSharedPreferences.getInstance(context);
+        return CustomSharedPreferences.getInstance(context, Constants.PREF_NAME);
     }
 
     @Provides

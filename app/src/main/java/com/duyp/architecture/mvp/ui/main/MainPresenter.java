@@ -70,7 +70,7 @@ import static com.duyp.architecture.mvp.ui.main.DrawerMenuItem.DRAWER_MENU_ITEM_
 
     private void navigateProfile() {
         if (getUserManager().isUserSessionStarted()) {
-            mNavigatorHelper.navigateUserProfile(getContainerId());
+            mNavigatorHelper.navigateUserProfile(getContainerId(), null);
         } else {
             navigateLogin();
         }

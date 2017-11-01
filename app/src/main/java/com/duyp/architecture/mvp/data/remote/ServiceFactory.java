@@ -2,6 +2,7 @@ package com.duyp.architecture.mvp.data.remote;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.util.Log;
 import com.duyp.androidutils.network.CustomTrustManager;
 import com.duyp.androidutils.network.Tls12SocketFactory;
 import com.duyp.architecture.mvp.BuildConfig;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
+import com.duyp.architecture.mvp.data.repos.UserRepo;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -61,7 +64,7 @@ public class ServiceFactory {
         return retrofit.create(serviceClass);
     }
 
-    public static OkHttpClient.Builder makeOkHttpClientBuilder(Context context, @Nullable String token) {
+    public static OkHttpClient.Builder makeOkHttpClientBuilder(Context context, @NonNull UserDataStore userDataStore) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
         if (BuildConfig.DEBUG) {
@@ -80,7 +83,8 @@ public class ServiceFactory {
 
                     String header = chain.request().header(RemoteConstants.HEADER_AUTH);
 
-                    if (TextUtils.isEmpty(header) && token != null && !token.isEmpty()) {
+                    String token;
+                    if (TextUtils.isEmpty(header) && !(token = userDataStore.getUserToken()).isEmpty()) {
                         requestBuilder.addHeader(RemoteConstants.HEADER_AUTH, token);
                     }
                     return chain.proceed(requestBuilder.build());

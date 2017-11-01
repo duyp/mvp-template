@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.utils.AvatarLoader;
 import com.duyp.architecture.mvp.utils.functions.PlainBiConsumer;
 
@@ -67,6 +68,15 @@ public class CustomRepositoryView extends BaseRelativeLayout<Repository> {
         this.setOnClickListener(view -> {
             if (getData() != null && consumer != null) {
                 consumer.accept(getData().getId(), imvAvatar);
+            }
+        });
+    }
+
+    // temporary disabled
+    private void setAvatarClickListener(PlainBiConsumer<User, View> consumer) {
+        imvAvatar.setOnClickListener(view -> {
+            if (getData() != null && consumer != null) {
+                consumer.accept(getData().getOwner().partialClone(), imvAvatar);
             }
         });
     }

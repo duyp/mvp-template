@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Must be inflated in Relative layout-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_default"
+    android:paddingLeft="@dimen/margin_default"
+    android:paddingRight="@dimen/margin_default"
+    android:background="?attr/selectableItemBackground">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/avatar_size_normal"
+        android:layout_height="@dimen/avatar_size_normal"
+        android:background="@color/transparent"
+        app:cardCornerRadius="@dimen/base5"
+        android:layout_centerVertical="true"
+        android:id="@+id/avatar">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imvAvatar"
+            android:src="@drawable/ic_account_circle_black_48dp"/>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/text_name_default"
+        android:text="@string/sample_name"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_toRightOf="@id/avatar"
+        android:layout_toEndOf="@id/avatar"
+        android:layout_toLeftOf="@+id/imvFavorite"
+        android:layout_toStartOf="@+id/imvFavorite" />
+
+    <TextView
+        android:id="@+id/tvDes"
+        style="@style/text_description"
+        android:layout_below="@+id/tvName"
+        android:layout_marginTop="@dimen/base5"
+        android:text="@string/lorem_short"
+        android:layout_alignStart="@id/tvName"
+        android:layout_alignLeft="@id/tvName"
+        android:layout_alignRight="@+id/tvName"
+        android:layout_alignEnd="@+id/tvName" />
+
+    <TextView
+        android:id="@+id/tvLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDes"
+        android:layout_alignStart="@id/tvName"
+        android:layout_alignLeft="@id/tvName"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/repo_language_format"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvDes"
+        android:layout_toRightOf="@id/tvLanguage"
+        android:layout_toEndOf="@id/tvLanguage"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/repo_access_format"
+        android:id="@+id/tvAccess"/>
+
+    <ImageView
+        android:layout_width="@dimen/base25"
+        android:layout_height="@dimen/base25"
+        android:src="@drawable/ic_favorite"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/imvFavorite" />
+
+    <View style="@style/line_hoz_gray_thin"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_below="@id/tvLanguage"/>
+
+</RelativeLayout>

@@ -31,8 +31,8 @@ public class DbTaskHelper {
 
     public static void doTaskOnBackground(@NonNull Action action, @Nullable Action onComplete, @Nullable PlainConsumer<Throwable> throwable) {
         Completable.create(e -> {
-            action.run();
-            e.onComplete();
+            action.run(); // run on thread which is subscribe on (upstream)
+            e.onComplete(); // -> onComplete will run on thread which is ObserveOn (downstream)
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe(onComplete != null ? onComplete : () -> {},

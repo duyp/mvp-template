@@ -5,6 +5,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import com.duyp.architecture.mvp.dagger.module.FragmentModule;
 import com.duyp.architecture.mvp.dagger.scopes.PerFragment;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
+import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.RepositoryDetailFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.commits.CommitFragment;
@@ -38,4 +39,5 @@ public interface FragmentComponent {
     void inject(RepositoryDetailFragment fragment);
     void inject(IssuesFragment fragment);
     void inject(CommitFragment fragment);
+    void inject(ProfileFragment fragment);
 }

@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.duyp.androidutils.CustomSharedPreferences;
-import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.app.Constants;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
+import com.duyp.architecture.mvp.data.local.dao.UserDao;
 import com.duyp.architecture.mvp.data.model.User;
 import com.google.gson.Gson;
 
@@ -17,7 +19,7 @@ import javax.inject.Inject;
  * User repository for storing and retrieving user data from database / shared preference
  */
 
-public class UserRepo {
+public class UserDataStore {
 
     private static final long USER_ID_NOT_EXIST = -1;
 
@@ -30,11 +32,14 @@ public class UserRepo {
     @NonNull
     private final MutableLiveData<User> mUserLiveData;
 
+    private final UserDao userDao;
+
     @Inject
-    public UserRepo(@NonNull CustomSharedPreferences sharedPreferences, @NonNull Gson gson) {
+    public UserDataStore(@NonNull CustomSharedPreferences sharedPreferences, @NonNull Gson gson, RealmDatabase realmDatabase) {
         this.mSharedPreferences = sharedPreferences;
         this.mGson = gson;
         mUserLiveData = new MutableLiveData<>();
+        this.userDao = realmDatabase.getUserDao();
     }
 
     public CustomSharedPreferences getSharedPreferences() {
@@ -48,11 +53,15 @@ public class UserRepo {
     public LiveData<User> setUser(@NonNull User user) {
         mSharedPreferences.setPreferences(Constants.PREF_USER, mGson.toJson(user));
         mUserLiveData.setValue(user);
+        userDao.addOrUpdate(user);
         return mUserLiveData;
     }
 
     @Nullable
     public User getUser() {
+        if (mUserLiveData.getValue() != null) {
+            return mUserLiveData.getValue();
+        }
         String userJson = mSharedPreferences.getPreferences(Constants.PREF_USER, "");
         if (userJson != null && !userJson.equals("")) {
             return fromJson(userJson);
@@ -96,6 +105,10 @@ public class UserRepo {
      * Clear user from database
      */
     public void clearUser() {
+        User user = getUser();
+        if (user != null) {
+            userDao.delete(user.getId());
+        }
         mSharedPreferences.setPreferences(Constants.PREF_USER_ID, USER_ID_NOT_EXIST);
         mSharedPreferences.setPreferences(Constants.PREF_USER_TOKEN, "");
         mSharedPreferences.setPreferences(Constants.PREF_USER, "");

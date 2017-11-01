@@ -29,19 +29,17 @@ public class UserRepositoryFragment extends BaseSwipeRecyclerViewFragment<Reposi
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fragmentComponent().inject(this);
+    }
+
+    @Override
     protected void initialize(View view) {
-
-        Bundle bundle = getArguments();
-        ensureInUserScope(userFragmentComponent -> {
-            userFragmentComponent.inject(this);
-            getPresenter().initTargetUser(null);
-        }, () -> {
-            fragmentComponent().inject(this);
-            getPresenter().initTargetUser(Parcels.unwrap(bundle.getParcelable("user")));
-        });
-
         super.initialize(view);
-        refresh();
+        Bundle bundle = getArguments();
+        getPresenter().initTargetUser(Parcels.unwrap(bundle.getParcelable("user")));
+        refreshWithUi(500);
     }
 
     @NonNull

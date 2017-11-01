@@ -8,10 +8,11 @@ import com.duyp.architecture.mvp.dagger.module.DataModule;
 import com.duyp.architecture.mvp.dagger.module.NetworkModule;
 import com.duyp.architecture.mvp.dagger.module.UserModule;
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.IssueDao;
 import com.duyp.architecture.mvp.data.local.dao.RepositoryDao;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 
 import javax.inject.Singleton;
@@ -38,17 +39,13 @@ public interface AppComponent {
 
     UserManager userManager();
 
-    UserRepo userRepo();
+    UserDataStore userRepo();
 
-    Realm realm();
+    RealmDatabase realmDatabase();
 
     GithubService askTutorService();
 
     UserComponent getUserComponent(UserModule userModule);
-
-    RepositoryDao repositoryDao();
-
-    IssueDao issueDao();
 
     void inject(MyApplication application);
 }

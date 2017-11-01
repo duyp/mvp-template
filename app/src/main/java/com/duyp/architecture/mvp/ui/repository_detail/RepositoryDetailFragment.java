@@ -2,24 +2,23 @@ package com.duyp.architecture.mvp.ui.repository_detail;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.duyp.androidutils.image.glide.loader.SimpleGlideLoader;
-import com.duyp.androidutils.navigator.NavigationUtils;
+import com.duyp.androidutils.image.glide.loader.TransitionGlideLoader;
 import com.duyp.architecture.mvp.R;
 import com.duyp.architecture.mvp.base.fragment.BasePresenterFragment;
-import com.duyp.architecture.mvp.data.Constants;
+import com.duyp.architecture.mvp.app.Constants;
 import com.duyp.architecture.mvp.data.model.Repository;
-
-import org.parceler.Parcels;
+import com.duyp.architecture.mvp.ui.customviews.CustomIconTabLayout;
+import com.duyp.architecture.mvp.ui.customviews.CustomTabTitleView;
+import com.duyp.architecture.mvp.utils.NavigatorHelper;
 
 import javax.inject.Inject;
 
@@ -45,7 +44,7 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     @BindView(R.id.appBar)
     AppBarLayout appBar;
     @BindView(R.id.tab)
-    TabLayout tab;
+    CustomIconTabLayout tab;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
@@ -56,13 +55,14 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
     @BindView(R.id.tvForkCount)
     TextView tvForkCount;
 
-    private TextView[] tabTitles;
-
     @Inject
     RepoTabAdapter adapter;
 
     @Inject
-    SimpleGlideLoader glideLoader;
+    TransitionGlideLoader glideLoader;
+
+    @Inject
+    NavigatorHelper navigatorHelper;
 
     @Override
     protected int getLayout() {
@@ -81,6 +81,11 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             imvBackground.setTransitionName(getString(R.string.transition_name_avatar));
         }
+        imvBackground.setOnClickListener(v -> {
+            if (getPresenter().getData() != null) {
+                navigatorHelper.navigateUserProfileActivity(getPresenter().getData().getOwner().partialClone());
+            }
+        });
 
         Bundle bundle = getArguments();
         if (bundle == null) {
@@ -90,27 +95,13 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
             throw new IllegalArgumentException("Must pass repository to this fragment or container activity");
         }
         final Long repoId = bundle.getLong(Constants.EXTRA_DATA);
-        final Repository repository = getPresenter().initRepo(repoId);
-        new android.os.Handler().postDelayed(() -> {
-            adapter.setRepoId(repoId);
-            initTabs();
-            getPresenter().fetchData();
-        }, 1000);
-    }
 
-    private void initTabs() {
+        adapter.setRepoId(repoId);
         viewPager.setAdapter(adapter);
         tab.setupWithViewPager(viewPager);
-        int n = tab.getTabCount();
-        tabTitles = new TextView[n];
-        for (int i = 0; i < n; i++) {
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.view_tab_item, null);
-            ImageView imv = view.findViewById(R.id.imv);
-            tabTitles[i] = view.findViewById(R.id.tvTitle);
-            imv.setImageResource(ICONS[i]);
-            tabTitles[i].setText(TITLES[i]);
-            tab.getTabAt(i).setCustomView(view);
-        }
+
+        getPresenter().initRepo(repoId);
+        getPresenter().fetchData();
     }
 
     @Override
@@ -121,12 +112,6 @@ public class RepositoryDetailFragment extends BasePresenterFragment<RepositoryDe
         tvStarCount.setText(String.valueOf(repository.getStargazersCount()));
         tvWatchCount.setText(String.valueOf(repository.getWatchersCount()));
         tvForkCount.setText(String.valueOf(repository.getForksCount()));
-        updateIssuesCount(repository.getOpenIssuesCount());
-    }
-
-    private void updateIssuesCount(long count) {
-        if (tabTitles != null) {
-            tabTitles[1].setText(getString(R.string.issues_format, count));
-        }
+        tab.setTitleAt(1, getString(R.string.issues_format, repository.getOpenIssuesCount()));
     }
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.duyp.architecture.mvp.dagger.qualifier.ApplicationContext;
 import com.duyp.architecture.mvp.dagger.qualifier.OkHttpNoAuth;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.data.remote.ServiceFactory;
 import com.google.gson.Gson;
@@ -32,8 +32,8 @@ public class NetworkModule {
     @Provides
     @OkHttpNoAuth
     @Singleton
-    static OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context, UserRepo userRepo) {
-        return ServiceFactory.makeOkHttpClientBuilder(context, userRepo.getUserToken()).build();
+    static OkHttpClient provideOkHttpClientNoAuth(@ApplicationContext Context context, UserDataStore userDataStore) {
+        return ServiceFactory.makeOkHttpClientBuilder(context, userDataStore).build();
     }
 
     @Provides

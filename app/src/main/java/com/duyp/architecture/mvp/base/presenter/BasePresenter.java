@@ -17,7 +17,7 @@ import com.duyp.architecture.mvp.dagger.qualifier.ActivityContext;
 import com.duyp.architecture.mvp.data.Resource;
 import com.duyp.architecture.mvp.data.Status;
 import com.duyp.architecture.mvp.data.local.user.UserManager;
-import com.duyp.architecture.mvp.data.local.user.UserRepo;
+import com.duyp.architecture.mvp.data.local.user.UserDataStore;
 import com.duyp.architecture.mvp.data.model.base.ErrorEntity;
 import com.duyp.architecture.mvp.data.remote.GithubService;
 import com.duyp.architecture.mvp.utils.api.ApiUtils;
@@ -91,7 +91,7 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
         return userManager.getGithubService();
     }
 
-    public UserRepo getUserRepo() {
+    public UserDataStore getUserRepo() {
         return userManager.getUserRepo();
     }
 
@@ -113,13 +113,13 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
      * @param response
      * @param <T>
      */
-    public <T> void addRequest(boolean showProgress, Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
+    public <T> void addRequest(boolean showProgress, Flowable<Resource<T>> resourceFlowable, @Nullable PlainConsumer<T> response) {
         Disposable disposable = resourceFlowable.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(resource -> {
                     if (resource != null && getView() != null) {
                         Log.d("source", "addRequest: resource changed: " + resource.toString());
-                        if (resource.data != null) {
+                        if (resource.data != null && response != null) {
                             response.accept(resource.data);
                         }
                         if (showProgress) {
@@ -138,6 +138,14 @@ public abstract class BasePresenter<V extends BaseView> implements Lifecycle, Re
 
     public <T> void addRequest(Flowable<Resource<T>> resourceFlowable, PlainConsumer<T> response) {
         addRequest(true, resourceFlowable, response);
+    }
+
+    public <T> void addRequest(Flowable<Resource<T>> resourceFlowable) {
+        addRequest(true, resourceFlowable, null);
+    }
+
+    public <T> void addRequest(boolean showProgress, Flowable<Resource<T>> resourceFlowable) {
+        addRequest(showProgress, resourceFlowable, null);
     }
 
     /**

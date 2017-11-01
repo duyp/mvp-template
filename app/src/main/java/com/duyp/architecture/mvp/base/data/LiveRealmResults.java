@@ -19,11 +19,11 @@ public class LiveRealmResults<T extends RealmModel> extends LiveData<Pair<RealmR
     private RealmResults<T> mRealmResults;
 
     private final OrderedRealmCollectionChangeListener<RealmResults<T>> listener = (realmResults, changeSet) -> {
-        this.setValue(new Pair<>(realmResults, changeSet));
+        this.updateValue(new Pair<>(realmResults, changeSet));
     };
 
     public LiveRealmResults(@NonNull RealmResults<T> realmResults) {
-        setValue(new Pair<>(realmResults, null));
+        updateValue(new Pair<>(realmResults, null));
     }
 
     public RealmResults<T> getData() {
@@ -42,9 +42,26 @@ public class LiveRealmResults<T extends RealmModel> extends LiveData<Pair<RealmR
         mRealmResults.removeChangeListener(listener);
     }
 
+
+    protected void updateValue(Pair<RealmResults<T>, OrderedCollectionChangeSet> value) {
+        try {
+            this.setValue(value);
+        } catch (IllegalStateException e) {
+            // if we can't set value (since current thread is a background thread), we must call postValue() instead
+            // java.lang.IllegalStateException: Cannot invoke setValue on a background thread
+            this.postValue(value);
+        }
+    }
+
     @Override
     protected void setValue(Pair<RealmResults<T>, OrderedCollectionChangeSet> value) {
         super.setValue(value);
+        mRealmResults = value.first;
+    }
+
+    @Override
+    protected void postValue(Pair<RealmResults<T>, OrderedCollectionChangeSet> value) {
+        super.postValue(value);
         mRealmResults = value.first;
     }
 

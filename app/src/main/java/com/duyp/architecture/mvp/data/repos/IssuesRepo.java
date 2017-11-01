@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.duyp.architecture.mvp.base.data.BaseRepo;
 import com.duyp.architecture.mvp.base.data.LiveRealmResults;
 import com.duyp.architecture.mvp.data.Resource;
+import com.duyp.architecture.mvp.data.local.RealmDatabase;
 import com.duyp.architecture.mvp.data.local.dao.IssueDao;
 import com.duyp.architecture.mvp.data.model.Issue;
 import com.duyp.architecture.mvp.data.model.Repository;
@@ -25,26 +26,29 @@ import lombok.Getter;
 
 public class IssuesRepo extends BaseRepo {
 
-    private IssueDao mIssuesDao;
-
     private Repository mRepository;
+
+    private IssueDao mIssuesDao;
 
     @Getter
     private LiveRealmResults<Issue> data;
 
     @Inject
-    public IssuesRepo(LifecycleOwner owner, GithubService githubService, IssueDao issueDao) {
-        super(owner, githubService);
-        this.mIssuesDao = issueDao;
+    public IssuesRepo(LifecycleOwner owner, GithubService githubService, RealmDatabase realmDatabase) {
+        super(owner, githubService, realmDatabase);
+        this.mIssuesDao = realmDatabase.getIssueDao();
     }
 
-    public void initRepo(@NonNull Repository repository) {
-        this.mRepository = repository;
+    public void initRepo(@NonNull Long repoId) {
+        this.mRepository = getRealmDatabase().getRepositoryDao().getById(repoId).getData();
         data = mIssuesDao.getRepoIssues(mRepository.getId());
     }
 
-    public Flowable<Resource<List<Issue>>> getRepoIssues() {
-        return createResource(getGithubService().getRepoIssues(mRepository.getOwner().getLogin(), mRepository.getName()), issues -> {
+    public Flowable<Resource<List<Issue>>> getRepoIssues(boolean refresh) {
+        return createResource(refresh, getGithubService().getRepoIssues(mRepository.getOwner().getLogin(), mRepository.getName()), (issues, isRefresh) -> {
+            if (isRefresh) {
+                mIssuesDao.deleteAll();
+            }
             for (Issue issue : issues) {
                 issue.setRepoId(mRepository.getId());
             }

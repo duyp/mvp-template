@@ -27,6 +27,10 @@
         <activity android:name=".ui.repository_detail.RepositoryDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeTranslucent"/>
-    </application>
+
+        <activity android:name=".ui.profile.ProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeTranslucent"/>
+     </application>
 
 </manifest>

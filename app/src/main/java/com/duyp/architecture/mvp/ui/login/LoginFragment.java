@@ -104,7 +104,7 @@ public class LoginFragment extends BasePresenterFragment<LoginView, LoginPresent
         isPreparingForTransition = true;
         avatarLoader.loadImage(user.getAvatarUrl(), imvAvatar);
         new android.os.Handler().postDelayed(() -> {
-            fragmentNavigator.replaceFragment(R.id.container,  new ProfileFragment(), imvAvatar);
+            fragmentNavigator.replaceFragment(R.id.container,  ProfileFragment.newInstance(null), imvAvatar);
             if (getActivity() instanceof MainView) {
                 ((MainView) getActivity()).setTitle("Profile");
             }

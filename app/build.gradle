@@ -9,12 +9,13 @@ android {
     compileSdkVersion cfg.compileVersion
     buildToolsVersion cfg.buildToolsVersion
     defaultConfig {
-        applicationId "com.duyp.architecture.mvp"
+        applicationId cfg.package
         minSdkVersion cfg.minSdk
         targetSdkVersion cfg.targetSdk
         versionCode cfg.version_code
         versionName cfg.version_name
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        testInstrumentationRunner 'com.duyp.architecture.mvp.MockTestRunner'
     }
     buildTypes {
         release {
@@ -38,15 +39,16 @@ android {
 }
 
 // to use snapshot version libraries
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
+//configurations.all {
+//    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+//}
 
 dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -107,6 +109,7 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     compile 'com.mikhaellopez:circularimageview:3.0.2'
+
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
     // custom font
@@ -121,4 +124,7 @@ dependencies {
     // parcel
     compile 'org.parceler:parceler-api:1.1.8'
     annotationProcessor 'org.parceler:parceler:1.1.8'
+
+    // image plur
+    compile 'jp.wasabeef:blurry:2.1.1'
 }

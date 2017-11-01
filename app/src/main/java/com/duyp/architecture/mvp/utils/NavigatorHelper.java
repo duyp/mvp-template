@@ -2,12 +2,14 @@ package com.duyp.architecture.mvp.utils;
 
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.duyp.androidutils.navigator.Navigator;
-import com.duyp.architecture.mvp.data.Constants;
-import com.duyp.architecture.mvp.data.model.Repository;
+import com.duyp.architecture.mvp.app.Constants;
+import com.duyp.architecture.mvp.data.model.User;
 import com.duyp.architecture.mvp.ui.login.LoginFragment;
+import com.duyp.architecture.mvp.ui.profile.ProfileActivity;
 import com.duyp.architecture.mvp.ui.profile.ProfileFragment;
 import com.duyp.architecture.mvp.ui.repositories.RepositoriesFragment;
 import com.duyp.architecture.mvp.ui.repository_detail.RepositoryDetailActivity;
@@ -31,12 +33,18 @@ public class NavigatorHelper {
 
     Navigator mNavigator;
 
-    public void navigateUserProfile(@IdRes int containerId) {
+    public void navigateUserProfile(@IdRes int containerId, @Nullable User user) {
         ProfileFragment fragment = mNavigator.findFragmentByTag(TAG_PROFILE);
         if (fragment == null) {
-            fragment = new ProfileFragment();
+            fragment = ProfileFragment.newInstance(user);
         }
         mNavigator.replaceFragment(containerId, fragment, TAG_PROFILE, null);
+    }
+
+    public void navigateUserProfileActivity(@Nullable User user, View... transitionViews) {
+        mNavigator.startActivityWithTransition(ProfileActivity.class, intent -> {
+            intent.putExtra(Constants.EXTRA_DATA, Parcels.wrap(user));
+        }, false, false, transitionViews);
     }
 
     public void navigateLoginFragment(@IdRes int containerId) {
@@ -60,8 +68,8 @@ public class NavigatorHelper {
     }
 
     public void navigateRepositoryDetail(@NonNull Long repoId, View... views) {
-        mNavigator.startActivityWithTransition(RepositoryDetailActivity.class, intent -> {
+        mNavigator.startActivity(RepositoryDetailActivity.class, intent -> {
             intent.putExtra(Constants.EXTRA_DATA, repoId);
-        }, false, false, views);
+        });
     }
 }

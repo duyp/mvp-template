@@ -40,12 +40,12 @@ public class RepositoriesFragment extends BaseSwipeRecyclerViewFragment<Reposito
     @Override
     protected void initialize(View view) {
         super.initialize(view);
-        RxTextView.textChanges(edtSearch).debounce(1000, TimeUnit.MILLISECONDS)
+        RxTextView.textChanges(edtSearch).debounce(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(charSequence -> {
                     getPresenter().findRepositories(charSequence.toString());
                 });
-        refreshWithUi(200);
+        refreshWithUi(300);
     }
 
     @NonNull
